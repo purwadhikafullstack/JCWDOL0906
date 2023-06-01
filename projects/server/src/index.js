@@ -2,6 +2,7 @@ const { join } = require("path");
 require('dotenv').config({ path: join(__dirname, '../.env') });
 const express = require("express");
 const cors = require("cors");
+const router = require('./router')
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -22,7 +23,9 @@ app.get("/api/greetings", (req, res, next) => {
 });
 // ===========================
 // NOTE : Add your routes here
-
+for (let routes in router.routes) {
+  app.use('/api', routes)
+}
 // ===========================
 
 // not found
