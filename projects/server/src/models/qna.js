@@ -1,7 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
+const category = require("./category");
 module.exports = (sequelize, DataTypes) => {
-    class Product_Details extends Model {
+    class QnA extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -9,46 +10,55 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Product_Details.hasOne(models.Product, {
+            QnA.belongsTo(models.User, {
                 foreignKey: {
-                    name: "product_id",
+                    name: "user_id",
                 },
             });
-            
         }
     }
-    Product_Details.init(
+    QnA.init(
         {
-            product_id: {
+            useer_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
             },
-            description: {
-                type: DataTypes.STRING,
+            admin_id: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
-                unique: "description",
+                defaultValue: false,
             },
-            indication: {
+            question: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: "indication"
+                unique: "question",
             },
-            dose: {
+            answer: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: "dose",
+                unique: "answer",
             },
-            rules: {
-                type: DataTypes.STRING,
+            is_deleted: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
-                unique: "rules"
+                defaultValue: false,
+            },
+            createdBy: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
+            },
+            updatedBy: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
             },
         },
         {
             sequelize,
-            modelName: "Product_Details",
+            modelName: "QnA",
         }
     );
-    return Product_Details;
+    return QnA;
 };

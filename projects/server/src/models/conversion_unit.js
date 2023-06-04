@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class conversion_unit extends Model {
+    class Conversion_Unit extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             // });
         }
     }
-    conversion_unit.init(
+    Conversion_Unit.init(
         {
             unit_name: {
                 type: DataTypes.STRING,
@@ -27,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
             modelName: "conversion_unit",
         }
     );
-    return conversion_unit;
+    return Conversion_Unit;
 };

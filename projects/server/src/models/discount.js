@@ -1,7 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
+const category = require("./category");
 module.exports = (sequelize, DataTypes) => {
-    class Product_Details extends Model {
+    class Discount extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -9,46 +10,40 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Product_Details.hasOne(models.Product, {
+            Discount.belongsTo(models.Product, {
                 foreignKey: {
                     name: "product_id",
                 },
             });
-            
         }
     }
-    Product_Details.init(
+    Discount.init(
         {
             product_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
             },
-            description: {
+            discount_name: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: "description",
+                unique: "discount_name",
             },
-            indication: {
-                type: DataTypes.STRING,
+            value: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
-                unique: "indication"
+                defaultValue: false,
             },
-            dose: {
-                type: DataTypes.STRING,
+            is_deleted: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
-                unique: "dose",
-            },
-            rules: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "rules"
+                defaultValue: false,
             },
         },
         {
             sequelize,
-            modelName: "Product_Details",
+            modelName: "Discount",
         }
     );
-    return Product_Details;
+    return Discount;
 };
