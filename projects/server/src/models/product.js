@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class User extends Model {
+    class Product extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -9,72 +9,71 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            User.hashOne(models.Profile, {
+            Product.hashOne(models.Product_Details, {
                 foreignKey: {
-                    name: "user_id",
+                    name: "product_id",
                 },
             });
-            User.hasMany(models.Address, {
+            Product.hasMany(models.Category, {
                 foreignKey: {
-                    name: "user_id",
+                    name: "category_id",
                 }
             });
-            User.hasMany(models.Transaction, {
+            Product.hasMany(models.Discount, {
                 foreignKey: {
-                    name: "user_id",
+                    name: "product_id",
                 }
             });
-            User.hasMany(models.QnA, {
+            Product.hasMany(models.Transaction_Detail, {
                 foreignKey: {
-                    name: "user_id",
+                    name: "product_id",
+                }
+            });
+            Product.hasMany(models.Stock, {
+                foreignKey: {
+                    name: "product_id"
                 }
             });
             
         }
     }
-    User.init(
+    Product.init(
         {
-            username: {
+            product_name: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                unique: "username",
+                unique: "product_name",
             },
-            email: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "email",
-            },
-            password: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    len: [8],
-                },
-            },
-            phone_number: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "phone_number",
-            },
-            is_verified: {
+            price: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
             },
-            role: {
+            image: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: "image"
+            },
+            is_deleted: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
             },
-            verification_token: {
-                type: DataTypes.STRING,
-                allowNull: true,
+            createdBy: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
+            },
+            updatedBy: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
             },
         },
         {
             sequelize,
-            modelName: "User",
+            modelName: "Product",
         }
     );
-    return User;
+    return Product;
 };

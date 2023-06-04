@@ -4,6 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const router = require('./router')
 
+//
+const db = require("./models")
+
 const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
@@ -61,9 +64,11 @@ app.get("*", (req, res) => {
 //#endregion
 
 app.listen(PORT, (err) => {
+  // db.sequelize.sync({ alter: true });
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
     console.log(`APP RUNNING at ${PORT} ✅`);
   }
 });
+
