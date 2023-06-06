@@ -9,31 +9,31 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Product.hashOne(models.Product_Details, {
-                foreignKey: {
-                    name: "product_id",
-                },
-            });
-            Product.hasMany(models.Category, {
-                foreignKey: {
-                    name: "category_id",
-                }
-            });
-            Product.hasMany(models.Discount, {
-                foreignKey: {
-                    name: "product_id",
-                }
-            });
-            Product.hasMany(models.Transaction_Detail, {
-                foreignKey: {
-                    name: "product_id",
-                }
-            });
-            Product.hasMany(models.Stock, {
-                foreignKey: {
-                    name: "product_id"
-                }
-            });
+            // Product.hasOne(models.Product_Details, {
+            //     foreignKey: {
+            //         name: "product_id",
+            //     },
+            // });
+            // Product.hasMany(models.Category, {
+            //     foreignKey: {
+            //         name: "category_id",
+            //     }
+            // });
+            // Product.hasMany(models.Discount, {
+            //     foreignKey: {
+            //         name: "product_id",
+            //     }
+            // });
+            // Product.hasMany(models.Transaction_Detail, {
+            //     foreignKey: {
+            //         name: "product_id",
+            //     }
+            // });
+            // Product.hasMany(models.Stock, {
+            //     foreignKey: {
+            //         name: "product_id"
+            //     }
+            // });
             
         }
     }
