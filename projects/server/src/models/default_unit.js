@@ -27,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
             modelName: "default_unit",
         }
     );
-    return Dafault_Unit;
+    return Default_Unit;
 };
