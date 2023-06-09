@@ -6,7 +6,7 @@ const router = require('./router');
 const db = require('../src/models')
 
 //
-const db = require("./models")
+// const db = require("./models")
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -27,7 +27,7 @@ app.get("/api/greetings", (req, res, next) => {
 });
 // ===========================
 // NOTE : Add your routes here
-for (let routes in router.routes) {
+for (routes of router.routes) {
   app.use('/api', routes)
 }
 // ===========================

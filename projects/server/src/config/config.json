@@ -2,7 +2,7 @@
     "development": {
         "username": "root",
         "password": "root",
-        "database": "g-medsnial",
+        "database": "g_medsnial",
         "host": "127.0.0.1",
         "dialect": "mysql"
     },

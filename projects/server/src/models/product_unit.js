@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class default_unit extends Model {
+    class product_unit extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -15,18 +15,31 @@ module.exports = (sequelize, DataTypes) => {
             // });
         }
     }
-    default_unit.init(
+    product_unit.init(
         {
-            unit_name: {
-                type: DataTypes.STRING,
+            product_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }, default_unit_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }, default_unit_qty: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }, conversion_unit_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }, conversion_unit_qty: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
             }
+
         },
         {
             sequelize,
-            modelName: "default_unit",
+            modelName: "product_unit",
             freezeTableName: true
         }
     );
-    return default_unit;
+    return product_unit;
 };
