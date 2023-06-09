@@ -1,13 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
-import { LoginForm }  from "../src/components/loginForm";
-import { RegistrationForm }  from "../src/components/registerForm";
-import Verification  from "./pages/verification";
+import { LoginForm } from "../src/components/loginForm";
+import { RegistrationForm } from "../src/components/registerForm";
+import Verification from "./pages/verification";
 
 import "./App.css";
 import UserHome from "./pages/userHome";
 import AdminDashboard from "./pages/admindashboard";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
     { path: "/verification/:token", element: <Verification /> },
     { path: "/userhome", element: <UserHome /> },
     { path: "/admindashboard", element: <AdminDashboard /> },
-    
+
 ]);
 
 function App() {

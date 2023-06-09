@@ -1,33 +1,57 @@
-import React from "react";
-import Slider from "react-slick"
+import React from 'react';
+import Slider from 'react-slick';
 
 export default function SimpleSlider() {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
   return (
     <Slider {...settings}>
       <div>
-        <h3>1</h3>
+        <div
+          style={{ backgroundColor: 'blue', width: '100px', height: '100px' }}
+        >
+          SLIDE 1
+        </div>
       </div>
       <div>
-        <h3>2</h3>
+        <div
+          style={{ backgroundColor: 'black', width: '100px', height: '100px' }}
+        >
+          SLIDE 2
+        </div>
       </div>
       <div>
-        <h3>3</h3>
+        <div
+          style={{ backgroundColor: 'grey', width: '100px', height: '100px' }}
+        >
+          SLIDE 3
+        </div>
       </div>
       <div>
-        <h3>4</h3>
+        <div
+          style={{ backgroundColor: 'red', width: '100px', height: '100px' }}
+        >
+          SLIDE 4
+        </div>
       </div>
       <div>
-        <h3>5</h3>
+        <div
+          style={{ backgroundColor: 'yellow', width: '100px', height: '100px' }}
+        >
+          SLIDE 5
+        </div>
       </div>
       <div>
-        <h3>6</h3>
+        <div
+          style={{ backgroundColor: 'green', width: '100px', height: '100px' }}
+        >
+          SLIDE 6
+        </div>
       </div>
     </Slider>
   );
