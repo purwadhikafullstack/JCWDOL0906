@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            // Product.hashOne(models.Product_Details, {
+            // Product.hasOne(models.Product_Details, {
             //     foreignKey: {
             //         name: "product_id",
             //     },

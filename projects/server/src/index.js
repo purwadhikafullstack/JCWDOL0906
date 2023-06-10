@@ -5,9 +5,6 @@ const cors = require("cors");
 const router = require('./router');
 const db = require('../src/models')
 
-//
-// const db = require("./models")
-
 const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
@@ -19,6 +16,11 @@ app.use("/", express.static(__dirname + "/public"));
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
+
+const
+  authRouter
+    = require("./router/authRouter");
+app.use("/api/auth", authRouter);
 
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
