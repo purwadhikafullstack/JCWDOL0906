@@ -2,6 +2,10 @@ import axios from "axios";
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from './theme/theme.js'
+import Dashboard from "./adminLayouts/Admin";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -15,12 +19,13 @@ function App() {
     })();
   }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {message}
-      </header>
-    </div>
+    <ChakraProvider theme={theme} resetCss={false} position="relative">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
+    </ChakraProvider>
   );
 }
 
