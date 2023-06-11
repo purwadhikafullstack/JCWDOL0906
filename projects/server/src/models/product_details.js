@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Product_Details.hasOne(models.Product, {
-                foreignKey: {
-                    name: "product_id",
-                },
-            });
-            
+            // Product_Details.hasOne(models.Product, {
+            //     foreignKey: {
+            //         name: "product_id",
+            //     },
+            // });
+
         }
     }
     Product_Details.init(

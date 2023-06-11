@@ -17,9 +17,9 @@ app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-const 
-    authRouter
- = require("./router/authRouter");
+const
+  authRouter
+    = require("./router/authRouter");
 app.use("/api/auth", authRouter);
 
 app.get("/api/greetings", (req, res, next) => {
@@ -29,7 +29,7 @@ app.get("/api/greetings", (req, res, next) => {
 });
 // ===========================
 // NOTE : Add your routes here
-for (let routes in router.routes) {
+for (routes of router.routes) {
   app.use('/api', routes)
 }
 // ===========================

@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "product_id"
             //     }
             // });
-            
+
         }
     }
     Product.init(

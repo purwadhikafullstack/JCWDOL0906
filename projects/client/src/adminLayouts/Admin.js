@@ -84,6 +84,7 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
   const getRoutes = (routes) => {
+    console.log(routes)
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -95,7 +96,7 @@ export default function Dashboard(props) {
         return (
           <Route
             path={prop.layout + prop.path}
-            component={prop.component}
+            Component={prop.component}
             key={key}
           />
         );
