@@ -2,6 +2,7 @@ const db = require('../models')
 const product_unit = db.product_unit
 const stock = db.stock
 
+
 exports.createStock = (qty, conversion_qty, default_qty, type) => {
     let stock_default, stockConversion;
     if (type === 'default') {
@@ -16,7 +17,7 @@ exports.createStock = (qty, conversion_qty, default_qty, type) => {
     }
 }
 
-exports.increaseStock = async (product_id, qty) => {
+exports.addStock = async (product_id, qty) => {
 
     let stock_default = 0, stock_conversion = 0, update_default_stock = 0, update_conversion_stock = 0;
 
@@ -54,7 +55,7 @@ exports.increaseStock = async (product_id, qty) => {
     }
 }
 
-exports.decreaseStock = async (product_id, qty) => {
+exports.updateStock = async (product_id, qty) => {
     let stock_default, stock_conversion, update_default_stock, update_conversion_stock;
 
     try {

@@ -1,5 +1,6 @@
 // import
 import React, { Component } from 'react';
+import Units from './admin/pages/units';
 // import Dashboard from "views/Dashboard/Dashboard.js";
 // import Tables from "views/Dashboard/Tables.js";
 // import Billing from "views/Dashboard/Billing.js";
@@ -28,7 +29,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/tables",
+    path: "/product",
     name: "Product",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
@@ -36,7 +37,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/billing",
+    path: "/category",
     name: "Category",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
@@ -44,21 +45,30 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
+    path: "/report",
     name: "Report",
     rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
+    icon: <DocumentIcon color='inherit' />,
     // component: RTLPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
+    path: "/qna",
     name: "Q&A",
     rtlName: "آرتيإل",
     icon: <SupportIcon color='inherit' />,
     // component: RTLPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
+  {
+    path: "/unit",
+    name: "Units",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color='inherit' />,
+    component: Units,
+    layout: "/admin",
+  },
+
   // {
   //   name: "ACCOUNT PAGES",
   //   category: "account",
