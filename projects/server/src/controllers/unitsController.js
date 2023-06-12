@@ -1,7 +1,7 @@
+const { addStock, updateStock } = require('../helpers/units')
 const db = require('../models')
 const conversion_unit = db.conversion_unit
 const default_unit = db.default_unit
-const { countConversionQty, increaseStock } = require('../helper')
 const { Sequelize } = require('../models')
 
 const product_unit = db.product_unit
@@ -106,6 +106,39 @@ module.exports = {
             return res.status(400).json({ status: 'failed', message: error })
         }
     },
+    getDefaultUnitById: async (req, res) => {
+        try {
+            const data = await default_unit.findOne({
+                where: {
+                    id: req.params.id
+                }
+            });
+            if (data.dataValues) {
+                return res.status(200).json({ status: 'success', data: data.dataValues })
+            } else {
+                return res.status(400).json({ status: 'failed', data: {} })
+            }
+        } catch (error) {
+            return res.status(400).json({ status: 'failed', message: error })
+        }
+    },
+    getConversionUnitById: async (req, res) => {
+        try {
+            const data = await conversion_unit.findOne({
+                where: {
+                    id: req.params.id
+                }
+            });
+            const { dataValues } = data
+            if (data.dataValues) {
+                return res.status(200).json({ status: 'success', dataValues })
+            } else {
+                return res.status(400).json({ status: 'failed', message: 'data not found', data: {} })
+            }
+        } catch (error) {
+            return res.status(400).json({ status: 'failed', message: error })
+        }
+    },
     addProductUnit: async (req, res) => {
         const { product_id, default_unit_qty, default_unit_id, conversion_unit_qty, conversion_unit_id } = req.body
         try {
@@ -142,18 +175,5 @@ module.exports = {
             return res.status(400).json({ status: 'failed', message: error })
         }
     },
-    test: async (req, res) => {
-        try {
-            let data = await increaseStock(1, 100)
-            console.log(data)
-            if (data) {
-                res.json({ message: 'Success' })
-            } else {
-                res.json({ message: 'Faai' })
-            }
-        } catch (error) {
-            res.json({ message: 'Faail' })
-        }
-    }
 
 }

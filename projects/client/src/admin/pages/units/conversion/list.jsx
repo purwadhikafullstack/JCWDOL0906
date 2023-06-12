@@ -1,19 +1,67 @@
-import { Box, Button, Card, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Card, Editable, EditableInput, EditablePreview, Flex, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, StatHelpText, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { swalFailed } from '../../../utils';
+import { clearForm, swalFailed, swalSuccess } from '../../../utils';
 import ModalForm from '../../../components/modal';
+import TableCRUD from '../../../components/table';
+import ModalEditForm from '../../../components/modal';
 
 
 const ListConversionUnits = () => {
     const [units, setUnits] = useState([])
-    // const [isOpen, setOpen] = useState(false)
+    const [dataEdit, setDataEdit] = useState({})
+    const [idUnit, setIdUnit] = useState(0)
+    const [unitName, setUnitName] = useState("")
+    const [isError, setError] = useState(false)
+    const textColor = useColorModeValue("gray.700", "white");
     const { onOpen, onClose, isOpen } = useDisclosure()
+    const modalEdit = useDisclosure()
+    console.log(unitName)
+    console.log(dataEdit)
     const getData = async () => {
         try {
             let result = await axios.get("http://localhost:8000/api/unit/conversion")
             setUnits(result.data.data)
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
+    }
+
+    const handleSubmit = async () => {
+        try {
+            if (document.getElementById('unit').value === '') { setError(true); return; }
+            let result = await axios.post("http://localhost:8000/api/unit/conversion", {
+                unit: document.getElementById("unit").value
+            })
+            swalSuccess(result.data.message)
+            clearForm(['unit'])
+            getData()
+            onClose()
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
+    }
+
+    const getDataEdit = async (e) => {
+        try {
+            let result = await axios.get('http://localhost:8000/api/unit/conversion/' + e.target.id)
             console.log(result)
+            setDataEdit(result.data.dataValues)
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
+    }
+
+    const handleUpdate = async () => {
+        try {
+            if (unitName === '') { setError(true); return; }
+            let result = await axios.post("http://localhost:8000/api/unit/conversion/" + idUnit, {
+                unit: unitName
+            })
+            swalSuccess(result.data.message)
+            clearForm(['unit'])
+            getData()
+            modalEdit.onClose()
         } catch (error) {
             swalFailed(error.response.data.message)
         }
@@ -23,10 +71,7 @@ const ListConversionUnits = () => {
         getData()
     }, [])
 
-    const textColor = useColorModeValue("gray.700", "white");
-    const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    const textTableColor = useColorModeValue("gray.500", "white");
+
     return (
         <>
             <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
@@ -40,62 +85,7 @@ const ListConversionUnits = () => {
                         </Button>
                     </Flex>
                     <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-                        <Table>
-                            <Thead>
-                                <Tr bg={tableRowColor}>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        No
-                                    </Th>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Unit Name
-                                    </Th>
-                                    <Th color='gray.400' borderColor={borderColor}>
-                                        Action
-                                    </Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {units.length > 0 ? units.map((el, index, arr) => {
-                                    return (
-                                        <Tr key={index}>
-                                            <Td
-                                                color={textTableColor}
-                                                fontSize='sm'
-                                                fontWeight='bold'
-                                                borderColor={borderColor}
-                                                border={index === arr.length - 1 ? "none" : null}>
-                                                {index + 1}
-                                            </Td>
-                                            <Td
-                                                color={textTableColor}
-                                                fontSize='sm'
-                                                border={index === arr.length - 1 ? "none" : null}
-                                                borderColor={borderColor}>
-                                                {el.unit_name}
-                                            </Td>
-                                            <Td
-                                                color={textTableColor}
-                                                fontSize='sm'
-                                                border={index === arr.length - 1 ? "none" : null}
-                                                borderColor={borderColor}>
-                                                <Button>
-                                                    Edit
-                                                </Button>
-                                            </Td>
-                                        </Tr>
-                                    );
-                                }) : <Tr>
-                                    <Td
-                                        color={textTableColor}
-                                        fontSize='sm'
-                                        fontWeight='bold'
-                                        borderColor={borderColor}
-                                        colSpan='3'>
-                                        Data Not Found
-                                    </Td>
-                                </Tr>}
-                            </Tbody>
-                        </Table>
+                        <TableCRUD data={units} header={['Unit Name']} dataFill={['unit_name']} action={(e) => { modalEdit.onOpen(); getDataEdit(e) }} />
                     </Box>
                 </Flex>
             </Card>
@@ -106,23 +96,41 @@ const ListConversionUnits = () => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Default Unit</ModalHeader>
+                    <ModalHeader>Conversion Unit</ModalHeader>
                     <ModalCloseButton onClose={onClose} />
                     <ModalBody pb={6}>
-                        <FormControl>
+                        <FormControl isInvalid={isError}>
                             <FormLabel>Unit name</FormLabel>
                             <Input placeholder='Unit name' id="unit" />
+                            {isError ? (
+                                <FormErrorMessage>Field is required.</FormErrorMessage>
+                            ) : (
+                                ""
+                            )}
                         </FormControl>
+
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
+                        <Button colorScheme='blue' mr={3} onClick={() => handleSubmit()}>
                             Save
                         </Button>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={() => { onClose(); setError(false); }}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+
+            {/* MODAL EDIT */}
+            <ModalEditForm
+                Open={modalEdit.isOpen}
+                Close={modalEdit.onClose}
+                isError={isError}
+                Data={dataEdit}
+                SetId={(e) => setIdUnit(e.target.value)}
+                SetUnit={(e) => setUnitName(e.target.value)}
+                Cancel={() => { modalEdit.onClose(); setError(false); }}
+                Submit={() => handleUpdate()} />
+            {/* MODAL EDIT */}
 
         </>
 

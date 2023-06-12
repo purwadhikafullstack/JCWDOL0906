@@ -512,19 +512,19 @@ export const GMedsnialLogo = createIcon({
   path: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 437.5 81.11">
       <defs>
-        <linearGradient id="linear-gradient" x1="5.15" y1="27.68" x2="45.73" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a97c2" />
-          <stop offset="0.28" stop-color="#1d84b8" />
-          <stop offset="0.65" stop-color="#2171af" />
-          <stop offset="0.91" stop-color="#226aab" />
+        <linearGradient id="linear-gradient" x1="5.15" y1="27.68" x2="45.73" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#1a97c2" />
+          <stop offset="0.28" stopColor="#1d84b8" />
+          <stop offset="0.65" stopColor="#2171af" />
+          <stop offset="0.91" stopColor="#226aab" />
         </linearGradient>
-        <linearGradient id="linear-gradient-2" x1="26.25" y1="14.48" x2="77.52" y2="65.75" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a97c2" />
-          <stop offset="1" stop-color="#226aab" />
+        <linearGradient id="linear-gradient-2" x1="26.25" y1="14.48" x2="77.52" y2="65.75" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#1a97c2" />
+          <stop offset="1" stopColor="#226aab" />
         </linearGradient>
-        <linearGradient id="linear-gradient-3" x1="29.83" y1="26.93" x2="47.53" y2="57.59" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1a97c2" />
-          <stop offset="1" stop-color="#236bac" />
+        <linearGradient id="linear-gradient-3" x1="29.83" y1="26.93" x2="47.53" y2="57.59" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#1a97c2" />
+          <stop offset="1" stopColor="#236bac" />
         </linearGradient>
-        <linearGradient id="linear-gradient-4" x1="47.37" y1="47.26" x2="62.49" y2="47.26" gradientUnits="userSpaceOnUse"><stop offset="0.36" stop-color="#1a97c2" />
-          <stop offset="1" stop-color="#226aab" />
+        <linearGradient id="linear-gradient-4" x1="47.37" y1="47.26" x2="62.49" y2="47.26" gradientUnits="userSpaceOnUse"><stop offset="0.36" stopColor="#1a97c2" />
+          <stop offset="1" stopColor="#226aab" />
         </linearGradient>
 
       </defs>
