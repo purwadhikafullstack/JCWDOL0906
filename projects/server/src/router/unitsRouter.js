@@ -11,5 +11,6 @@ router.get('/unit/default/:id', c_units.getDefaultUnitById)
 router.get('/unit/conversion/:id', c_units.getConversionUnitById)
 router.post('/unit/product', c_units.addProductUnit)
 router.get('/unit/product/:id', c_units.getProductUnitById)
+router.get('/unit/test/:id', c_units.test)
 
 module.exports = router

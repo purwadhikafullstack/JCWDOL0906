@@ -3,12 +3,16 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { clearForm, swalFailed, swalSuccess } from '../../../utils';
 import TableCRUD from '../../../components/table';
+import ModalEditForm from '../../../components/modal';
 
 
 const ListDefaultUnits = () => {
     const [units, setUnits] = useState([])
+    const [dataEdit, setDataEdit] = useState({})
     const { onOpen, onClose, isOpen } = useDisclosure()
     const [isError, setError] = useState(false)
+    const modalEdit = useDisclosure()
+    const [unitName, setUnitName] = useState("")
     const getData = async () => {
         try {
             let result = await axios.get("http://localhost:8000/api/unit/default")
@@ -37,6 +41,31 @@ const ListDefaultUnits = () => {
         }
     }
 
+    const getDataEdit = async (e) => {
+        try {
+            let result = await axios.get('http://localhost:8000/api/unit/default/' + e.target.id)
+            console.log(result)
+            setDataEdit(result.data.dataValues)
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
+    }
+
+    const handleUpdate = async () => {
+        try {
+            if (unitName === '') { setError(true); return; }
+            let result = await axios.post("http://localhost:8000/api/unit/default/" + dataEdit.id, {
+                unit: unitName
+            })
+            swalSuccess(result.data.message)
+            clearForm(['unit'])
+            getData()
+            modalEdit.onClose()
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
+    }
+
     useEffect(() => {
         getData()
     }, [])
@@ -59,7 +88,7 @@ const ListDefaultUnits = () => {
                         </Button>
                     </Flex>
                     <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-                        <TableCRUD data={units} header={['Unit Name']} dataFill={['unit_name']} />
+                        <TableCRUD data={units} header={['Unit Name']} dataFill={['unit_name']} action={(e) => { modalEdit.onOpen(); getDataEdit(e) }} />
                     </Box>
                 </Flex>
             </Card>
@@ -92,6 +121,15 @@ const ListDefaultUnits = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            <ModalEditForm
+                Title="Edit Default Unit"
+                Open={modalEdit.isOpen}
+                Close={modalEdit.onClose}
+                isError={isError}
+                Data={dataEdit}
+                SetUnit={(e) => setUnitName(e.target.value)}
+                Cancel={() => { modalEdit.onClose(); setError(false); }}
+                Submit={() => handleUpdate()} />
         </>
 
     )

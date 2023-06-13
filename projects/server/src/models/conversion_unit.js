@@ -8,11 +8,7 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static asscociate(models) {
-            // Profile.belongsTo(models.User, {
-            //     foreignKey: {
-            //         name: "user_id",
-            //     },
-            // });
+            conversion_unit.belongsTo(models.stock)
         }
     }
     conversion_unit.init(
@@ -28,5 +24,6 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true
         }
     );
+
     return conversion_unit;
 };

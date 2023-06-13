@@ -9,17 +9,17 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Transaction_Details.hasOne(models.Transaction, {
-                foreignKey: {
-                    name: "transaction_id",
-                },
-            });
-            Transaction_Details.hasMany(models.Product, {
-                foreignKey: {
-                    name: "product_id",
-                },
-            });
-            
+            // Transaction_Details.hasOne(models.Transaction, {
+            //     foreignKey: {
+            //         name: "transaction_id",
+            //     },
+            // });
+            // Transaction_Details.hasMany(models.Product, {
+            //     foreignKey: {
+            //         name: "product_id",
+            //     },
+            // });
+
         }
     }
     Transaction_Details.init(
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
-            }, 
+            },
             qty: {
                 type: DataTypes.INTEGER,
                 allowNull: false,

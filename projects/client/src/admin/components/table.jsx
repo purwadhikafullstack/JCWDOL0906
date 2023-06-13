@@ -1,13 +1,15 @@
 
-import { Button, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import { Button, Collapse, Flex, HStack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 
 import React from 'react'
 
-const TableCRUD = ({ data, header, dataFill, action }) => {
+const TableCRUD = ({ menu, data, header, dataFill, action }) => {
+    console.log(action)
     const textColor = useColorModeValue("gray.700", "white");
     const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const textTableColor = useColorModeValue("gray.500", "white");
+
     return (
         <>
             {
@@ -23,7 +25,7 @@ const TableCRUD = ({ data, header, dataFill, action }) => {
                                 </Th>)
                             }
 
-                            <Th color='gray.400' borderColor={borderColor}>
+                            <Th color='gray.400' borderColor={borderColor} isNumeric>
                                 Action
                             </Th>
                         </Tr>
@@ -32,6 +34,8 @@ const TableCRUD = ({ data, header, dataFill, action }) => {
                         {data.map((el, index, arr) => {
                             return (
                                 <Tr key={index}>
+
+
                                     <Td
                                         color={textTableColor}
                                         fontSize='sm'
@@ -46,17 +50,42 @@ const TableCRUD = ({ data, header, dataFill, action }) => {
                                         border={index === arr.length - 1 ? "none" : null}
                                         borderColor={borderColor}>
                                         {el[i]}
-                                    </Td>)}
 
-                                    <Td
-                                        color={textTableColor}
-                                        fontSize='sm'
-                                        border={index === arr.length - 1 ? "none" : null}
-                                        borderColor={borderColor}>
-                                        <Button onClick={action} id={el.id}>
-                                            Edit
-                                        </Button>
-                                    </Td>
+
+                                    </Td>)}
+                                    {menu === "product" ?
+                                        <Td
+                                            color={textTableColor}
+                                            fontSize='sm'
+                                            border={index === arr.length - 1 ? "none" : null}
+                                            borderColor={borderColor} isNumeric>
+                                            <HStack spacing='5px'>
+                                                <Button colorScheme='teal' onClick={action[0]} id={el.id}>
+                                                    Detail
+                                                </Button>
+                                                <Button colorScheme='linkedin' onClick={action[1]} id={el.id}>
+                                                    Stock
+                                                </Button>
+                                                <Button colorScheme='purple' onClick={action[2]} id={el.id}>
+                                                    Units
+                                                </Button>
+                                                <Button colorScheme='red' onClick={action} id={el.id}>
+                                                    Delete
+                                                </Button>
+                                            </HStack>
+
+                                        </Td> :
+                                        <Td
+                                            color={textTableColor}
+                                            fontSize='sm'
+                                            border={index === arr.length - 1 ? "none" : null}
+                                            borderColor={borderColor} isNumeric>
+                                            <Button colorScheme='teal' onClick={action[0]} id={el.id}>
+                                                Edit
+                                            </Button>
+                                        </Td>
+                                    }
+
                                 </Tr>
                             );
                         })}

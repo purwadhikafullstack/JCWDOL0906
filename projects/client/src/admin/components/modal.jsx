@@ -1,7 +1,7 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import React, { useEffect } from "react"
 
-const ModalEditForm = ({ Open, Close, isError, Data, SetId, SetUnit, Cancel, Submit }) => {
+const ModalEditForm = ({ Open, Close, isError, Data, Title, SetUnit, Cancel, Submit }) => {
     console.log(Data)
     return (
         <>
@@ -11,12 +11,11 @@ const ModalEditForm = ({ Open, Close, isError, Data, SetId, SetUnit, Cancel, Sub
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Edit Conversion Unit</ModalHeader>
+                    <ModalHeader>{Title}</ModalHeader>
                     <ModalCloseButton onClose={Close} />
                     <ModalBody pb={6}>
                         <FormControl isInvalid={isError}>
                             <FormLabel>Unit name</FormLabel>
-                            <Input type="hidden" id="id" value={Data.id} onChange={SetId} />
                             <Input placeholder='Unit name' id="unit" defaultValue={Data.unit_name} onChange={SetUnit} />
                             {isError ? (
                                 <FormErrorMessage>Field is required.</FormErrorMessage>

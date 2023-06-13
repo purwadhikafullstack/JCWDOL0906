@@ -1,5 +1,6 @@
 // import
 import React, { Component } from 'react';
+import Product from './admin/pages/product';
 import Units from './admin/pages/units';
 
 import {
@@ -26,7 +27,7 @@ var dashRoutes = [
     name: "Product",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
-    // component: ListDefaultUnits,
+    component: Product,
     layout: "/admin",
   },
   {

@@ -16,6 +16,7 @@ const ListConversionUnits = () => {
     const textColor = useColorModeValue("gray.700", "white");
     const { onOpen, onClose, isOpen } = useDisclosure()
     const modalEdit = useDisclosure()
+    console.log(idUnit)
     console.log(unitName)
     console.log(dataEdit)
     const getData = async () => {
@@ -53,9 +54,10 @@ const ListConversionUnits = () => {
     }
 
     const handleUpdate = async () => {
+        console.log(idUnit)
         try {
             if (unitName === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/conversion/" + idUnit, {
+            let result = await axios.post("http://localhost:8000/api/unit/conversion/" + dataEdit.id, {
                 unit: unitName
             })
             swalSuccess(result.data.message)
@@ -122,11 +124,11 @@ const ListConversionUnits = () => {
 
             {/* MODAL EDIT */}
             <ModalEditForm
+                Title="Edit Conversion Unit"
                 Open={modalEdit.isOpen}
                 Close={modalEdit.onClose}
                 isError={isError}
                 Data={dataEdit}
-                SetId={(e) => setIdUnit(e.target.value)}
                 SetUnit={(e) => setUnitName(e.target.value)}
                 Cancel={() => { modalEdit.onClose(); setError(false); }}
                 Submit={() => handleUpdate()} />
