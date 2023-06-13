@@ -8,11 +8,8 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static asscociate(models) {
-            // Profile.belongsTo(models.User, {
-            //     foreignKey: {
-            //         name: "user_id",
-            //     },
-            // });
+
+            stock.hasOne(models.conversion_unit)
         }
     }
     stock.init(

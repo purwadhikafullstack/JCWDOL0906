@@ -1,13 +1,7 @@
 // import
 import React, { Component } from 'react';
+import Product from './admin/pages/product';
 import Units from './admin/pages/units';
-// import Dashboard from "views/Dashboard/Dashboard.js";
-// import Tables from "views/Dashboard/Tables.js";
-// import Billing from "views/Dashboard/Billing.js";
-// import RTLPage from "views/RTL/RTLPage.js";
-// import Profile from "views/Dashboard/Profile.js";
-// import SignIn from "views/Pages/SignIn.js";
-// import SignUp from "views/Pages/SignUp.js";
 
 import {
   HomeIcon,
@@ -33,7 +27,7 @@ var dashRoutes = [
     name: "Product",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
-    // component: Tables,
+    component: Product,
     layout: "/admin",
   },
   {
@@ -68,6 +62,7 @@ var dashRoutes = [
     component: Units,
     layout: "/admin",
   },
+
 
   // {
   //   name: "ACCOUNT PAGES",

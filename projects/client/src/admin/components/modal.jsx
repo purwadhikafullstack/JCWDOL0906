@@ -1,39 +1,36 @@
-import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import React, { useEffect } from "react"
 
-const ModalForm = ({ Open, Close }) => {
-    const { isOpen, onOpen, onClose, isClose } = useDisclosure()
-
+const ModalEditForm = ({ Open, Close, isError, Data, Title, SetUnit, Cancel, Submit }) => {
+    console.log(Data)
     return (
         <>
-            <Button onClick={onOpen}>Open Modal</Button>
-
-
             <Modal
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={Open}
+                onClose={Close}
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Create your account</ModalHeader>
-                    <ModalCloseButton isClose={true} />
+                    <ModalHeader>{Title}</ModalHeader>
+                    <ModalCloseButton onClose={Close} />
                     <ModalBody pb={6}>
-                        <FormControl>
-                            <FormLabel>First name</FormLabel>
-                            <Input placeholder='First name' />
+                        <FormControl isInvalid={isError}>
+                            <FormLabel>Unit name</FormLabel>
+                            <Input placeholder='Unit name' id="unit" defaultValue={Data.unit_name} onChange={SetUnit} />
+                            {isError ? (
+                                <FormErrorMessage>Field is required.</FormErrorMessage>
+                            ) : (
+                                ""
+                            )}
                         </FormControl>
 
-                        <FormControl mt={4}>
-                            <FormLabel>Last name</FormLabel>
-                            <Input placeholder='Last name' />
-                        </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
+                        <Button colorScheme='blue' mr={3} onClick={Submit}>
                             Save
                         </Button>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={Cancel}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -41,4 +38,4 @@ const ModalForm = ({ Open, Close }) => {
     )
 }
 
-export default ModalForm
+export default ModalEditForm

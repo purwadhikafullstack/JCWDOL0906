@@ -1,9 +1,8 @@
+const { addStock, updateStock } = require('../helpers/units')
 const db = require('../models')
 const conversion_unit = db.conversion_unit
 const default_unit = db.default_unit
-const { countConversionQty, increaseStock } = require('../helper')
-const { Sequelize } = require('../models')
-
+const stock = db.stock
 const product_unit = db.product_unit
 module.exports = {
     addDefaultUnit: async (req, res) => {
@@ -33,6 +32,7 @@ module.exports = {
                     id: req.params.id
                 }
             })
+            console.log(data)
             if (data === 1) {
                 return res.status(200).json({ message: 'Update default unit successfully' })
             } else {
@@ -65,12 +65,15 @@ module.exports = {
     },
     updateConversionUnit: async (req, res) => {
         try {
+            console.log(req.body)
+            console.log(req.params.id)
             const { unit } = req.body
             let [data] = await conversion_unit.update({ unit_name: unit }, {
                 where: {
                     id: req.params.id
                 }
             })
+            console.log(data)
             if (data === 1) {
                 return res.status(200).json({ message: 'Update conversion unit successfully' })
             } else {
@@ -106,6 +109,40 @@ module.exports = {
             return res.status(400).json({ status: 'failed', message: error })
         }
     },
+    getDefaultUnitById: async (req, res) => {
+        try {
+            const data = await default_unit.findOne({
+                where: {
+                    id: req.params.id
+                }
+            });
+            const { dataValues } = data
+            if (data.dataValues) {
+                return res.status(200).json({ status: 'success', dataValues })
+            } else {
+                return res.status(400).json({ status: 'failed', data: {} })
+            }
+        } catch (error) {
+            return res.status(400).json({ status: 'failed', message: error })
+        }
+    },
+    getConversionUnitById: async (req, res) => {
+        try {
+            const data = await conversion_unit.findOne({
+                where: {
+                    id: req.params.id
+                }
+            });
+            const { dataValues } = data
+            if (data.dataValues) {
+                return res.status(200).json({ status: 'success', dataValues })
+            } else {
+                return res.status(400).json({ status: 'failed', message: 'data not found', data: {} })
+            }
+        } catch (error) {
+            return res.status(400).json({ status: 'failed', message: error })
+        }
+    },
     addProductUnit: async (req, res) => {
         const { product_id, default_unit_qty, default_unit_id, conversion_unit_qty, conversion_unit_id } = req.body
         try {
@@ -121,38 +158,53 @@ module.exports = {
 
                 return res.status(200).json({ status: 'success', message: 'add product unit successfully' })
             } else {
-                return res.status(400).json({ status: 'failed', message: 'Product already in units' })
+                await product_unit.update({
+                    default_unit_qty: default_unit_qty, default_unit_id: default_unit_id, conversion_unit_qty: conversion_unit_qty, conversion_unit_id: conversion_unit_id
+                }, { where: { product_id: product_id } })
+                return res.status(200).json({ status: 'success', message: 'add product unit successfully' })
             }
         } catch (error) {
             return res.status(400).json({ status: 'failed', message: error })
         }
     },
     getProductUnitById: async (req, res) => {
-        const { product_id } = req.params.id
+
         try {
             const data = await product_unit.findOne({
                 where: {
-                    product_id: product_id
+                    product_id: req.params.id
                 }
             });
-            console.log(data)
-            return res.status(200).json({ status: 'success', data })
+            const { dataValues } = data
+            return res.status(200).json({ status: 'success', dataValues })
 
         } catch (error) {
             return res.status(400).json({ status: 'failed', message: error })
         }
     },
+
     test: async (req, res) => {
         try {
-            let data = await increaseStock(1, 100)
-            console.log(data)
-            if (data) {
-                res.json({ message: 'Success' })
+            let result = await product_unit.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            if (result) {
+                res.json({
+                    message: 'ok'
+                })
             } else {
-                res.json({ message: 'Faai' })
+                res.json({
+                    message: 'none'
+                })
             }
+
         } catch (error) {
-            res.json({ message: 'Faail' })
+            res.json({
+                message: 'failed'
+            })
         }
     }
 
