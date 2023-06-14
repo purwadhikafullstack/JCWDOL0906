@@ -7,7 +7,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import Configurator from "../adminComponents/Configurator/Configurator";
-import Footer from "../adminComponents/Footer/Footer.js";
+import Footer from "../adminComponents/Footer/Footer";
 import {
   ArgonLogoDark,
   ArgonLogoLight,

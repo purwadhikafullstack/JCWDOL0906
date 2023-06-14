@@ -14,9 +14,17 @@ import UserHome from "./pages/userHome";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { login } from "../src/redux/userSlice";
 function App() {
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  useEffect(() =>{
+    const userLogin = JSON.parse(localStorage.getItem("user"))
+if (userLogin) {
+  dispatch(login(userLogin))
+};
+  },[]);
 
   useEffect(() => {
     (async () => {

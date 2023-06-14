@@ -29,10 +29,10 @@ function Verification() {
           }
         );
 
-        // alert(response.data.message);
+        alert(response.data.message);
         setTimeout(() => {
           navigate("/");
-        }, 5000);
+        }, 2000);
       }
     } catch (err) {
       console.log(err.response.data);
