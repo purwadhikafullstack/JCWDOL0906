@@ -1,12 +1,7 @@
 // import
 import React, { Component } from 'react';
-// import Dashboard from "views/Dashboard/Dashboard.js";
-// import Tables from "views/Dashboard/Tables.js";
-// import Billing from "views/Dashboard/Billing.js";
-// import RTLPage from "views/RTL/RTLPage.js";
-// import Profile from "views/Dashboard/Profile.js";
-// import SignIn from "views/Pages/SignIn.js";
-// import SignUp from "views/Pages/SignUp.js";
+import Product from './admin/pages/product';
+import Units from './admin/pages/units';
 
 import {
   HomeIcon,
@@ -28,15 +23,15 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/tables",
+    path: "/product",
     name: "Product",
     rtlName: "لوحة القيادة",
     icon: <StatsIcon color='inherit' />,
-    // component: Tables,
+    component: Product,
     layout: "/admin",
   },
   {
-    path: "/billing",
+    path: "/category",
     name: "Category",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
@@ -44,21 +39,31 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
+    path: "/report",
     name: "Report",
     rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
+    icon: <DocumentIcon color='inherit' />,
     // component: RTLPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
+    path: "/qna",
     name: "Q&A",
     rtlName: "آرتيإل",
     icon: <SupportIcon color='inherit' />,
     // component: RTLPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
+  {
+    path: "/unit",
+    name: "Units",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color='inherit' />,
+    component: Units,
+    layout: "/admin",
+  },
+
+
   // {
   //   name: "ACCOUNT PAGES",
   //   category: "account",

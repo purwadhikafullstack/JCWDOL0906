@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Default_Unit extends Model {
+    class default_unit extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             // });
         }
     }
-    Default_Unit.init(
+    default_unit.init(
         {
             unit_name: {
                 type: DataTypes.STRING,
@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: "default_unit",
+            freezeTableName: true
         }
     );
-    return Default_Unit;
+    return default_unit;
 };

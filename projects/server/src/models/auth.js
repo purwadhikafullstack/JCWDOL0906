@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                     name: "user_id",
                 }
             });
-            
+
         }
     }
     User.init(

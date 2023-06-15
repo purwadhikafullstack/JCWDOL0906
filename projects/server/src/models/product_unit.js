@@ -1,49 +1,45 @@
 "use strict";
 const { Model } = require("sequelize");
-const category = require("./category");
 module.exports = (sequelize, DataTypes) => {
-    class Discount extends Model {
+    class product_unit extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
-            // define association here
-            // Discount.belongsTo(models.product, {
+        static asscociate(models) {
+            // Profile.belongsTo(models.User, {
             //     foreignKey: {
-            //         name: "product_id",
+            //         name: "user_id",
             //     },
             // });
         }
     }
-    Discount.init(
+    product_unit.init(
         {
             product_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                defaultValue: false,
-            },
-            discount_name: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "discount_name",
-            },
-            value: {
+            }, default_unit_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                defaultValue: false,
-            },
-            is_deleted: {
+            }, default_unit_qty: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                defaultValue: false,
-            },
+            }, conversion_unit_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }, conversion_unit_qty: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            }
+
         },
         {
             sequelize,
-            modelName: "Discount",
+            modelName: "product_unit",
+            freezeTableName: true
         }
     );
-    return Discount;
+    return product_unit;
 };
