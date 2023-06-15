@@ -14,7 +14,7 @@ import theme from '../src/theme/theme';
 import Dashboard from "./adminLayouts/Admin";
 
 import "./App.css";
-import UserHome from "./pages/userHome";
+// import UserHome from "./pages/userHome";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import axios from "axios";
@@ -48,8 +48,7 @@ if (userLogin) {
           <Route path ="/login" element={<LoginForm/>} />
           <Route path="/register" element={<RegistrationForm /> }/>
           <Route path="/verification/:token" element={<Verification/>}/>
-          <Route path="/userhome" element={<UserHome /> }/>
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
           <Route path="/admin/unit" Component={Dashboard} />
         </Routes>

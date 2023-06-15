@@ -37,6 +37,28 @@ export default function AuthNavbar(props) {
     base: useColorModeValue("gray.700", "white"),
     md: "white",
   };
+
+  const { isOpen, onToggle } = useDisclosure();
+  const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
+  const user = useSelector((state)=> state.userSlice)
+  const handleLogOut = () => {
+    localStorage.removeItem("user")
+    dispatch(logout()) 
+  };
+
+const username = useSelector((state)=> state.userSlice.value.username)
+ 
+useEffect(()=> {
+if (!user.value.id || user.value.id <1 ) {
+setIsLogin(true)
+} else {setIsLogin(false)}
+},[user])
+  // const token = localStorage.getItem("token")
+useEffect(() =>{
+  console.log(username)
+},[username]);
+
   let brand = (
     <Link
       href={`${process.env.PUBLIC_URL}/#/`}

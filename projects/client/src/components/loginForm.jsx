@@ -65,7 +65,7 @@ export const LoginForm = () => {
         });
         onClose()
         if (result.data.data.role === 2) {
-          navigate("/dashboard")
+          navigate("*")
         }
       
        } catch (error) {
