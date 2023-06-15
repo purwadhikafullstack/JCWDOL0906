@@ -47,7 +47,7 @@ function Verification() {
 
   return (
     <Stack alignContent="center" justifyContent="center" textAlign="center" py={10} px={6}>
-      <Image alt={"Verification"} fit={"cover"} align={"center"} w={"400px"} src={verification} />
+      <Image alt={"Verification"} fit={"cover"} align={"center"} w={"500px"} src={verification} />
       <Heading as="h2" size="xl" mt={6} mb={2}>
         Your account is being verified
       </Heading>
