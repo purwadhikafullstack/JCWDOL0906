@@ -32,9 +32,9 @@ function Verification() {
 
         alert(response.data.message);
         console.log(response)
-        // setTimeout(() => {
-        //   navigate("/");
-        // }, 5000);
+        setTimeout(() => {
+          navigate("/");
+        }, 4000);
       }
     } catch (err) {
       console.log(err.response.data);
