@@ -2,40 +2,38 @@
 import {
   Portal,
   useDisclosure,
+  useColorMode,
   Stack,
   Box,
-  useColorMode,
 } from "@chakra-ui/react";
-import Configurator from "../adminComponents/Configurator/Configurator";
-import Footer from "../adminComponents/Footer/Footer.js";
+import { RtlProvider } from "components/RTLProvider/RTLProvider";
+import Configurator from "components/Configurator/Configurator";
+import Footer from "components/Footer/Footer.js";
+// Layout components
+import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import Sidebar from "components/Sidebar/Sidebar.js";
+import React, { useState } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import routes from "routes.js";
+import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
+// Custom components
+import MainPanel from "../components/Layout/MainPanel";
+import PanelContainer from "../components/Layout/PanelContainer";
+import PanelContent from "../components/Layout/PanelContent";
 import {
   ArgonLogoDark,
   ArgonLogoLight,
   ChakraLogoDark,
   ChakraLogoLight,
-  GMedsnialLogo
-} from "../adminComponents/Icons/Icons";
-// Layout adminComponents
-
-import React, { useState } from "react";
-import { Route, Routes, Switch } from "react-router-dom";
-import routes from "../routes.js";
-// Custom Chakra theme
-import FixedPlugin from "../adminComponents/FixedPlugin/FixedPlugin";
-// Custom adminComponents
-import MainPanel from "../adminComponents/Layout/MainPanel";
-import PanelContainer from "../adminComponents/Layout/PanelContainer";
-import PanelContent from "../adminComponents/Layout/PanelContent";
-import bgAdmin from "../assets/img/admin-background.png";
-//=================================================================
-import Sidebar from "../adminComponents/Sidebar/Sidebar";
-import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
+} from "components/Icons/Icons";
+import bgAdmin from "assets/img/admin-background.png";
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
+  const [sidebarVariant, setSidebarVariant] = useState("transparent");
   const [fixed, setFixed] = useState(false);
-  const { colorMode } = useColorMode();
-  // functions for changing the states from adminComponents
+  // ref for main panel div
+  const mainPanel = React.createRef();
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
@@ -84,7 +82,6 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
   const getRoutes = (routes) => {
-    console.log(routes)
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -92,11 +89,11 @@ export default function Dashboard(props) {
       if (prop.category === "account") {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/rtl" || prop.layout === "/admin") {
         return (
           <Route
             path={prop.layout + prop.path}
-            Component={prop.component}
+            component={prop.component}
             key={key}
           />
         );
@@ -105,11 +102,12 @@ export default function Dashboard(props) {
       }
     });
   };
+  const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  document.documentElement.dir = "ltr";
+  document.documentElement.dir = "rtl";
   // Chakra Color Mode
   return (
-    <Box>
+    <RtlProvider>
       <Box
         minH='40vh'
         w='100%'
@@ -124,9 +122,9 @@ export default function Dashboard(props) {
         logo={
           <Stack direction='row' spacing='12px' align='center' justify='center'>
             {colorMode === "dark" ? (
-              <GMedsnialLogo w='84px' h='40px' />
+              <ArgonLogoLight w='74px' h='27px' />
             ) : (
-              <GMedsnialLogo w='84px' h='40px' />
+              <ArgonLogoDark w='74px' h='27px' />
             )}
             <Box
               w='1px'
@@ -141,9 +139,12 @@ export default function Dashboard(props) {
           </Stack>
         }
         display='none'
+        sidebarVariant={sidebarVariant}
         {...rest}
       />
       <MainPanel
+        variant='rtl'
+        ref={mainPanel}
         w={{
           base: "100%",
           xl: "calc(100% - 275px)",
@@ -151,6 +152,7 @@ export default function Dashboard(props) {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
+            logoText={"ARGON DASHBOARD CHAKRA"}
             brandText={getActiveRoute(routes)}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
@@ -160,9 +162,10 @@ export default function Dashboard(props) {
         {getRoute() ? (
           <PanelContent>
             <PanelContainer>
-              <Routes>
+              <Switch>
                 {getRoutes(routes)}
-              </Routes>
+                <Redirect from='/rtl' to='/rtl/rtl-support-page' />
+              </Switch>
             </PanelContainer>
           </PanelContent>
         ) : null}
@@ -182,8 +185,10 @@ export default function Dashboard(props) {
           onSwitch={(value) => {
             setFixed(value);
           }}
+          onOpaque={() => setSidebarVariant("opaque")}
+          onTransparent={() => setSidebarVariant("transparent")}
         />
       </MainPanel>
-    </Box>
+    </RtlProvider>
   );
 }
