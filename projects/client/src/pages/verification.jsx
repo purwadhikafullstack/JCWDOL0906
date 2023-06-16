@@ -17,6 +17,7 @@ function Verification() {
   let { token } = useParams();
 
   const tokenVerification = async () => {
+    console.log(tokenVerification)
     try {
       if (token) {
         const response = await axios.post(
@@ -30,9 +31,10 @@ function Verification() {
         );
 
         alert(response.data.message);
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        console.log(response)
+        // setTimeout(() => {
+        //   navigate("/");
+        // }, 5000);
       }
     } catch (err) {
       console.log(err.response.data);

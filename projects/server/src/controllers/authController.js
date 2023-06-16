@@ -106,17 +106,17 @@ module.exports = {
               }
             );
 
-            if (userAlreadyExist) {
-                if (userAlreadyExist.is_verified) {
-                    return res.status(400).send({
-                        message: 'Your Email is already veriefied, please login'
-                    });
-                } else {
-                    return res.status(400).send({
-                        message: 'Your email address exists, but it is not verified. Please verify your email'
-                    });
-                }
-            };
+            // if (userAlreadyExist) {
+            //     if (userAlreadyExist.is_verified) {
+            //         return res.status(400).send({
+            //             message: 'Your Email is already veriefied, please login'
+            //         });
+            //     } else {
+            //         return res.status(400).send({
+            //             message: 'Your email address exists, but it is not verified. Please verify your email'
+            //         });
+            //     }
+            // };
 
         res.status(200).send({
             status: true,
@@ -125,38 +125,10 @@ module.exports = {
         });
 
         } catch (err) {
-            console.log(err);
-            res.status(400).send(err);
+            console.log(err.result);
+            // res.status(400).send(err);
         }
     },
-
-    verification: async (req, res) => {
-        try {
-        //   const id = req.user.id;
-        
-        const userExist = await user.findOne({
-            where: {
-              id: req.userId,
-            },
-          });
-          console.log(req.userId);
-          await user.update(
-            { is_verified: true,
-             },
-            {
-              where: {
-                id: req.userId,
-              },
-            }
-          );
-         return res.status(200).send({
-            status: true,
-            message: "Your account is verified",
-          });
-        } catch (error) {
-          return res.status(500).send(error);
-        }
-      },
     login: async (req, res) => {
         try {
             const { emailOrUsername, password } = req.body;
@@ -214,4 +186,29 @@ module.exports = {
             return res.status(400).send(err);
         }
     },
+    verification: async (req, res) => {
+        try {
+          // const id = req.user.id;
+          const userExist = await user.findOne({
+            where: {
+              id: req.userId,
+            },
+          });
+    
+          await user.update(
+            { is_verified: true },
+            {
+              where: {
+                id: req.userId,
+              },
+            }
+          );
+          res.status(200).send({
+            status: true,
+            message: "Your account is verified",
+          });
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      },
 };

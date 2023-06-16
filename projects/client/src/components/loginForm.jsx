@@ -72,7 +72,7 @@ export const LoginForm = () => {
         console.log(error);
         Swal.fire({
             icon: "error",
-            tittle: "failed attempt",
+            title: "failed attempt",
             text: error.response.data.message
                 ? error.response.data.message
                 : "something went wrong!",

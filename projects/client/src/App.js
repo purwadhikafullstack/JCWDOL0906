@@ -1,9 +1,8 @@
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
 import { LoginForm } from "../src/components/loginForm";
 import { RegistrationForm } from "../src/components/registerForm";
-import Verification from "./pages/verification";
+import Verification from "../src/pages/verification";
 // import axios from "axios";
 // import logo from "./logo.svg";
 import "./App.css";
@@ -22,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 
 function App() {
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   useEffect(() =>{
     const userLogin = JSON.parse(localStorage.getItem("user"))
@@ -42,7 +41,7 @@ if (userLogin) {
 
   return (
     <ChakraProvider theme={theme} resetCss={false} position="relative">
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path ="/" element={<HomePage/>}errorElement={<ErrorPage/>}/>
           <Route path ="/login" element={<LoginForm/>} />
@@ -52,7 +51,7 @@ if (userLogin) {
           <Route path="*" element={<Dashboard />} />
           <Route path="/admin/unit" Component={Dashboard} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </ChakraProvider>
   );
 };

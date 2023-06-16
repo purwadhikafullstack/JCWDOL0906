@@ -79,10 +79,9 @@ export const RegistrationForm = () => {
         console.log(err);
         Swal.fire({
             icon: "error",
-            tittle: "failed attempt",
+            title: "failed attempt",
             text: err.response.data.message,
                 //  "something went wrong!",
-
             customClass: {
                 container: "my-swal",
                 }
@@ -104,8 +103,6 @@ export const RegistrationForm = () => {
         onClick={onOpen}
         pt={{ base: "4", md: 0}}
         borderRadius='10px'
-
-        
         >
             SignUp
         </Button>
