@@ -1,9 +1,9 @@
 const { join } = require("path");
-require('dotenv').config({ path: join(__dirname, '../.env') });
+require("dotenv").config({ path: join(__dirname, "../.env") });
 const express = require("express");
 const cors = require("cors");
-const router = require('./router');
-const db = require('../src/models')
+const router = require("./router");
+const db = require("../src/models");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -17,10 +17,11 @@ app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-const 
-    authRouter
- = require("./router/authRouter");
+const authRouter = require("./router/authRouter");
 app.use("/api/auth", authRouter);
+
+const productRouter = require("./router/productRouter");
+app.use("/api/product", productRouter);
 
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
@@ -30,7 +31,7 @@ app.get("/api/greetings", (req, res, next) => {
 // ===========================
 // NOTE : Add your routes here
 for (let routes in router.routes) {
-  app.use('/api', routes)
+  app.use("/api", routes);
 }
 // ===========================
 
@@ -67,12 +68,10 @@ app.get("*", (req, res) => {
 //#endregion
 
 app.listen(PORT, (err) => {
-  // db.sequelize.sync({ alter: true });
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
-    // db.sequelize.sync({ alter: true })
+    // db.sequelize.sync({ alter: true });
     console.log(`APP RUNNING at ${PORT} ✅`);
   }
 });
-
