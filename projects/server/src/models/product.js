@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "product_id"
             //     }
             // });
+            product.belongsTo(models.Category, {
+                foreignKey: 'category_id'
+            })
+            product.hasOne(models.stock, {
+                foreignKey: 'product_id'
+            })
 
         }
     }
@@ -54,6 +60,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 unique: "image"
+            },
+            category_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
             },
             is_deleted: {
                 type: DataTypes.INTEGER,

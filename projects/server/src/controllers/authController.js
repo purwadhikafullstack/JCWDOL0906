@@ -20,11 +20,11 @@ module.exports = {
                 req.body;
 
             console.log(req.body);
-           
+
             if (!username || !email || !phone_number || !password) {
                 return res.status(400).send({
                     message: 'Please complete your data'
-                   })
+                })
             };
 
             if (isNaN(phone_number)) {
@@ -43,7 +43,7 @@ module.exports = {
                 })
             };
             const passwordRegex =
-                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*.()_+])[0-9a-zA-Z!@#$%.^&*()_+]{8,}$/;
             if (!passwordRegex.test(password)) {
                 return res.status(400).send({
                     message: 'Password must contain at least 8 characters including an uppercase letter, a symbol, and a number'
@@ -82,28 +82,28 @@ module.exports = {
                 },
             );
 
-            
+
             const verificationLink = `http://localhost:3000/verification/${token}`;
-            const tempEmail = fs.readFileSync(require.resolve("../templates/emailconfirmation.html"),{ encoding: "utf8"});
+            const tempEmail = fs.readFileSync(require.resolve("../templates/emailconfirmation.html"), { encoding: "utf8" });
             // console.log (tempEmail);
             const tempCompile = handlebars.compile(tempEmail);
             const tempResult = tempCompile({ username, verificationLink });
-      
+
             await transporter.sendMail(
-              {
-                from: `G-Medsnial <gmedsnial@gmial.com}>`,
-                to: email,
-                subject: "Verify Your Account",
-                html: tempResult,
-              },
-              (error, info) => {
-                if (error) {
-                throw new Error();
-                //   console.log(error);
-                } else {
-                  console.log("Email sent: " + info.response);
+                {
+                    from: `G-Medsnial <gmedsnial@gmial.com}>`,
+                    to: email,
+                    subject: "Verify Your Account",
+                    html: tempResult,
+                },
+                (error, info) => {
+                    if (error) {
+                        throw new Error();
+                        //   console.log(error);
+                    } else {
+                        console.log("Email sent: " + info.response);
+                    }
                 }
-              }
             );
 
             // if (userAlreadyExist) {
@@ -118,11 +118,11 @@ module.exports = {
             //     }
             // };
 
-        res.status(200).send({
-            status: true,
-            data: result,
-            message: "Register success",
-        });
+            res.status(200).send({
+                status: true,
+                data: result,
+                message: "Register success",
+            });
 
         } catch (err) {
             console.log(err.result);
@@ -150,8 +150,8 @@ module.exports = {
                 return res.status(400).send({
                     status: false,
                     message: "User not found",
-                }) 
-                };
+                })
+            };
             const isvalid = await bcrypt.compare(password, userExist.password);
             if (!isvalid) {
                 return res.status(400).send({
@@ -188,27 +188,27 @@ module.exports = {
     },
     verification: async (req, res) => {
         try {
-          // const id = req.user.id;
-          const userExist = await user.findOne({
-            where: {
-              id: req.userId,
-            },
-          });
-    
-          await user.update(
-            { is_verified: true },
-            {
-              where: {
-                id: req.userId,
-              },
-            }
-          );
-          res.status(200).send({
-            status: true,
-            message: "Your account is verified",
-          });
+            // const id = req.user.id;
+            const userExist = await user.findOne({
+                where: {
+                    id: req.userId,
+                },
+            });
+
+            await user.update(
+                { is_verified: true },
+                {
+                    where: {
+                        id: req.userId,
+                    },
+                }
+            );
+            res.status(200).send({
+                status: true,
+                message: "Your account is verified",
+            });
         } catch (error) {
-          res.status(500).send(error);
+            res.status(500).send(error);
         }
-      },
+    },
 };

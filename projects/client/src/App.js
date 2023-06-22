@@ -19,16 +19,18 @@ import "slick-carousel/slick/slick-theme.css";
 // import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
+import UserProduct from "./pages/user/product";
+import StoreProductDetail from "./components/store/product/productDetail";
 
 function App() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  useEffect(() =>{
+  useEffect(() => {
     const userLogin = JSON.parse(localStorage.getItem("user"))
-if (userLogin) {
-  dispatch(login(userLogin))
-};
-  },[]);
+    if (userLogin) {
+      dispatch(login(userLogin))
+    };
+  }, []);
 
   // useEffect(() => {
   //   (async () => {
@@ -43,13 +45,15 @@ if (userLogin) {
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
         <Routes>
-          <Route path ="/" element={<HomePage/>}errorElement={<ErrorPage/>}/>
-          <Route path ="/login" element={<LoginForm/>} />
-          <Route path="/register" element={<RegistrationForm /> }/>
-          <Route path="/verification/:token" element={<Verification/>}/>
+          <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/verification/:token" element={<Verification />} />
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
-          <Route path="/admin/unit" Component={Dashboard} />
+          <Route path="/store/product" element={<UserProduct />} />
+          <Route path="/store/product/detail/:id" element={<StoreProductDetail />} />
+          {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

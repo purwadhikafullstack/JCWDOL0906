@@ -1,5 +1,5 @@
-// const router = require('express').Router()
-// const { c_products } = require('../controllers')
+const router = require('express').Router()
+const { c_products } = require('../controllers')
 
 // router.get('/product', c_products.getProduct)
 // router.get('/product/detail', c_products.getProductDetailByProductId)
@@ -9,5 +9,8 @@
 // router.post('/product/stock/:id', c_products.updateProductStockById)
 // router.post('/product/delete', c_products.deleteProduct)
 
+router.get('/store/product', c_products.getStoreProduct)
+router.get('/store/product/detail/:id', c_products.getStoreProductDetail)
 
-// module.exports = router
+
+module.exports = router
