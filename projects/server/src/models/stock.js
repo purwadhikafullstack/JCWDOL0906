@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
          */
         static asscociate(models) {
 
-            stock.hasOne(models.conversion_unit)
+            stock.belongsTo(models.product, {
+                foreignKey: 'product_id'
+            })
         }
     }
     stock.init(

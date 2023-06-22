@@ -1,7 +1,7 @@
 // import
 import React, { Component } from 'react';
-import Product from './admin/pages/product';
-import Units from './admin/pages/units';
+import Product from './pages/admin/pages/product';
+import Units from './pages/admin/pages/units';
 
 import {
   HomeIcon,
@@ -12,6 +12,7 @@ import {
   RocketIcon,
   SupportIcon,
 } from "./adminComponents/Icons/Icons";
+import UserProduct from './pages/user/product';
 
 var dashRoutes = [
   {
@@ -62,6 +63,7 @@ var dashRoutes = [
     component: Units,
     layout: "/admin",
   },
+
 
 
   // {
