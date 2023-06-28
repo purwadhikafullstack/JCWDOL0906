@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                     name: "user_id",
                 }
             });
-            
+
         }
     }
     User.init(
@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: false,
             },
             verification_token: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            authorization_token: {
                 type: DataTypes.STRING,
                 allowNull: true,
             },

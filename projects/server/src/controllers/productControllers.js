@@ -2,20 +2,34 @@ const db = require("../models");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
-const auth = db.Auth;
-const product = db.Product;
-const product_detail = db.Product_Details;
+const auth = db.auth;
+const product = db.product;
 
 module.exports = {
   addProduct: async (req, res) => {
     // let token = req.headers.auth;
     // //jika token.roles = 1 maka process try catch dilanjutkan
 
-    // if (!token) {
-    //   return res.status(400).send("token unauthorized or expired");
+    // // if (!token) {
+    // //   return res.status(400).send("token unauthorized or expired");
     // }
     // kalo bukan 1, tulis unauthorized product
-    const { product_name, price, image } = req.body;
+
+    // let data = JSON.parse(req.body.data);
+    const data = JSON.parse(req.body.data);
+    const {
+      product_name,
+      price,
+      description,
+      indication,
+      dose,
+      rules,
+      createdBy,
+    } = data;
+
+    const image = req.file.path;
+    console.log(req.body);
+
     try {
       let isExist = await product.findOne({
         where: {
@@ -24,27 +38,44 @@ module.exports = {
       });
 
       if (!isExist) {
-        await product.create(req.body);
+        await product.create({
+          product_name,
+          price,
+          image,
+          description,
+          indication,
+          dose,
+          rules,
+          createdBy,
+        });
         return res.status(200).json({ message: "Product added successfully" });
       } else {
         return res.status(400).json({ message: "Product already exists! " });
       }
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ message: "Product already exists !" });
+      return res.status(400).json({ message: "Internal server error" });
     }
   },
   getProduct: async (req, res) => {
     try {
-      let data = await product.findAll();
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.size) || 6;
 
-      if (data.length > 0) {
-        return res.status(200).json({ status: "success", data });
-      } else {
-        return res.status(400).json({ status: "failed", data: {} });
-      }
+      const result = await product.findAndCountAll({
+        where: { is_deleted: false },
+        limit: pageSize,
+        offset: (page - 1) * pageSize,
+      });
+      res.status(200).send({
+        data: result.rows,
+        count: result.count,
+        message: "Get All Product Succesfully",
+      });
     } catch (error) {
-      return res.status(400).json({ status: "failed", message: error });
+      res.status(400).send({
+        error: "Failed to get all products",
+      });
     }
   },
   getProductById: async (req, res) => {
@@ -64,35 +95,17 @@ module.exports = {
       return res.status(400).json({ status: "failed", message: error });
     }
   },
-  getProductDetailByProductId: async (req, res) => {
-    try {
-      let data = await product_detail.findOne({
-        where: {
-          product_id: req.query.detail,
-        },
-      });
-      console.log(data);
-      const { dataValues } = data;
-      if (dataValues) {
-        return res.status(200).json({ status: "success", dataValues });
-      } else {
-        return res.status(400).json({ status: "failed", data: {} });
-      }
-    } catch (error) {
-      return res.status(400).json({ status: "failed", message: error });
-    }
-  },
-  updateDetailProduct: async (req, res) => {
+  updateProduct: async (req, res) => {
     console.log(req.body);
     try {
-      let isExists = await product_detail.findOne({
+      let isExists = await product.findOne({
         where: {
           product_id: req.params.id,
         },
       });
 
       if (!isExists) {
-        let [data] = await product_detail.create(req.body);
+        let [data] = await product.create(req.body);
         console.log(req.body);
         console.log(data);
         if (data === 0) {
@@ -108,24 +121,29 @@ module.exports = {
     }
   },
   deleteProduct: async (req, res) => {
+    console.log(req.params.id);
     try {
-      const data = await product.destroy({
-        where: {
-          id: req.body.id,
+      const data = await product.update(
+        {
+          is_deleted: true,
         },
-      });
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+      console.log(data);
       if (data) {
         console.log("null");
-        const data = await product_detail.destroy({
-          where: {
-            product_id: req.body.id,
-          },
-        });
+        // const data = await product_details.destroy({
+        //   where: {
+        //     product_id: req.params.id,
+        //   },
+        // });
 
-        if (data)
-          return res
-            .status(200)
-            .json({ message: "Delete product successfully" });
+        // if (data)
+        return res.status(200).json({ message: "Delete product successfully" });
       } else {
         return res.status(200).json({ message: "Product not found" });
       }
@@ -140,7 +158,6 @@ module.exports = {
 //     const page = parseInt(req.query.page) || 1;
 //     const pageSize = 9;
 
-//     // const categoryId = parseInt(req.query.category) || null;
 //     const productName = req.query.product_name || null;
 
 //     // const categoryQuery = categoryId ? { Category_id: categoryId } : {};
