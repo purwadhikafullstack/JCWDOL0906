@@ -4,6 +4,8 @@ const { Op } = require("sequelize");
 // import model
 const db = require("../models");
 const user = db.User;
+const db = require("../models");
+const profile = db.profile;
 // import jwt
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -208,6 +210,89 @@ module.exports = {
       });
     } catch (error) {
       res.status(500).send(error);
+    }
+  },
+  editProfile: async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      const { user_id, full_name, email, gender, birthdate } = req.body;
+      console.log(req.body);
+
+      await profile.update(
+        {
+          full_name,
+          email,
+          gender,
+          birthdate,
+        },
+        {
+          where: {
+            id: user_id,
+          },
+        }
+      );
+
+      const user = await user.findByPk(user_id);
+      console.log(user);
+
+      return res.status(200).json({
+        message: "Changes Saved",
+        result: user,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Error",
+      });
+    }
+  },
+  settingEmail: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { email } = req.body;
+
+      const checkEmail = await user.findOne({
+        where: { email: email },
+        raw: true,
+      });
+      if (checkEmail) throw "Email have been used";
+
+      await user.update(
+        { email: email, is_verified: 0 },
+        {
+          where: { id: id },
+        }
+      );
+
+      res.status(201).send({
+        status: "Success",
+        message: "Success change email",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  editProfilePic: async (req, res) => {
+    try {
+      const { user_id } = req.params;
+      let fileUploaded = req.file;
+
+      await profile.update(
+        {
+          picture: `/public/profile/${fileUploaded.filename}`,
+        },
+        {
+          where: {
+            id: user_id,
+          },
+        }
+      );
+      res.status(200).send({
+        status: "Success",
+        message: "Succes upload user image",
+      });
+    } catch (err) {
+      res.status(400).send(er);
     }
   },
 };
