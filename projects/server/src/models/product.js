@@ -14,11 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       //         name: "product_id",
       //     },
       // });
-      // Product.hasMany(models.Category, {
-      //     foreignKey: {
-      //         name: "category_id",
-      //     }
-      // });
+      product.belongsTo(models.Category, {
+        foreignKey: "category_id",
+      });
+
       // Product.hasMany(models.Discount, {
       //     foreignKey: {
       //         name: "product_id",
@@ -67,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       rules: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      category: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       is_deleted: {
