@@ -17,6 +17,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
+// import MyAccount from "./pages/userProfile/profile";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -62,6 +63,7 @@ function App() {
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
           <Route path="/admin/unit" Component={Dashboard} />
+          {/* <Route path="/profile/edit" Component={MyAccount} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

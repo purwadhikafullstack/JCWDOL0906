@@ -4,8 +4,7 @@ const { Op } = require("sequelize");
 // import model
 const db = require("../models");
 const user = db.User;
-const db = require("../models");
-const profile = db.profile;
+const profile = db.Profile;
 // import jwt
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -214,9 +213,12 @@ module.exports = {
   },
   editProfile: async (req, res) => {
     try {
-      const { user_id } = req.params;
-      const { user_id, full_name, email, gender, birthdate } = req.body;
-      console.log(req.body);
+      const { userId } = req;
+      const { full_name, email, gender, birthdate } = req.body;
+      console.log("body:", req.body);
+      console.log("userId:", userId);
+      let fileUploaded = req.file;
+      console.log("fileUpload:", fileUploaded);
 
       await profile.update(
         {
@@ -224,20 +226,25 @@ module.exports = {
           email,
           gender,
           birthdate,
+          picture: `/public/profile/${fileUploaded.filename}`,
         },
         {
           where: {
-            id: user_id,
+            user_id: userId,
           },
         }
       );
 
-      const user = await user.findByPk(user_id);
-      console.log(user);
+      const profileData = await profile.findOne({
+        where: {
+          user_id: userId,
+        },
+      });
+      console.log(profileData);
 
       return res.status(200).json({
         message: "Changes Saved",
-        result: user,
+        result: profileData,
       });
     } catch (err) {
       console.log(err);
@@ -248,7 +255,7 @@ module.exports = {
   },
   settingEmail: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { userId } = req;
       const { email } = req.body;
 
       const checkEmail = await user.findOne({
@@ -260,7 +267,7 @@ module.exports = {
       await user.update(
         { email: email, is_verified: 0 },
         {
-          where: { id: id },
+          where: { id: userId },
         }
       );
 
@@ -272,27 +279,27 @@ module.exports = {
       res.status(400).send(error);
     }
   },
-  editProfilePic: async (req, res) => {
-    try {
-      const { user_id } = req.params;
-      let fileUploaded = req.file;
+  // editProfilePic: async (req, res) => {
+  //   try {
+  //     const { userId } = req;
+  //     let fileUploaded = req.file;
 
-      await profile.update(
-        {
-          picture: `/public/profile/${fileUploaded.filename}`,
-        },
-        {
-          where: {
-            id: user_id,
-          },
-        }
-      );
-      res.status(200).send({
-        status: "Success",
-        message: "Succes upload user image",
-      });
-    } catch (err) {
-      res.status(400).send(er);
-    }
-  },
+  //     await profile.update(
+  //       {
+  //         picture: `/public/profile/${fileUploaded.filename}`,
+  //       },
+  //       {
+  //         where: {
+  //           id: userId,
+  //         },
+  //       }
+  //     );
+  //     res.status(200).send({
+  //       status: "Success",
+  //       message: "Succes upload user image",
+  //     });
+  //   } catch (err) {
+  //     res.status(400).send(er);
+  //   }
+  // },
 };
