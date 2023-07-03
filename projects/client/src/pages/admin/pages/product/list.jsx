@@ -10,10 +10,11 @@ import {
 import React, { useEffect, useState } from "react";
 import TableCRUD from "../../components/table";
 import axios from "axios";
-import { swalFailed, swalSuccess } from "../../../admin/utils";
+import { swalFailed, swalSuccess } from "../../../../helper";
 // import ModalEditForm from "../Modals/Modal";
 import ModalProductUpdate from "../../components/ModalProductUpdate";
 import ModalAddProduct from "../../components/ModalAddProduct";
+// import ModalProductUnit from '../../components/modalProductUnit';
 import { useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
@@ -27,8 +28,6 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  // const [totalPage, setTotalPage] = useState(0);
-  // const [activePage, setActivePage] = useState(1);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
 
@@ -87,9 +86,11 @@ const ProductList = () => {
         "http://localhost:8000/api/product" + `?page=${activePage}`
       );
       setProducts(result.data.data);
+      console.log(result.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
       swalFailed(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -216,8 +217,8 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          activePage={activePage}
-          totalPage={totalPage}
+          defaultActivePages={activePage}
+          totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
             console.log(pageInfo);

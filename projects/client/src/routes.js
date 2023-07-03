@@ -1,7 +1,7 @@
 // import
 import React, { Component } from "react";
-import Product from "./admin/pages/product";
-import Units from "./admin/pages/units";
+import Product from "./pages/admin/pages/product";
+import Units from "./pages/admin/pages/units";
 
 import {
   HomeIcon,
@@ -10,6 +10,7 @@ import {
   SupportIcon,
   DocumentIcon,
 } from "./adminComponents/Icons/Icons";
+import UserProduct from "./pages/user/product";
 
 var dashRoutes = [
   {

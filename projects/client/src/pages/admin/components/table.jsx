@@ -68,7 +68,7 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
                     borderColor={borderColor}
                     border={index === arr.length - 1 ? "none" : null}
                   >
-                    {(activePage - 1) * 10 + index + 1}
+                    {(activePage - 1) * 6 + index + 1}
                   </Td>
                   {dataFill.map((i) => (
                     <Td

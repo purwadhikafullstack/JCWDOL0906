@@ -62,7 +62,9 @@ export const LoginForm = () => {
       });
       onClose();
       if (result.data.data.role === 2) {
-        navigate("*");
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/store/product");
       }
     } catch (error) {
       console.log(error);

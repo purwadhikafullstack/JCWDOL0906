@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 
 const auth = db.auth;
 const product = db.product;
+const category = db.Category;
 
 module.exports = {
   addProduct: async (req, res) => {
@@ -63,16 +64,19 @@ module.exports = {
       const pageSize = parseInt(req.query.size) || 6;
 
       const result = await product.findAndCountAll({
+        include: [category],
         where: { is_deleted: false },
         limit: pageSize,
         offset: (page - 1) * pageSize,
       });
+      console.log(result.data);
       res.status(200).send({
         data: result.rows,
         count: result.count,
         message: "Get All Product Succesfully",
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send({
         error: "Failed to get all products",
       });
@@ -186,26 +190,3 @@ module.exports = {
 //     res.status(400).send(err);
 //   }
 // },
-
-//   productDetails: async (req, res) => {
-//     try {
-//       const query = `SELECT products.id, products.name AS product_name, products.description, products.price, products.image, products.stock,
-//       categories.id AS category_id, categories.name AS category,
-//       merchants.id AS merchant_id, merchants.name AS merchant_name, merchants.address
-//       FROM products
-//       INNER JOIN categories ON products.Category_id = categories.id
-//       INNER JOIN merchants ON products.merchant_id = merchants.id
-//       WHERE products.id = ${req.params.id};`;
-//       const [results] = await db.sequelize.query(query);
-//       res.status(200).send({
-//         status: true,
-//         results,
-//       });
-//     } catch (err) {
-//       console.log(err);
-//       res.status(400).send(err);
-//   //     }
-//     },
-// };
-
-// include product list

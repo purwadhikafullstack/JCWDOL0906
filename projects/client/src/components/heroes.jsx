@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import heroes from "../assets/heroes.jpg";
+import CategorySlider from "./carousel";
 
 export const Heroes = () => {
   return (
@@ -48,10 +49,10 @@ export const Heroes = () => {
             </Text>
             <br />
             <Text as={"span"} color={"blue.800"}>
-              HEALTHIER, LONGER, BETTER LIVES
+              HEALTHEIER, LONGER, BETTER LIVES
             </Text>
           </Heading>
-          <Text color={"black.500"}>HEALTHY HEALTHY HEALTHY</Text>
+          <Text color={"black.500"}>HELTHY HEALTHY HEALTHY</Text>
         </Stack>
         <Flex
           flex={1}
@@ -88,6 +89,7 @@ export const Heroes = () => {
           </Box>
         </Flex>
       </Stack>
+      <CategorySlider />
     </Container>
   );
 };
