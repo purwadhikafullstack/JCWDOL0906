@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Category.hasMany(models.product, {
-        foreignKey: "category_id",
+        foreignKey: "product_id",
       });
     }
   }
@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: "category_name",
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       is_deleted: {
         type: DataTypes.INTEGER,

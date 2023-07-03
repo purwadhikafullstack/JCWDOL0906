@@ -43,7 +43,7 @@ module.exports = {
         });
       }
       const passwordRegex =
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*.()_+])[0-9a-zA-Z!@#$%.^&*()_+]{8,}$/;
       if (!passwordRegex.test(password)) {
         return res.status(400).send({
           message:

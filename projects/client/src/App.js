@@ -17,6 +17,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
+import UserProduct from "./pages/user/product";
+import StoreProductDetail from "./components/store/product/productDetail";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -52,16 +54,18 @@ function App() {
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Dashboard />} />
-          {/* <Route path="/admin/Products/" element={<Dashboard />} /> */}
-
           <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
-          <Route path="/admin/unit" Component={Dashboard} />
+          <Route path="/store/product" element={<UserProduct />} />
+          <Route
+            path="/store/product/detail/:id"
+            element={<StoreProductDetail />}
+          />
+          {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
