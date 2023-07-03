@@ -1,16 +1,15 @@
-const router = require('express').Router()
-const { c_products } = require('../controllers')
+const router = require("express").Router();
+const { productControllers } = require("../controllers");
+const product = require("../models/product");
+const { uploadFile } = require("../middleware/productMulter");
+// const authorize = require('../')
+const { c_products } = require("../controllers");
 
-// router.get('/product', c_products.getProduct)
-// router.get('/product/detail', c_products.getProductDetailByProductId)
-// router.get('/product/stock/:id', c_products.getProductStockById)
-// router.post('/product', c_products.addProduct)
-// router.post('/product/detail/:id', c_products.updateDetailProduct)
-// router.post('/product/stock/:id', c_products.updateProductStockById)
-// router.post('/product/delete', c_products.deleteProduct)
+router.post("/product/add", uploadFile, productControllers.addProduct);
+router.get("/product", productControllers.getProduct);
+router.delete("/product/delete/:id", productControllers.deleteProduct);
+router.patch("/product/:id", productControllers.updateProduct);
+router.get("/store/product", c_products.getStoreProduct);
+router.get("/store/product/detail/:id", c_products.getStoreProductDetail);
 
-router.get('/store/product', c_products.getStoreProduct)
-router.get('/store/product/detail/:id', c_products.getStoreProductDetail)
-
-
-module.exports = router
+module.exports = router;
