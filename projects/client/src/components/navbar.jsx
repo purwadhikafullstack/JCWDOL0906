@@ -16,22 +16,24 @@ import {
   Button,
   MenuGroup,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-} from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 // import {useNavigate, Link} from"react-router-dom";
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
-import { SearchBar } from "../components/searchbar"
-import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg"
+import { SearchBar } from "../components/searchbar";
+import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg";
 import { useEffect, useState } from "react";
+import MyAccountPage from "../pages/userProfile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
-import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
+import {
+  DocumentIcon,
+  PersonIcon,
+  RocketIcon,
+} from "../adminComponents/Icons/Icons";
 import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
 
@@ -40,23 +42,25 @@ export const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userSlice)
+  const user = useSelector((state) => state.userSlice);
   const handleLogOut = () => {
-    localStorage.removeItem("user")
-    dispatch(logout())
+    localStorage.removeItem("user");
+    dispatch(logout());
   };
-  const username = useSelector((state) => state.userSlice.value.username)
+  const username = useSelector((state) => state.userSlice.value.username);
 
   useEffect(() => {
-    console.log(user.value.id)
+    console.log(user.value.id);
     if (user.value.id || user.value.id === 1) {
-      setIsLogin(true)
-    } else { setIsLogin(false) }
-    console.log(isLogin)
-  }, [user])
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+    console.log(isLogin);
+  }, [user]);
   // const token = localStorage.getItem("token")
   useEffect(() => {
-    console.log(username)
+    console.log(username);
   }, [username]);
 
   return (
@@ -93,15 +97,14 @@ export const Navbar = () => {
         >
           <Image
             src={logo_gmedsnial}
-            height={'30px'}
+            height={"30px"}
             alt={"Icon Logo"}
-            fit={"logo"} />
+            fit={"logo"}
+          />
 
           <Flex ml="auto" alignItems="center" spacing={3}>
-
             <SearchBar />
             {isLogin ? (
-
               <div>
                 <Menu direction="row">
                   <Avatar
@@ -113,18 +116,12 @@ export const Navbar = () => {
                     textColor="white"
                   />
                   <MenuList>
-                    <MenuItem>
+                    <MenuItem onClick={() => MyAccountPage()}>
                       My Account
                     </MenuItem>
-                    <MenuItem>
-                      Cart
-                    </MenuItem>
-                    <MenuItem>
-                      Transaction
-                    </MenuItem>
-                    <MenuItem onClick={() => handleLogOut()}>
-                      Log Out
-                    </MenuItem>
+                    <MenuItem>Cart</MenuItem>
+                    <MenuItem>Transaction</MenuItem>
+                    <MenuItem onClick={() => handleLogOut()}>Log Out</MenuItem>
                   </MenuList>
                 </Menu>
                 {/* <Button
