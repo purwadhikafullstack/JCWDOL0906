@@ -55,7 +55,7 @@ module.exports = {
 
             const generateVerticationToken = (username) => {
                 let token = jwt.sign({ username }, "g-medsnial", {
-                    expiresIn: "9999 years",
+                    expiresIn: "30m",
                 });
                 return token;
             };
@@ -84,7 +84,7 @@ module.exports = {
 
             
             const verificationLink = `http://localhost:3000/verification/${token}`;
-            const tempEmail = fs.readFileSync(require.resolve("../templates/emailconfirmation.html"),{ encoding: "utf8"});
+            const tempEmail = fs.readFileSync(require.resolve("../templates/verification.html"),{ encoding: "utf8"});
             // console.log (tempEmail);
             const tempCompile = handlebars.compile(tempEmail);
             const tempResult = tempCompile({ username, verificationLink });
@@ -93,7 +93,7 @@ module.exports = {
               {
                 from: `G-Medsnial <gmedsnial@gmial.com}>`,
                 to: email,
-                subject: "Verify Your Account",
+                subject: "Verification Account",
                 html: tempResult,
               },
               (error, info) => {
@@ -164,7 +164,7 @@ module.exports = {
                 role: userExist.role,
                 is_verified: userExist.is_verified,
             };
-            const token = jwt.sign(payload, "g-medsnial", { expiresIn: "999years" });
+            const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
             // mengambil id dari bearer token
             const verifiedUser = jwt.verify(token, "g-medsnial");
             console.log(verifiedUser);
@@ -211,4 +211,127 @@ module.exports = {
           res.status(500).send(error);
         }
       },
+      confirm_email: async (req, res) => {
+        try {
+            const {email} = req.body;
+            if(!email) {
+                return res.status(400).send({
+                    message: "Please Input Your Email Address",
+                });
+            }
+
+            if(!email.includes("@") || !email.endsWith(".com")) {
+                return res.status(400).send({
+                    message: "Please enter a Valid Email Address",
+                });
+            }
+            let result = await user.findOne ({ where: {email} });
+            
+            let payload = { id: result.id };
+            let token = jwt.sign(payload, "g-medsnial", {
+                expiresIn: "1h",
+            });
+
+            await user.update(
+                {reset_token: token},
+                {
+                where: {
+                    id: result.id,
+                }
+                }
+            )
+            const resetLink = `http://localhost:3000/resetpassword/${token}`;
+            const tempEmail = fs.readFileSync(require.resolve("../templates/reset.html"),{ encoding: "utf8"});
+            const tempCompile = handlebars.compile(tempEmail);
+            const tempResult = tempCompile({ resetLink });
+      
+            await transporter.sendMail(
+              {
+                from: `G-Medsnial <gmedsnial@gmial.com}>`,
+                to: email,
+                subject: "Reset Password",
+                html: tempResult,
+              });
+              res.status(200).send({
+                message: " Please Check Your Email",
+                result,
+              })
+        } catch (error) {
+            console.log(error);
+        }
+      },
+      reset_password: async (req, res) => {
+        try {
+            const { password, confirmPassword } = req.body;
+            console.log(password, confirmPassword)
+            if (!password || !confirmPassword)
+            return res.status(400).send({
+                message: "Please Complate Your Data",
+            })
+            if (password !== confirmPassword) {
+                return res.status(400).sedn({
+                    message: "Password does not match"
+                });
+            }
+            const passwordRegex =
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+
+            if (!passwordRegex.test(password)) {
+            return res.status(400).send({
+                message: 'Password must contain at least 8 characters including an uppercase letter, a symbol, and a number'
+                 });
+           }
+
+           let token = req.headers.authorization;
+           token = token.split(" ") [1];
+           const data = jwt.verify(token, "g-medsnial");
+           console.log(data);
+
+           const salt = await bcrypt.genSalt(10);
+           const hashPass = await bcrypt.hash(password, salt);
+
+           const userPassword = await user.update(
+            {password: hashPass},
+            { where: {id: data.id}}
+           );
+
+           res.send({
+            message: "Reset Password Succes",
+            data: userPassword,
+           });
+        } catch (error) {
+            console.log(error);
+            res.status(400).send({
+                message: "Server Error!"
+            });
+        }
+      },
+    //   keep_login: async (req, res) => {
+    //     try {
+    //         let getToken = req.dataToken
+    //         // console.log(getToken)
+
+    //         let tokenUser = await db.user.findOne({
+    //             where: {
+    //                 id: getToken.id
+    //             }
+    //         })
+    //         // console.log(tokenUser)
+
+    //         res.status(201).send({
+    //             isError: false,
+    //             message: 'Token still valid',
+    //             data: tokenUser
+    //         })
+
+    //     } catch (error) {
+    //         // console.log(error)
+    //         res.status(401).send({
+    //             isError: true,
+    //             message: error.message,
+    //             data: null
+    //         })
+
+    //     }
+    // },
 };
