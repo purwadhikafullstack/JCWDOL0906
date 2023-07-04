@@ -25,7 +25,7 @@ import {
 import {RegistrationForm} from "../components/registerForm";
 import {LoginForm} from "../components/loginForm";
 import {SearchBar} from"../components/searchbar"
-import logo_gmedsnial from"../assets/svg/logo_gmedsnial.svg"
+import logo_gmedsnial from"../assets/svg/logogmedsnial1.png"
 import { useEffect, useState } from "react";
 
 //imprt redux
@@ -45,7 +45,7 @@ export const Navbar = () => {
   const username = useSelector((state)=> state.userSlice.value.username)
  
 useEffect(()=> {
-if (!user.value.id || user.value.id <1 ) {
+if (user.value.id || user.value.id ===1 ) {
 setIsLogin(true)
 } else {setIsLogin(false)}
 },[user])
@@ -53,6 +53,7 @@ setIsLogin(true)
 useEffect(() =>{
   console.log(username)
 },[username]);
+
 
   return (
     <Box>
@@ -88,54 +89,43 @@ useEffect(() =>{
         >
           <Image 
           src={logo_gmedsnial} 
-          height={'30px'}
+          height={'60px'}
           alt={"Icon Logo"}
           fit={"logo"}/>
 
           <Flex ml="auto" alignItems="center" spacing={3}>
             <SearchBar />
             {isLogin?(
-              <div>
-                <RegistrationForm/>
-                <LoginForm/>
-              </div>
+               <div>
+               <Menu  direction="row">
+                 <Avatar
+                 as={MenuButton}
+                 mr="4"
+                 name={username}
+                 size="md"
+                 bg="blue.300"
+                 textColor="white"
+                 />
+                 <MenuList>
+                   <MenuItem>
+                   My Account
+                   </MenuItem>
+                   <MenuItem>
+                     Cart
+                   </MenuItem>
+                   <MenuItem>
+                   Transaction
+                   </MenuItem>
+                   <MenuItem onClick={() => handleLogOut()}>
+                   Log Out
+                   </MenuItem>
+                 </MenuList>
+               </Menu>
+               </div>
           ):(
-          <div>
-          <Menu  direction="row">
-            <Avatar
-            as={MenuButton}
-            mr="4"
-            name={username}
-            size="md"
-            bg="blue.300"
-            textColor="white"
-            />
-            <MenuList>
-              <MenuItem>
-              My Account
-              </MenuItem>
-              <MenuItem>
-                Cart
-              </MenuItem>
-              <MenuItem>
-              Transaction
-              </MenuItem>
-              <MenuItem onClick={() => handleLogOut()}>
-              Log Out
-              </MenuItem>
-            </MenuList>
-          </Menu>
-          {/* <Button
-            display={{base : "solid", md: "inline-flex"}}
-            fontSize={"md"}
-            fontWeight="bold"
-            color={"blue.800"}
-            bg="blue.200"
-            pt={{ base: "3", md: 0}}
-            borderRadius='10px'
-            onClick={() => handleLogOut()}>
-          LogOut
-          </Button> */}
+            <div>
+            <RegistrationForm/>
+            <LoginForm/>
           </div>
           )}
           </Flex>

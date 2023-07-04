@@ -1,89 +1,81 @@
-// import {useState} from 'react'
-// import React from 'react';
-// import Slider from 'react-slick';
-// import {FaChevronLeft, FaChevronRight} from 'react-icons'
+import React from 'react';
+import { Box, IconButton, useBreakpointValue } from '@chakra-ui/react';
+import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+//asets banner
+import banner3 from '../assets/banner/banner3.jpg';
+import banner6 from '../assets/banner/banner6.jpg';
+import banner7 from '../assets/banner/banner7.jpg';
+import banner8 from '../assets/banner/banner8.jpg';
+import banner9 from '../assets/banner/banner9.jpg';
+import banner10 from '../assets/banner/banner10.jpg';
+import banner11 from '../assets/banner/banner11.jpg';
 
-// export default function SimpleSlider() {
-//     const [sliderRef, setSliderRef] = useState(null)
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 1000,
-//     slidesToShow: 5,
-//     slidesToScroll: 1,
-//   }
-//    const productsCards = [
-//     {
-//         imageSrc: 
-//         'https://i.pinimg.com/736x/11/00/c7/1100c7ddf2c547ce814da329aa69f322.jpg',
-//         tittle: 'Panadol',
-//         description: 'Menurunkan Demam',
+const settings = {
+  dots: true,
+  dotsClass: 'slick-dots',
+  arrows: false,
+  fade: true,
+  infinite: true,
+  autoplay: true,
+  speed: 500,
+  autoplaySpeed: 3000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
-//     },
-//     {
-//         imageSrc: 
-//         'https://i.pinimg.com/736x/0a/86/64/0a8664574a50e2fb4410cb2568911eaf.jpg',
-//         tittle: 'Imboost',
-//         description: 'Vitamin Imun',
-//     },
-//     {
-//         imageSrc: 
-//         'https://i.pinimg.com/736x/f4/ae/f7/f4aef7b2d62561dd449d540c79b09149.jpg',
-//         tittle: 'Emergen-C',
-//         description: 'Vitamin C',
-//     },
-//     {
-//         imageSrc: 
-//         'https://i.pinimg.com/736x/52/0d/79/520d79eed32418a798366bc12d3871fb.jpg',
-//         tittle: 'Centrum',
-//         description: 'Multivitamin',
-//     }
-//    ]
-//   return (
-//     <div classNa
-//     <Slider {...settings}>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'blue', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 1
-//         </div>
-//       </div>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'black', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 2
-//         </div>
-//       </div>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'grey', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 3
-//         </div>
-//       </div>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'red', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 4
-//         </div>
-//       </div>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'yellow', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 5
-//         </div>
-//       </div>
-//       <div>
-//         <div
-//           style={{ backgroundColor: 'green', width: '100px', height: '100px' }}
-//         >
-//           SLIDE 6
-//         </div>
-//       </div>
-//     </Slider>
-//   );
-// }
+export function Carousel() {
+  const [slider, setSlider] = React.useState(null);
+  const top = useBreakpointValue({ base: '80%', md: '40%' });
+  const side = useBreakpointValue({ base: '30%', md: '10px' });
+
+  const cards = [
+   banner3, banner6, banner7, banner8, banner9, banner10, banner11
+  ];
+ 
+  return (
+    <Box position={'relative'} height={'465px'} width={'full'} overflow={'hidden'}>
+      <IconButton
+        aria-label="left-arrow"
+        colorScheme="messenger"
+        borderRadius="full"
+        position="absolute"
+        left={side}
+        top={top}
+        transform={'translate(0%, -50%)'}
+        zIndex={2}
+        onClick={() => slider?.slickPrev()}
+      >
+        <BiLeftArrowAlt />
+      </IconButton>
+      <IconButton
+        aria-label="right-arrow"
+        colorScheme="messenger"
+        borderRadius="full"
+        position="absolute"
+        right={side}
+        top={top}
+        transform={'translate(0%, -50%)'}
+        zIndex={2}
+        onClick={() => slider?.slickNext()}
+      >
+        <BiRightArrowAlt />
+      </IconButton>
+      <Slider {...settings} ref={(slider) => setSlider(slider)}>
+        {cards.map((url, index) => (
+          <Box
+            key={index}
+            height={'400px'}
+            position="relative"
+            backgroundPosition="center"
+            backgroundRepeat="no-repeat"
+            backgroundSize="cover"
+            backgroundImage={`url(${url})`}
+          />
+        ))}
+      </Slider>
+    </Box>
+  );
+};
