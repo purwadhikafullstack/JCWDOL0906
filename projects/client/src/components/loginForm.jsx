@@ -51,6 +51,7 @@ export const LoginForm = () => {
         const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
         const result = await Axios.post (url, data);
         console.log(result.data);
+        localStorage.setItem(JSON.stringify('token', token));
         localStorage.setItem("user", JSON.stringify(result.data.data))
         dispatch(login(result.data.data));
 
