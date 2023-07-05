@@ -22,10 +22,10 @@ import {
 } from "@chakra-ui/icons";
 
 // import {useNavigate, Link} from"react-router-dom";
-import { RegistrationForm } from "../components/registerForm";
-import { LoginForm } from "../components/loginForm";
-import { SearchBar } from "../components/searchbar"
-import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg"
+import {RegistrationForm} from "../components/registerForm";
+import {LoginForm} from "../components/loginForm";
+import {SearchBar} from"../components/searchbar"
+import logo_gmedsnial from"../assets/svg/logogmedsnial1.png"
 import { useEffect, useState } from "react";
 
 //imprt redux
@@ -45,19 +45,18 @@ export const Navbar = () => {
     localStorage.removeItem("user")
     dispatch(logout())
   };
-  const username = useSelector((state) => state.userSlice.value.username)
-
-  useEffect(() => {
-    console.log(user.value.id)
-    if (user.value.id || user.value.id === 1) {
-      setIsLogin(true)
-    } else { setIsLogin(false) }
-    console.log(isLogin)
-  }, [user])
+  const username = useSelector((state)=> state.userSlice.value.username)
+ 
+useEffect(()=> {
+if (user.value.id || user.value.id ===1 ) {
+setIsLogin(true)
+} else {setIsLogin(false)}
+},[user])
   // const token = localStorage.getItem("token")
   useEffect(() => {
     console.log(username)
   }, [username]);
+
 
   return (
     <Box>
@@ -91,60 +90,48 @@ export const Navbar = () => {
           justify={{ base: "center", md: "start", lg: "flex-end" }}
           alignItems="center"
         >
-          <Image
-            src={logo_gmedsnial}
-            height={'30px'}
-            alt={"Icon Logo"}
-            fit={"logo"} />
+          <Image 
+          src={logo_gmedsnial} 
+          height={'60px'}
+          alt={"Icon Logo"}
+          fit={"logo"}/>
 
           <Flex ml="auto" alignItems="center" spacing={3}>
 
             <SearchBar />
-            {isLogin ? (
-
-              <div>
-                <Menu direction="row">
-                  <Avatar
-                    as={MenuButton}
-                    mr="4"
-                    name={username}
-                    size="md"
-                    bg="blue.300"
-                    textColor="white"
-                  />
-                  <MenuList>
-                    <MenuItem>
-                      My Account
-                    </MenuItem>
-                    <MenuItem>
-                      Cart
-                    </MenuItem>
-                    <MenuItem>
-                      Transaction
-                    </MenuItem>
-                    <MenuItem onClick={() => handleLogOut()}>
-                      Log Out
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-                {/* <Button
-            display={{base : "solid", md: "inline-flex"}}
-            fontSize={"md"}
-            fontWeight="bold"
-            color={"blue.800"}
-            bg="blue.200"
-            pt={{ base: "3", md: 0}}
-            borderRadius='10px'
-            onClick={() => handleLogOut()}>
-          LogOut
-          </Button> */}
-              </div>
-            ) : (
-              <div>
-                <RegistrationForm />
-                <LoginForm />
-              </div>
-            )}
+            {isLogin?(
+               <div>
+               <Menu  direction="row">
+                 <Avatar
+                 as={MenuButton}
+                 mr="4"
+                 name={username}
+                 size="md"
+                 bg="blue.300"
+                 textColor="white"
+                 />
+                 <MenuList>
+                   <MenuItem>
+                   My Account
+                   </MenuItem>
+                   <MenuItem>
+                     Cart
+                   </MenuItem>
+                   <MenuItem>
+                   Transaction
+                   </MenuItem>
+                   <MenuItem onClick={() => handleLogOut()}>
+                   Log Out
+                   </MenuItem>
+                 </MenuList>
+               </Menu>
+               </div>
+          ):(
+            <div>
+            <RegistrationForm/>
+            <LoginForm/>
+          </div>
+          )}
           </Flex>
         </Flex>
       </Flex>

@@ -1,18 +1,18 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
-  Input,
-  Alert,
+    Button,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    FormControl,
+    FormLabel,
+    Input,
+    Alert,
+    Link
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -117,48 +117,59 @@ export const LoginForm = () => {
               }}
               validationSchema={LoginSchema}
               onSubmit={onLogin}
-            >
-              <Form>
-                <FormControl>
-                  <FormLabel mt={5}>Email</FormLabel>
-                  <Field
-                    as={Input}
-                    id="email"
-                    type="email"
-                    name="email"
-                    borderColor="blue.300"
-                    placeholder="Email Address"
-                  />
-                  <ErrorMessage name="email" component="div" style={{ color: "red" }} />
-                  <FormLabel mt={5}>Password</FormLabel>
-                  <Field
-                    as={Input}
-                    id="password"
-                    type="password"
-                    name="password"
-                    borderColor="blue.300"
-                    placeholder="Password"
-                  />
-                  <ErrorMessage name="password" component="div" style={{ color: "red" }} />
-                  {/* <ResetPassword/> */}
-                </FormControl>
-                <ModalFooter>
-                  <Button
-                    mr={5} type="submit"
-                    colorScheme='blue.800'>
-                    Login
-                  </Button>
-                  <Button
-                    display={{ base: "solid", md: "inline-flex" }}
-                    fontSize={"md"} fontWeight="bold"
-                    color={"blue.800"} bg="blue.100"
-                    onClick={() => onLogin()}>Login</Button>
-                </ModalFooter>
-              </Form>
+              >
+                <Form>
+              <FormControl>
+                <FormLabel mt={5}>Email</FormLabel>
+                <Field
+                as={Input} 
+                id="email"
+                type="email"
+                name="email"
+                borderColor="blue.300"
+                placeholder="Email Address"
+                />
+                <ErrorMessage name="email" component="div" style={{color:"red"}}/>
+                <FormLabel mt={5}>Password</FormLabel>
+                <Field
+                as={Input}
+                id="password"
+                type="password"
+                name="password"
+                borderColor="blue.300"
+                placeholder="Password"
+                />
+                <ErrorMessage name="password" component="div" style={{color:"red"}} />
+              </FormControl>
+            <ModalFooter>
+              <Button 
+              mr={5} type="submit"
+              colorScheme='blue.800'>
+                Login
+              </Button>
+              <Button 
+              display={{base : "solid", md: "inline-flex"}}
+              fontSize={"md"} fontWeight="bold"
+              color={"blue.800"} bg="blue.100"
+              onClick={()=>onLogin()}>Login</Button>
+            </ModalFooter>
+            </Form>
             </Formik>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
+            <Link
+              as={Button}
+              variant="link"
+              onClick={() => {
+                onClose();
+                navigate("/confirmemail");
+              }}
+              color="blue.400"
+              mt={5}
+            >
+              Forgot password? Reset here
+            </Link>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
