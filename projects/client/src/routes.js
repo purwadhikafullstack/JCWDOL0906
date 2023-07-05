@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Product from './admin/pages/product';
 import Units from './admin/pages/units';
+import CategoryList from './admin/pages/category/list';
 
 import {
   HomeIcon,
@@ -35,7 +36,7 @@ var dashRoutes = [
     name: "Category",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
-    // component: Billing,
+    component: CategoryList,
     layout: "/admin",
   },
   {

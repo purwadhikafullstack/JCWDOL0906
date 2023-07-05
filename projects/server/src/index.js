@@ -3,24 +3,26 @@ require('dotenv').config({ path: join(__dirname, '../.env') });
 const express = require("express");
 const cors = require("cors");
 const router = require('./router');
-const db = require('../src/models')
+const db = require('../src/models');
+const multer = require('multer')
+
 
 const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
 
 app.use(express.json());
-app.use("/", express.static(__dirname + "/public"));
+app.use("/public", express.static(__dirname + "/public"));
 
 //#region API ROUTES
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-const
-  authRouter
-    = require("./router/authRouter");
+const authRouter= require("./router/authRouter");
 app.use("/api/auth", authRouter);
+const categoryRouter = require("./router/categoryRouter");
+app.use("/api/categories", categoryRouter);
 
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
@@ -67,7 +69,6 @@ app.get("*", (req, res) => {
 //#endregion
 
 app.listen(PORT, (err) => {
-  // db.sequelize.sync({ alter: true });
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {

@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 unique: "category_name",
             },
+            image: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             is_deleted: {
                 type: DataTypes.INTEGER,
                 allowNull: false,

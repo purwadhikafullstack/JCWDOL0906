@@ -1,15 +1,14 @@
-
-import { Button, Collapse, Flex, HStack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import { Button, Collapse, Flex, HStack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue, Image } from '@chakra-ui/react';
 
 import React from 'react'
 
-const TableCRUD = ({ menu, data, header, dataFill, action }) => {
+const TableCRUD = ({ menu, data, header, dataFill, action, activePage}) => {
     console.log(action)
     const textColor = useColorModeValue("gray.700", "white");
     const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const textTableColor = useColorModeValue("gray.500", "white");
-
+    // const [selectedCategory, setSelectedCategory] = useState(null);
     return (
         <>
             {
@@ -34,46 +33,37 @@ const TableCRUD = ({ menu, data, header, dataFill, action }) => {
                         {data.map((el, index, arr) => {
                             return (
                                 <Tr key={index}>
-
-
                                     <Td
                                         color={textTableColor}
                                         fontSize='sm'
                                         fontWeight='bold'
                                         borderColor={borderColor}
                                         border={index === arr.length - 1 ? "none" : null}>
-                                        {index + 1}
+                                        {(activePage - 1) * 5 + index + 1}
                                     </Td>
                                     {dataFill.map(i => <Td
                                         color={textTableColor}
                                         fontSize='sm'
                                         border={index === arr.length - 1 ? "none" : null}
                                         borderColor={borderColor}>
-                                        {el[i]}
-
-
+                                        { i === "image" ?
+                                        <Image boxSize='50px'
+                                        src= {el[i]} />: el[i]}
                                     </Td>)}
-                                    {menu === "product" ?
+                                    {menu === "category" ?
                                         <Td
                                             color={textTableColor}
                                             fontSize='sm'
                                             border={index === arr.length - 1 ? "none" : null}
                                             borderColor={borderColor} isNumeric>
                                             <HStack spacing='5px'>
-                                                <Button colorScheme='teal' onClick={action[0]} id={el.id}>
-                                                    Detail
+                                                <Button colorScheme='teal' onClick={action[1]} id={el.id}>
+                                                    Update
                                                 </Button>
-                                                <Button colorScheme='linkedin' onClick={action[1]} id={el.id}>
-                                                    Stock
-                                                </Button>
-                                                <Button colorScheme='purple' onClick={action[2]} id={el.id}>
-                                                    Units
-                                                </Button>
-                                                <Button colorScheme='red' onClick={action} id={el.id}>
+                                                <Button colorScheme='red' onClick={action[2]} id={el.id}>
                                                     Delete
                                                 </Button>
                                             </HStack>
-
                                         </Td> :
                                         <Td
                                             color={textTableColor}

@@ -30,29 +30,11 @@ import {
               lineHeight={1.1}
               fontWeight={600}
               fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}>
-              <Text
-                as={'span'}
-                position={'relative'}
-                _after={{
-                  content: "''",
-                  width: 'full',
-                  height: '30%',
-                  position: 'absolute',
-                  bottom: 1,
-                  left: 0,
-                  bg: 'blue.800',
-                  zIndex: -1,
-                }}>
-                G-MEDSNIAL,
-              </Text>
               <br />
-              <Text as={'span'} color={'blue.800'}>
-                HEALTHEIER, LONGER, BETTER LIVES
+              <Text as={'span'} color={'blue.900'}>
+                HEALTHIER, LONGER, AND BETTER LIVES
               </Text>
             </Heading>
-            <Text color={'black.500'}>
-            HELTHY HEALTHY HEALTHY
-            </Text>
           </Stack>
           <Flex
             flex={1}
@@ -71,7 +53,7 @@ import {
             />
             <Box
               position={'relative'}
-              height={'300px'}
+              height={'400px'}
               rounded={'2xl'}
               boxShadow={'2xl'}
               width={'full'}

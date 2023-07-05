@@ -1,4 +1,3 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
     Button,
     useDisclosure,
@@ -13,6 +12,7 @@ import {
     FormLabel,
     Input,
     Alert,
+    Link
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -139,7 +139,6 @@ export const LoginForm = () => {
                 placeholder="Password"
                 />
                 <ErrorMessage name="password" component="div" style={{color:"red"}} />
-                {/* <ResetPassword/> */}
               </FormControl>
             <ModalFooter>
               <Button 
@@ -155,6 +154,18 @@ export const LoginForm = () => {
             </ModalFooter>
             </Form>
             </Formik>
+            <Link
+              as={Button}
+              variant="link"
+              onClick={() => {
+                onClose();
+                navigate("/confirmemail");
+              }}
+              color="blue.400"
+              mt={5}
+            >
+              Forgot password? Reset here
+            </Link>
             </ModalBody>
           </ModalContent>
         </Modal>
