@@ -166,7 +166,10 @@ module.exports = {
             };
             const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
             // mengambil id dari bearer token
-            const verifiedUser = jwt.verify(token, "g-medsnial");
+            const verifiedUser = jwt.verify(token, "g-medsnial", {
+                expiresIn: "1h",
+            });
+
             console.log(verifiedUser);
             // pengecekan verifikasi
             if (!verifiedUser.is_verified) {
@@ -285,6 +288,7 @@ module.exports = {
            let token = req.headers.authorization;
            token = token.split(" ") [1];
            const data = jwt.verify(token, "g-medsnial");
+
            console.log(data);
 
            const salt = await bcrypt.genSalt(10);
@@ -306,32 +310,92 @@ module.exports = {
             });
         }
       },
-    //   keep_login: async (req, res) => {
-    //     try {
-    //         let getToken = req.dataToken
-    //         // console.log(getToken)
+      changePassword: async (req, res) => {
+    try {
+      const { id, password, newPassword, confirmPassword } = req.body;
 
-    //         let tokenUser = await db.user.findOne({
-    //             where: {
-    //                 id: getToken.id
-    //             }
-    //         })
-    //         // console.log(tokenUser)
+      const userExist = await User.findOne({
+        where: { id },
+      });
 
-    //         res.status(201).send({
-    //             isError: false,
-    //             message: 'Token still valid',
-    //             data: tokenUser
-    //         })
+      const isValid = await bcrypt.compare(
+        password,
+        userExist.dataValues.password
+      );
 
-    //     } catch (error) {
-    //         // console.log(error)
-    //         res.status(401).send({
-    //             isError: true,
-    //             message: error.message,
-    //             data: null
-    //         })
+      if (!isValid) {
+        return res.status(400).send({
+          message: "Your password does not match!",
+        });
+      }
 
-    //     }
-    // },
+      if (!newPassword || !confirmPassword) {
+        return res.status(400).send({
+          message: "Please input your new password and confirm password",
+        });
+      }
+
+      if (newPassword !== confirmPassword) {
+        return res.status(400).send({
+          message: "New password and confirm password do not match",
+        });
+      }
+
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+
+      if (!passwordRegex.test(newPassword, confirmPassword)) {
+        return res.status(400).send({
+          message:
+            "Password must contain at least 8 characters including an uppercase letter, a symbol, and a number",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(newPassword, salt);
+
+      const userPassword = await User.update(
+        { password: hashPass },
+        { where: { id: userExist.dataValues.id } }
+      );
+      // await roll.commit();
+      res.send({
+        message: "Change Password Success",
+        data: userPassword,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({
+        message: "Server Error!",
+      });
+    }
+  }, 
+      keep_login: async (req, res) => {
+        try {
+            let getToken = req.dataToken
+            // console.log(getToken)
+
+            let tokenUser = await db.user.findOne({
+                where: {
+                    id: getToken.id
+                }
+            })
+            // console.log(tokenUser)
+
+            res.status(201).send({
+                isError: false,
+                message: 'Token still valid',
+                data: tokenUser
+            })
+
+        } catch (error) {
+            // console.log(error)
+            res.status(401).send({
+                isError: true,
+                message: error.message,
+                data: null
+            })
+
+        }
+    },
 };
