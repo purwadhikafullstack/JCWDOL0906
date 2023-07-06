@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
+import MyAccount from "./pages/userProfile/account";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -65,7 +66,7 @@ function App() {
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
-          {/* <Route path="/admin/unit" Component={Dashboard} /> */}
+          <Route path="/myaccount" Component={MyAccount} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

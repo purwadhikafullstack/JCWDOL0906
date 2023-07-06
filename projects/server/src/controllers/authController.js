@@ -211,10 +211,37 @@ module.exports = {
       res.status(500).send(error);
     }
   },
+  getProfile: async (req, res) => {
+    try {
+      const { userId } = req;
+      console.log(userId);
+
+      const profileData = await profile.findOne({
+        where: {
+          user_id: userId,
+        },
+      });
+      console.log(profileData);
+      if (!profileData) {
+        return res.status(400).send({
+          message: "No UserId found",
+        });
+      }
+      return res.status(200).json({
+        message: "Successfully get profile data",
+        result: profileData,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Error",
+      });
+    }
+  },
   editProfile: async (req, res) => {
     try {
       const { userId } = req;
-      const { full_name, email, gender, birthdate } = req.body;
+      const { full_name, gender, birthdate } = req.body;
       console.log("body:", req.body);
       console.log("userId:", userId);
       let fileUploaded = req.file;
@@ -223,7 +250,6 @@ module.exports = {
       await profile.update(
         {
           full_name,
-          email,
           gender,
           birthdate,
           picture: `/public/profile/${fileUploaded.filename}`,
@@ -279,27 +305,27 @@ module.exports = {
       res.status(400).send(error);
     }
   },
-  // editProfilePic: async (req, res) => {
-  //   try {
-  //     const { userId } = req;
-  //     let fileUploaded = req.file;
+  editProfilePic: async (req, res) => {
+    try {
+      const { userId } = req;
+      let fileUploaded = req.file;
 
-  //     await profile.update(
-  //       {
-  //         picture: `/public/profile/${fileUploaded.filename}`,
-  //       },
-  //       {
-  //         where: {
-  //           id: userId,
-  //         },
-  //       }
-  //     );
-  //     res.status(200).send({
-  //       status: "Success",
-  //       message: "Succes upload user image",
-  //     });
-  //   } catch (err) {
-  //     res.status(400).send(er);
-  //   }
-  // },
+      await profile.update(
+        {
+          picture: `/public/profile/${fileUploaded.filename}`,
+        },
+        {
+          where: {
+            id: userId,
+          },
+        }
+      );
+      res.status(200).send({
+        status: "Success",
+        message: "Succes upload user image",
+      });
+    } catch (err) {
+      res.status(400).send(er);
+    }
+  },
 };

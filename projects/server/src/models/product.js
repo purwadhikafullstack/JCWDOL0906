@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: "image",
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(535),
         allowNull: true,
       },
       indication: {

@@ -24,7 +24,7 @@ import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar";
 import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg";
 import { useEffect, useState } from "react";
-import MyAccountPage from "../pages/userProfile/account";
+import MyAccount from "../pages/userProfile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +34,7 @@ import {
   PersonIcon,
   RocketIcon,
 } from "../adminComponents/Icons/Icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
 
 export const Navbar = () => {
@@ -43,6 +43,10 @@ export const Navbar = () => {
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
+  const navigate = useNavigate();
+  const handleAccount = () => {
+    navigate("/myaccount");
+  };
   const handleLogOut = () => {
     localStorage.removeItem("user");
     dispatch(logout());
@@ -116,9 +120,7 @@ export const Navbar = () => {
                     textColor="white"
                   />
                   <MenuList>
-                    <MenuItem onClick={() => MyAccountPage()}>
-                      My Account
-                    </MenuItem>
+                    <MenuItem onClick={() => handleAccount()}>Account</MenuItem>
                     <MenuItem>Cart</MenuItem>
                     <MenuItem>Transaction</MenuItem>
                     <MenuItem onClick={() => handleLogOut()}>Log Out</MenuItem>
