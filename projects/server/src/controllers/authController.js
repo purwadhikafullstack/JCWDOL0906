@@ -14,18 +14,12 @@ const transporter = require("../helpers/transporter");
 const fs = require("fs");
 const handlebars = require("handlebars");
 module.exports = {
-    register: async (req, res) => {
-        try {
-            const { username, email, phone_number, password, password_confirmation } =
-                req.body;
+  register: async (req, res) => {
+    try {
+      const { username, email, phone_number, password, password_confirmation } =
+        req.body;
 
-            console.log(req.body);
-           
-            if (!username || !email || !phone_number || !password) {
-                return res.status(400).send({
-                    message: 'Please complete your data'
-                   })
-            };
+      console.log(req.body);
 
             if (isNaN(phone_number)) {
                 return res.status(400).send({
@@ -119,20 +113,18 @@ module.exports = {
             // };
 
         res.status(200).send({
-            status: true,
-            data: result,
-            message: "Register success",
-        });
-
-        } catch (err) {
-            console.log(err.result);
-            // res.status(400).send(err);
-        }
-    },
-    login: async (req, res) => {
-        try {
-            const { emailOrUsername, password } = req.body;
-
+        status: true,
+        data: result,
+        message: "Register success",
+      });
+    } catch (err) {
+      console.log(err.result);
+      // res.status(400).send(err);
+    }
+  },
+  login: async (req, res) => {
+    try {
+      const { emailOrUsername, password } = req.body;
             if (!emailOrUsername || !password) {
                 return res.status(400).send({
                     message: "please complete your data"
@@ -176,45 +168,45 @@ module.exports = {
                 return res.status(400).send({
                     message: "please verify your account"
                 })
-            } else {
-                return res.status(200).send({
-                    status: true,
-                    message: "login success",
-                    data: userExist,
-                    token,
-                });
-            }
-        } catch (err) {
-            console.log(err);
-            return res.status(400).send(err);
-        }
-    },
-    verification: async (req, res) => {
-        try {
-          // const id = req.user.id;
-          const userExist = await user.findOne({
-            where: {
-              id: req.userId,
-            },
-          });
-    
-          await user.update(
-            { is_verified: true },
-            {
-              where: {
-                id: req.userId,
-              },
-            }
-          );
-          res.status(200).send({
+              } else {
+            return res.status(200).send({
             status: true,
-            message: "Your account is verified",
-          });
-        } catch (error) {
-          res.status(500).send(error);
+            message: "login success",
+           data: userExist,
+            token,
+             });
+            }
+             } catch (err) {
+               console.log(err);
+              return res.status(400).send(err);
+             }
+         },
+  verification: async (req, res) => {
+    try {
+      // const id = req.user.id;
+      const userExist = await user.findOne({
+        where: {
+          id: req.userId,
+        },
+      });
+
+      await user.update(
+        { is_verified: true },
+        {
+          where: {
+            id: req.userId,
+          },
         }
-      },
-      confirm_email: async (req, res) => {
+      );
+      res.status(200).send({
+        status: true,
+        message: "Your account is verified",
+      });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+  confirm_email: async (req, res) => {
         try {
             const {email} = req.body;
             if(!email) {
@@ -263,7 +255,7 @@ module.exports = {
             console.log(error);
         }
       },
-      reset_password: async (req, res) => {
+   reset_password: async (req, res) => {
         try {
             const { password, confirmPassword } = req.body;
             console.log(password, confirmPassword)
@@ -310,7 +302,7 @@ module.exports = {
             });
         }
       },
-      changePassword: async (req, res) => {
+ changePassword: async (req, res) => {
     try {
       const { id, password, newPassword, confirmPassword } = req.body;
 
@@ -370,7 +362,7 @@ module.exports = {
       });
     }
   }, 
-      keep_login: async (req, res) => {
+ keep_login: async (req, res) => {
         try {
             let getToken = req.dataToken
             // console.log(getToken)
@@ -395,7 +387,6 @@ module.exports = {
                 message: error.message,
                 data: null
             })
-
         }
     },
 };

@@ -19,7 +19,7 @@ import React from "react";
 // import decode from "jwt-decode";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import { Field, Formik, Form, ErrorMessage} from 'formik';
+import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import { useNavigate } from "react-router-dom";
 
@@ -36,15 +36,15 @@ export const LoginForm = () => {
     password: Yup.string().required('Password is Required'),
   })
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
-  
-    const dispatch = useDispatch(); 
-    const navigate = useNavigate();
-    
-    const onLogin = async () => {
-      const data = {
-        emailOrUsername: document.getElementById("email").value,
-        password: document.getElementById("password").value,
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onLogin = async () => {
+    const data = {
+      emailOrUsername: document.getElementById("email").value,
+      password: document.getElementById("password").value,
     };
        try {
         
@@ -54,61 +54,63 @@ export const LoginForm = () => {
         localStorage.setItem("user", JSON.stringify(result.data.token))
         dispatch(login(result.data.data));
 
-        Swal.fire({
-            icon: "success",
-            title: "Login Success",
-            text: `${result.data.message}`,
+      Swal.fire({
+        icon: "success",
+        title: "Login Success",
+        text: `${result.data.message}`,
 
-            customClass: {
-                container: "my-swal",
-            },
-        });
-        onClose()
-        if (result.data.data.role === 2) {
-          navigate("*")
+        customClass: {
+          container: "my-swal",
+        },
+      });
+      onClose()
+      if (result.data.data.role === 2) {
+        navigate("/admin/dashboard")
+      } else {
+        navigate("/store/product")
+      }
+
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "failed attempt",
+        text: error.response.data.message
+          ? error.response.data.message
+          : "something went wrong!",
+
+        customClass: {
+          container: "my-swal",
         }
-      
-       } catch (error) {
-        console.log(error);
-        Swal.fire({
-            icon: "error",
-            title: "failed attempt",
-            text: error.response.data.message
-                ? error.response.data.message
-                : "something went wrong!",
+      });
+    }
+  };
 
-            customClass: {
-                container: "my-swal",
-                }
-        });
-       }
-    };
-  
-    return (
-      <>
-        <Button 
-        display={{base : "solid", md: "inline-flex"}}
+  return (
+    <>
+      <Button
+        display={{ base: "solid", md: "inline-flex" }}
         fontSize={"md"}
         fontWeight="bold"
         color={"blue.800"}
         bg="blue.200"
         href={"#"}
         onClick={onOpen}
-        pt={{ base: "3", md: 0}}
-        borderRadius='10px'       
-        >
-            Login
-        </Button>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader textAlign={"center"} color="blue.800">Login Now!</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={5}>
-              <Formik
+        pt={{ base: "3", md: 0 }}
+        borderRadius='10px'
+      >
+        Login
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign={"center"} color="blue.800">Login Now!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={5}>
+            <Formik
               initialValues={{
                 email: '',
                 password: '',

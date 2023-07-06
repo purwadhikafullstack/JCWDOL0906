@@ -31,16 +31,19 @@ import { useEffect, useState } from "react";
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
+import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
+import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
 
 export const Navbar = () => {
+  let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state)=> state.userSlice)
+  const user = useSelector((state) => state.userSlice)
   const handleLogOut = () => {
     localStorage.removeItem("user")
-    dispatch(logout()) 
+    dispatch(logout())
   };
   const username = useSelector((state)=> state.userSlice.value.username)
  
@@ -50,9 +53,9 @@ setIsLogin(true)
 } else {setIsLogin(false)}
 },[user])
   // const token = localStorage.getItem("token")
-useEffect(() =>{
-  console.log(username)
-},[username]);
+  useEffect(() => {
+    console.log(username)
+  }, [username]);
 
 
   return (
@@ -94,6 +97,7 @@ useEffect(() =>{
           fit={"logo"}/>
 
           <Flex ml="auto" alignItems="center" spacing={3}>
+
             <SearchBar />
             {isLogin?(
                <div>
