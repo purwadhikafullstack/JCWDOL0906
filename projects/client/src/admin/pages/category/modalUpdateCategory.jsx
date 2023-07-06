@@ -45,6 +45,15 @@ const ModalUpdateCategory = ({
                 ""
               )}
             </FormControl>
+            <FormControl isInvalid={isError}>
+              <FormLabel>Image</FormLabel>
+              <Input type="file" placeholder="Image" id="image" />
+              {isError ? (
+                <FormErrorMessage>Field is required.</FormErrorMessage>
+              ) : (
+                ""
+              )}
+            </FormControl>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={Submit}>

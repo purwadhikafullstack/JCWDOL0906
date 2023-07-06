@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     Transaction.init(
         {
-            useer_id: {
+            user_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,

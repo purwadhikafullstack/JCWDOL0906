@@ -46,13 +46,13 @@ export const LoginForm = () => {
       emailOrUsername: document.getElementById("email").value,
       password: document.getElementById("password").value,
     };
-    try {
-
-      const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
-      const result = await Axios.post(url, data);
-      console.log(result.data);
-      localStorage.setItem("user", JSON.stringify(result.data.data))
-      dispatch(login(result.data.data));
+       try {
+        
+        const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
+        const result = await Axios.post (url, data);
+        console.log(result.data);
+        localStorage.setItem("user", JSON.stringify(result.data.token))
+        dispatch(login(result.data.data));
 
       Swal.fire({
         icon: "success",
