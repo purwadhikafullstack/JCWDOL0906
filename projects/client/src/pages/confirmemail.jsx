@@ -108,8 +108,6 @@ export const ConfirmEmail = () => {
                 _hover={{
                   bg: 'blue.800',
                 }}
-                // onClick={(values)=>confirmEmail(values)}
-                    // onSubmit={(values) => confirmEmail(values)}
               >
                 Request Reset
               </Button>
