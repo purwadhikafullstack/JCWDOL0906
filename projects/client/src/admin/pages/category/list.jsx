@@ -10,11 +10,11 @@ import {
 import React, { useEffect, useState } from "react";
 import TableCRUD from "../../components/table";
 import axios from "axios";
-import { swalFailed, swalSuccess } from "../../../admin/utils";
+import { swalFailed, swalSuccess } from "../../../helper";
 import ModalAddCategory from "../category/modalAddCategory";
 import ModalUpdateCategory from "./modalUpdateCategory";
 import {useSelector} from 'react-redux';
-import { AddIcon } from "@chakra-ui/icons";
+// import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
@@ -33,8 +33,8 @@ const CategoryList = () => {
   const addCategory = async () => {
 
     try {
-      const category_name = document.getElementById("category_name").value
-      const image = document.getElementById("image").value
+      let category_name = document.getElementById("category_name").value
+      let image = document.getElementById("image").files[0];
       const formData = new FormData();
       let data = {
         category_name: category_name,
@@ -68,9 +68,10 @@ const CategoryList = () => {
 
   const updateCategory = async (e) => {
     try {
-      const category_name = document.getElementById("category_name").value
+      let image = document.getElementById("image").files[0];
+      let category_name = document.getElementById("category_name").value
       let formData = new FormData();
-      let Data = {
+      let data = {
         category_name: category_name,
         updatedBy: adminId,
       };
