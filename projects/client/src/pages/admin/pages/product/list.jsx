@@ -130,7 +130,7 @@ const ProductList = () => {
 
       let result = await axios.patch(
         "http://localhost:8000/api/product/" + e.target.id,
-        data,
+        formData,
         {
           product_name: product_name,
           description: description,

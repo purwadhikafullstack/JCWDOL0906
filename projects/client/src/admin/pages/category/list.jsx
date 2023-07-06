@@ -31,19 +31,23 @@ const CategoryList = () => {
   const adminId = useSelector((state)=> state.userSlice.value.id);
 
   const addCategory = async () => {
-    const data = {
-      category_name: document.getElementById("category_name").value,
-      image: document.getElementById("image").value,
-      createdBy: adminId,
-    };
 
     try {
+      const category_name = document.getElementById("category_name").value
+      const image = document.getElementById("image").value
+      const formData = new FormData();
+      let data = {
+        category_name: category_name,
+        createdBy: adminId,
+      }
+      formData.append("data", JSON.stringify(data));
+      formData.append("image", image);
       let result = await axios.post(
         "http://localhost:8000/api/categories/",
-        data
+        formData
       );
       // console.log("adminId",adminId);
-      // console.log(result);
+      console.log(result);
       modalAdd.onClose();
       getAllCategory();
       swalSuccess(result.data.message);
@@ -64,17 +68,21 @@ const CategoryList = () => {
 
   const updateCategory = async (e) => {
     try {
-      // alert(`${e.target.id}`);
-      // const categoryId = e.target.id;
-      // console.log(categoryId);
-      const data = {
-      category_name: document.getElementById("category_name").value,
-      updatedBy: adminId,
-          };
-          console.log("data",data);
-        let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, data);
-        // console.log(result);
-        // console.log("e", e);
+      const category_name = document.getElementById("category_name").value
+      let formData = new FormData();
+      let Data = {
+        category_name: category_name,
+        updatedBy: adminId,
+      };
+      formData.append("data", JSON.stringify(data));
+      formData.append("image", image);
+      
+      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
+      {
+
+      }
+      );
+
         modalUpdate.onClose();
         getAllCategory();
         swalSuccess(result.data.message);

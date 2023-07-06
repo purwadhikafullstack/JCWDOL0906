@@ -48,7 +48,9 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage}) => {
                                         borderColor={borderColor}>
                                         { i === "image" ?
                                         <Image boxSize='50px'
-                                        src= {el[i]} />: el[i]}
+                                        src= {"http://localhost:8000/" + el[i]} 
+                                        alt=""
+                                        /> : el[i]}
                                     </Td>)}
                                     {menu === "category" ?
                                         <Td

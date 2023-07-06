@@ -5,28 +5,31 @@ const category = db.Category;
 
 module.exports = {
     addCategory: async (req, res) => {
-        try {
-            // upload image menggunakan multer
-            upload(req, res, async (err) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(400).send({
-                        message: "Error uploading image",
-                    });
-                }
+        const data = JSON.parse(req.body.data);
+        const {
+            category_name,
+            createdBy,
+        } = data;
 
-                const { category_name, image, createdBy } = req.body;
+        const image = req.file.path;
+        try {
+            let isExist = await category.findOne({
+                where: {
+                    category_name: category_name,
+                }
+            });
+
+            if (!isExist) {
                 await category.create({
                     category_name,
-                    image,
-                    // image: req.file.filename,
                     createdBy,
                 });
-
                 res.status(200).send({
                     message: "Category created successfully"
                 });
-            });
+            } else {
+                return res.status(400).send({ message: "Product already exists! " });
+            }
         } catch (err) {
             console.log(err);
             res.status(400).send({
