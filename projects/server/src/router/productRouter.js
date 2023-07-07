@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { productControllers } = require("../controllers");
-const product = require("../models/product");
-const { uploadFile } = require("../middleware/productMulter");
+const { uploadFile } = require("../middleware/multer");
 // const authorize = require('../')
 const { c_products } = require("../controllers");
 

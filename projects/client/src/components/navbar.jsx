@@ -25,7 +25,7 @@ import {
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar"
-import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg"
+import logo_gmedsnial from "../assets/svg/logogmedsnial1.png"
 import { useEffect, useState } from "react";
 
 //imprt redux
@@ -55,6 +55,7 @@ export const Navbar = () => {
   // const token = localStorage.getItem("token")
   useEffect(() => {
   }, [username]);
+
 
   return (
     <Box>
@@ -90,7 +91,7 @@ export const Navbar = () => {
         >
           <Image
             src={logo_gmedsnial}
-            height={'30px'}
+            height={'60px'}
             alt={"Icon Logo"}
             fit={"logo"} />
 
@@ -98,7 +99,6 @@ export const Navbar = () => {
 
             <SearchBar />
             {isLogin ? (
-
               <div>
                 <Menu direction="row">
                   <Avatar

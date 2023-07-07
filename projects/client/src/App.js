@@ -8,6 +8,8 @@ import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
 import { LoginForm } from "../src/components/loginForm";
 import { RegistrationForm } from "../src/components/registerForm";
+import { ResetPassword } from "./pages/reset";
+import { ConfirmEmail } from "./pages/confirmemail"
 import Verification from "../src/pages/verification";
 import theme from "../src/theme/theme";
 import Dashboard from "./components/adminLayouts/Admin";
@@ -50,6 +52,8 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
           <Route path="*" element={<Dashboard />} />
+          <Route path="/resetpassword/:token" element={<ResetPassword/>} />
+          <Route path="/confirmemail" element={<ConfirmEmail/>} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route
             path="/store/product/detail/:id"

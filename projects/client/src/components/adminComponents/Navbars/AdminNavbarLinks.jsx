@@ -9,14 +9,16 @@ import {
   MenuButton,
   MenuItem,
   MenuList, Stack, Text, useColorMode,
-  useColorModeValue
+  useColorModeValue,
+  Image,
 } from "@chakra-ui/react";
 // Assets
 import avatar1 from "../../../assets/img/avatars/avatar1.png";
 import avatar2 from "../../../assets/img/avatars/avatar2.png";
 import avatar3 from "../../../assets/img/avatars/avatar3.png";
+import logo_gmedsnial from "../../../assets/svg/logogmedsnial1.png";
 // Custom Icons
-import { ArgonLogoDark, ArgonLogoLight, ChakraLogoDark, ChakraLogoLight, ProfileIcon, SettingsIcon, GMedsnialLogo } from "../Icons/Icons";
+import { ArgonLogoDark, ArgonLogoLight, ChakraLogoDark, ChakraLogoLight, ProfileIcon, SettingsIcon } from "../Icons/Icons";
 // Custom adminComponents
 import { ItemContent } from "../Menu/ItemContent";
 import { SearchBar } from "./SearchBar/SearchBar";
@@ -83,9 +85,17 @@ export default function HeaderLinks(props) {
         logo={
           <Stack direction='row' spacing='12px' align='center' justify='center'>
             {colorMode === "dark" ? (
-              <GMedsnialLogo w='74px' h='27px' />
+              <Image
+                src={logo_gmedsnial}
+                height={'60px'}
+                alt={"Icon Logo"}
+                fit={"logo"} />
             ) : (
-              <GMedsnialLogo w='74px' h='27px' />
+              <Image
+                src={logo_gmedsnial}
+                height={'60px'}
+                alt={"Icon Logo"}
+                fit={"logo"} />
             )}
             <Box
               w='1px'

@@ -18,11 +18,10 @@ app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-// const authRouter = require("./router/authRouter");
-
-const authRouter = require("./router/authRouter");
-
+const authRouter= require("./router/authRouter");
 app.use("/api/auth", authRouter);
+const categoryRouter = require("./router/categoryRouter");
+app.use("/api/categories", categoryRouter);
 
 const productRouter = require("./router/productRouter");
 app.use("/api", productRouter);
