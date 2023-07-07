@@ -9,7 +9,7 @@ import {
   CreditIcon,
   SupportIcon,
   DocumentIcon,
-} from "./adminComponents/Icons/Icons";
+} from "./components/adminComponents/Icons/Icons";
 import UserProduct from "./pages/user/product";
 
 var dashRoutes = [

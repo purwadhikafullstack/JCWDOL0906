@@ -14,31 +14,31 @@ import { swalFailed, swalSuccess } from "../../../../helper";
 // import ModalEditForm from "../Modals/Modal";
 import ModalProductUpdate from "../../components/ModalProductUpdate";
 import ModalAddProduct from "../../components/ModalAddProduct";
-// import ModalProductUnit from '../../components/modalProductUnit';
+import ModalProductUnit from '../../components/modalProductUnit';
 import { useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import ModalProductStock from "../../components/modalProductStock";
 
 const ProductList = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const [dataDetail, setDataDetail] = useState([]);
-  const [product_name, description, indication, dose, rules] = useState({});
-  const [NewProduct, setNewProduct] = useState("");
   const [productId, setProductId] = useState(0);
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  // const [sortType, setSortType] = useState('')
-  // const [query, setQuery] = useState()
+  const [optionDefaultUnit, setOptionDefaultUnit] = useState([])
+  const [optionConversionUnit, setOptionConversionUnit] = useState([])
 
-  // const [defaultUnit, setDefaultUnit] = useState(0);
-  // const [conversionUnitQty, setConversionUnitQty] = useState(0);
-  // const [defaultUnitQty, setDefaultUnitQty] = useState(0);
+  //Product unit Data
+  const [conversionUnit, setConversionUnit] = useState(0)
+  const [defaultUnit, setDefaultUnit] = useState(0)
+  const [conversionUnitQty, setConversionUnitQty] = useState(0)
+  const [defaultUnitQty, setDefaultUnitQty] = useState(1)
 
   //Modal Events
-  const { onOpen } = useDisclosure();
-  // const modalUnits = useDisclosure();
-  // const modalStock = useDisclosure();
+  const modalUnits = useDisclosure();
+  const modalStock = useDisclosure();
   const modalAdd = useDisclosure();
   const modalUpdate = useDisclosure();
 
@@ -67,10 +67,9 @@ const ProductList = () => {
       formData.append("image", image);
 
       let result = await axios.post(
-        "http://localhost:8000/api/product/add",
+        process.env.REACT_APP_API_BASE_URL + "/product/add",
         formData
       );
-      console.log(result);
       getData();
       modalAdd.onClose();
       swalSuccess(result.data.message);
@@ -83,10 +82,9 @@ const ProductList = () => {
   const getData = async () => {
     try {
       let result = await axios.get(
-        "http://localhost:8000/api/product" + `?page=${activePage}`
+        process.env.REACT_APP_API_BASE_URL + "/product?page=" + activePage
       );
       setProducts(result.data.data);
-      console.log(result.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -94,17 +92,79 @@ const ProductList = () => {
     }
   };
 
-  // const getDataDetail = async (e) => {
-  //   try {
-  //     let result = await axios.get(
-  //       "http://localhost:8000/api/product/detail?detail=" + e.target.id
-  //     );
-  //     console.log(result);
-  //     setDataDetail(result.data.dataValues);
-  //   } catch (error) {
-  //     swalFailed(error.response.data.message);
-  //   }
-  // };
+  const getDropdownUnits = async () => {
+    try {
+      let resultDefault = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/default')
+      setOptionDefaultUnit(resultDefault.data.data)
+      let resultConversion = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/conversion')
+      setOptionConversionUnit(resultConversion.data.data)
+    } catch (error) {
+      swalFailed(error.response.data.message)
+    }
+  }
+
+  const getDataUnit = async (e) => {
+    try {
+      setProductId(e.target.id)
+      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/product/' + e.target.id)
+      const data = result.data.dataValues
+      setDefaultUnit(data.default_unit_id)
+      setConversionUnit(data.conversion_unit_id)
+      setConversionUnitQty(data.conversion_unit_qty)
+      setDefaultUnitQty(data.default_unit_qty)
+      modalUnits.onOpen();
+    } catch (error) {
+      modalUnits.onOpen();
+      setDefaultUnit(0)
+      setConversionUnit(0)
+      setConversionUnitQty(0)
+      setDefaultUnitQty(1)
+    }
+  }
+
+  const getProductById = async (e) => {
+    try {
+
+      setProductId(e.target.id)
+      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/product/' + e.target.id)
+      setDefaultUnitQty(result.data.data.defaultQty)
+      modalStock.onOpen();
+
+    } catch (error) {
+      swalFailed(error.response.data.message)
+    }
+  }
+
+  const updateProductUnit = async () => {
+    try {
+      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/product/" + productId, {
+        default_unit_qty: defaultUnitQty,
+        default_unit_id: defaultUnit,
+        conversion_unit_qty: conversionUnitQty,
+        conversion_unit_id: conversionUnit
+      })
+      swalSuccess(result.data.message)
+      getData()
+      modalUnits.onClose()
+    } catch (error) {
+      swalFailed(error.response.data.message)
+    }
+  }
+
+  const updateProductStock = async () => {
+    try {
+      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/product/stock/" + productId, {
+        qty: defaultUnitQty,
+      })
+      swalSuccess(result.data.message)
+      getData()
+      modalStock.onClose()
+    } catch (error) {
+      swalFailed(error.response.data.message)
+    }
+  }
+
+
 
   const updateDetailProduct = async (e) => {
     try {
@@ -115,6 +175,7 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+
       let formData = new FormData();
       let data = {
         product_name: product_name,
@@ -129,8 +190,8 @@ const ProductList = () => {
       formData.append("image", image);
 
       let result = await axios.patch(
-        "http://localhost:8000/api/product/" + e.target.id,
-        formData,
+        process.env.REACT_APP_API_BASE_URL + "/product/" + e.target.id,
+        data,
         {
           product_name: product_name,
           description: description,
@@ -151,7 +212,7 @@ const ProductList = () => {
   async function deleteOperation(e) {
     try {
       let result = await axios.delete(
-        "http://localhost:8000/api/product/delete/" + e.target.id
+        process.env.REACT_APP_API_BASE_URL + "/product/delete/" + e.target.id
       );
       getData();
     } catch (error) {
@@ -188,6 +249,10 @@ const ProductList = () => {
                 "Indication",
                 "Dose",
                 "Rules",
+                "Default Qty",
+                "Conversion Qty",
+                "Default Unit",
+                "Conversion Unit"
               ]}
               dataFill={[
                 "product_name",
@@ -197,18 +262,21 @@ const ProductList = () => {
                 "indication",
                 "dose",
                 "rules",
+                "defaultQty",
+                "conversionQty",
+                "defaultUnit",
+                "conversionUnit"
               ]}
               action={[
                 (e) => {
                   modalAdd.onOpen();
                   getData(e);
                 },
-                (e) => {
-                  updateDetailProduct(e);
-                },
+                (e) => { getProductById(e) },
                 (e) => {
                   deleteOperation(e);
                 },
+                (e) => { getDataUnit(e); getDropdownUnits() }
               ]}
             />
           </Box>
@@ -217,11 +285,10 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePages={activePage}
+          defaultActivePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
-            console.log(pageInfo);
           }}
         />
       </Flex>
@@ -231,7 +298,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
@@ -240,27 +307,40 @@ const ProductList = () => {
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
         Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Cancel={() => {
           modalUpdate.onClose();
         }}
         Submit={() => updateDetailProduct()}
       />
 
-      {/* <ModalProductUnit
-                Title="Product Stock"
-                Open={modalStock.isOpen}
-                Close={() => { modalStock.onClose(); setDataUnit([]); setDefaultUnit([]); setConversionUnit([]) }}
-                Data={dataUnit}
-                DefaultUnit={optionDefaultUnit}
-                ConversionUnit={optionConversionUnit}
-                SetUnit={() => { }}
-                Submit={() => updateProductUnitStock()}
-                setDefaultUnit={(e) => setDefaultUnit(e.target.value)}
-                SetConversionUnit={(e) => setConversionUnit(e.target.value)}
-                setConversionUnitQty={(e) => setConversionUnitQty(e.target.value)}
-                setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
-            /> */}
+      <ModalProductUnit
+        Title="Product Unit"
+        Open={modalUnits.isOpen}
+        Close={() => { modalUnits.onClose() }}
+        Submit={() => updateProductUnit()}
+
+        DefaultUnit={optionDefaultUnit}
+        ConversionUnit={optionConversionUnit}
+
+        conversionUnit={conversionUnit}
+        defaultUnit={defaultUnit}
+        conversionUnitQty={conversionUnitQty}
+        defaultUnitQty={defaultUnitQty}
+        SetDefaultUnit={(e) => setDefaultUnit(e.target.value)}
+        SetConversionUnit={(e) => setConversionUnit(e.target.value)}
+        SetConversionUnitQty={(e) => setConversionUnitQty(e.target.value)}
+        SetDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
+      />
+
+      <ModalProductStock
+        Title="Product Add Stock"
+        Open={modalStock.isOpen}
+        Close={() => { modalStock.onClose() }}
+        defaultUnitQty={defaultUnitQty}
+        Submit={() => updateProductStock()}
+        setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
+      />
     </>
   );
 };

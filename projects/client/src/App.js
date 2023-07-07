@@ -12,7 +12,7 @@ import { ResetPassword } from "./pages/reset";
 import { ConfirmEmail } from "./pages/confirmemail"
 import Verification from "../src/pages/verification";
 import theme from "../src/theme/theme";
-import Dashboard from "./adminLayouts/Admin";
+import Dashboard from "./components/adminLayouts/Admin";
 
 import "./App.css";
 import "slick-carousel/slick/slick.css";
@@ -43,15 +43,6 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { data } = await axios.get(
-  //       `${process.env.REACT_APP_API_BASE_URL}/greetings`
-  //     );
-  //     setMessage(data?.message || "");
-  //   })();
-  // }, []);
-
   return (
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
@@ -60,7 +51,6 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
-          {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
           <Route path="/resetpassword/:token" element={<ResetPassword/>} />
           <Route path="/confirmemail" element={<ConfirmEmail/>} />
@@ -69,7 +59,6 @@ function App() {
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
-          {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

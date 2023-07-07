@@ -11,12 +11,12 @@ import {
   Tr,
   useColorModeValue,
   Image,
+  Box,
 } from "@chakra-ui/react";
 
 import React from "react";
 
-const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
-  console.log(action);
+const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, collapseId }) => {
   const textColor = useColorModeValue("gray.700", "white");
   const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -36,18 +36,18 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
     return `Rp ${str}`;
   }
 
-  console.log(data);
+
   return (
-    <>
+    <Box overflowX='scroll'>
       {data.length > 0 ? (
-        <Table>
+        <Table >
           <Thead>
             <Tr bg={tableRowColor}>
               <Th color="gray.400" borderColor={borderColor}>
                 No
               </Th>
-              {header.map((i) => (
-                <Th color="gray.400" borderColor={borderColor}>
+              {header.map((i, idx) => (
+                <Th color="gray.400" borderColor={borderColor} key={idx}>
                   {i}
                 </Th>
               ))}
@@ -68,10 +68,10 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
                     borderColor={borderColor}
                     border={index === arr.length - 1 ? "none" : null}
                   >
-                    {(activePage - 1) * 6 + index + 1}
+                    {activePage ? (activePage - 1) * 6 + index + 1 : index + 1}
                   </Td>
-                  {dataFill.map((i) => (
-                    <Td
+                  {dataFill.map((i, idx) => (
+                    <Td key={idx}
                       color={textTableColor}
                       fontSize="sm"
                       border={index === arr.length - 1 ? "none" : null}
@@ -83,7 +83,7 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
                         <Image
                           boxSize="100px"
                           objectFit="cover"
-                          src={"http://localhost:8000/" + el[i]}
+                          src={process.env.REACT_APP_API_ADDRESS + el[i]}
                           alt=""
                         />
                       ) : (
@@ -112,18 +112,18 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
                           onClick={action[1]}
                           id={el.id}
                         >
-                          Stock
+                          Update Stock
                         </Button>
                         <Button
                           colorScheme="purple"
-                          onClick={action[2]}
+                          onClick={action[3]}
                           id={el.id}
                         >
                           Units
                         </Button>
                         <Button
                           colorScheme="red"
-                          onClick={action[1]}
+                          onClick={action[2]}
                           id={el.id}
                         >
                           Delete
@@ -150,19 +150,21 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
         </Table>
       ) : (
         <Table>
-          <Tr>
-            <Td
-              color={textTableColor}
-              fontSize="sm"
-              fontWeight="bold"
-              borderColor={borderColor}
-            >
-              Data Not Found
-            </Td>
-          </Tr>
+          <Tbody>
+            <Tr>
+              <Td
+                color={textTableColor}
+                fontSize="sm"
+                fontWeight="bold"
+                borderColor={borderColor}
+              >
+                Data Not Found
+              </Td>
+            </Tr>
+          </Tbody>
         </Table>
       )}
-    </>
+    </Box>
   );
 };
 
