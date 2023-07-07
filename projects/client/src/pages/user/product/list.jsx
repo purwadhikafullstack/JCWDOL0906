@@ -66,7 +66,7 @@ const UserProductList = () => {
 
 
     return (
-        <Flex flexDirection='column' alignItems='start' p={10} w='100%'>
+        <Flex flexDirection='column' alignItems='center' p={10} w='100%'>
             <Flex w='100%' alignItems='center' justifyContent='space-between' bg='white' p={3} borderRadius='20px'>
                 <StoreProductFilter
                     sort={sort}
@@ -78,7 +78,7 @@ const UserProductList = () => {
                     clearFilter={() => clearFilter()} />
 
                 <Flex alignItems='center' >
-                    <Text p={5}> Page {pageNumber} of {records} data </Text>
+                    <Text p={5} mb={0}> Page {pageNumber} of {records} data </Text>
                     <Pagination
                         prev={() => setPageNumber(Number(pageNumber) - 1)}
                         next={() => setPageNumber(Number(pageNumber) + 1)}
@@ -96,7 +96,7 @@ const UserProductList = () => {
             </Container>
 
             <Flex w='100%' alignItems='center' justifyContent='end' >
-                <Text p={5}> Page {pageNumber} of {records} data </Text>
+                <Text p={5} mb={0}> Page {pageNumber} of {records} data </Text>
                 <Pagination
                     prev={() => setPageNumber(Number(pageNumber) - 1)}
                     next={() => setPageNumber(Number(pageNumber) + 1)}

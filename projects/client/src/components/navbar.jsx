@@ -31,7 +31,7 @@ import { useEffect, useState } from "react";
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
-import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
+import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
 import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
 
@@ -48,15 +48,12 @@ export const Navbar = () => {
   const username = useSelector((state) => state.userSlice.value.username)
 
   useEffect(() => {
-    console.log(user.value.id)
     if (user.value.id || user.value.id === 1) {
       setIsLogin(true)
     } else { setIsLogin(false) }
-    console.log(isLogin)
   }, [user])
   // const token = localStorage.getItem("token")
   useEffect(() => {
-    console.log(username)
   }, [username]);
 
   return (
@@ -127,17 +124,6 @@ export const Navbar = () => {
                     </MenuItem>
                   </MenuList>
                 </Menu>
-                {/* <Button
-            display={{base : "solid", md: "inline-flex"}}
-            fontSize={"md"}
-            fontWeight="bold"
-            color={"blue.800"}
-            bg="blue.200"
-            pt={{ base: "3", md: 0}}
-            borderRadius='10px'
-            onClick={() => handleLogOut()}>
-          LogOut
-          </Button> */}
               </div>
             ) : (
               <div>

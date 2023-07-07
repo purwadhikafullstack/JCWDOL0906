@@ -38,9 +38,9 @@ app.get("/api/greetings", (req, res, next) => {
 // for (let routes in router.routes) {
 //   app.use("/api", routes);
 
-// for (routes of router.routes) {
-//   app.use("/api", routes);
-// }
+for (routes of router.routes) {
+  app.use("/api", routes);
+}
 // ===========================
 
 // not found

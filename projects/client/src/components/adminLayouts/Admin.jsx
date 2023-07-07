@@ -19,14 +19,14 @@ import {
 
 import React, { useState } from "react";
 import { Route, Routes, Switch } from "react-router-dom";
-import routes from "../routes.js";
+import routes from "../../routes";
 // Custom Chakra theme
 import FixedPlugin from "../adminComponents/FixedPlugin/FixedPlugin";
 // Custom adminComponents
 import MainPanel from "../adminComponents/Layout/MainPanel";
 import PanelContainer from "../adminComponents/Layout/PanelContainer";
 import PanelContent from "../adminComponents/Layout/PanelContent";
-import bgAdmin from "../assets/img/admin-background.png";
+import bgAdmin from "../../assets/img/admin-background.png";
 //=================================================================
 import Sidebar from "../adminComponents/Sidebar/Sidebar";
 import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
@@ -94,6 +94,7 @@ export default function Dashboard(props) {
       }
       if (prop.layout === "/admin") {
         return (
+
           <Route
             path={prop.layout + prop.path}
             Component={prop.component}
