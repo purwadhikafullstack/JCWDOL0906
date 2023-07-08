@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
+import ShoppingCart from "./pages/user/shoppingCart";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -52,6 +53,7 @@ function App() {
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
           <Route path="/store/product" element={<UserProduct />} />
+          <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/store/product/detail/:id" element={<StoreProductDetail />} />
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>

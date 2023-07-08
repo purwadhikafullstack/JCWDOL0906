@@ -30,7 +30,7 @@ const ProductList = () => {
 
     const getData = async () => {
         try {
-            let result = await axios.get("http://localhost:8000/api/product")
+            let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/product")
             setProducts(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -88,7 +88,7 @@ const ProductList = () => {
 
     const updateProductUnit = async () => {
         try {
-            let result = await axios.post("http://localhost:8000/api/unit/product", {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/product", {
                 product_id: productId,
                 default_unit_qty: defaultUnitQty,
                 default_unit_id: defaultUnit,
@@ -104,7 +104,7 @@ const ProductList = () => {
 
     const updateProductUnitStock = async () => {
         try {
-            let result = await axios.post("http://localhost:8000/api/product/stock/" + productId, {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/product/stock/" + productId, {
                 default_unit_qty: defaultUnitQty,
             })
             swalSuccess(result.data.message)

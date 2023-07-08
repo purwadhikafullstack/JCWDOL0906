@@ -1,3 +1,4 @@
+import { Icon } from '@chakra-ui/icons';
 import {
     Box,
     chakra,
@@ -21,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { BsDashLg, BsPlusLg } from 'react-icons/bs';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
@@ -67,7 +69,7 @@ export default function StoreProductDetail() {
                     spacing={{ base: 8, md: 10 }}
                     py={{ base: 10, md: 15 }}>
 
-                    <Flex>
+                    <Flex direction='column'>
                         <Image
                             rounded={'md'}
                             alt={'product image'}
@@ -79,6 +81,13 @@ export default function StoreProductDetail() {
                             w={'100%'}
                             h={{ base: '100%', sm: '400px', lg: '500px' }}
                         />
+                        <Box border='1px' w='sm'>
+                            <Flex alignItems='center'>
+                                <Button w='100%' size='sm' mr={2}><Icon as={BsPlusLg} h={5} w={5} alignSelf={'center'} /></Button>
+                                <Text w='100%'>0</Text>
+                                <Button w='100%' size='sm' ml={2}><Icon as={BsDashLg} h={5} w={5} alignSelf={'center'} /></Button>
+                            </Flex>
+                        </Box>
                     </Flex>
                     <Stack spacing={{ base: 6, md: 10 }}>
                         <Box as={'header'}>
@@ -182,6 +191,8 @@ export default function StoreProductDetail() {
                         </Stack>
                     </Stack>
                 </SimpleGrid>
+
+
             </Container>
         </>
     );

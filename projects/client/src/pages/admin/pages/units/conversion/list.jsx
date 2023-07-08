@@ -21,7 +21,7 @@ const ListConversionUnits = () => {
     console.log(dataEdit)
     const getData = async () => {
         try {
-            let result = await axios.get("http://localhost:8000/api/unit/conversion")
+            let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/unit/conversion")
             setUnits(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -31,7 +31,7 @@ const ListConversionUnits = () => {
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/conversion", {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/conversion", {
                 unit: document.getElementById("unit").value
             })
             swalSuccess(result.data.message)
@@ -57,7 +57,7 @@ const ListConversionUnits = () => {
         console.log(idUnit)
         try {
             if (unitName === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/conversion/" + dataEdit.id, {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/conversion/" + dataEdit.id, {
                 unit: unitName
             })
             swalSuccess(result.data.message)

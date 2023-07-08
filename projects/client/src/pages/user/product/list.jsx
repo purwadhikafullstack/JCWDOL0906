@@ -19,14 +19,13 @@ const UserProductList = () => {
     const [records, setRecords] = useState(0)
     const [pageNumber, setPageNumber] = useState(1)
 
-
     const getData = async () => {
         let params = ""
         if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
         if (filterCategory !== 0) { params += "&category=" + filterCategory } else { params += "&category=" }
         if (filterName !== "") { params += "&name=" + filterName } else { params += "&name=" }
         try {
-            const result = await axios.get("http://localhost:8000/api/store/product" + params + "&page=" + pageNumber)
+            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/store/product" + params + "&page=" + pageNumber)
 
             let page = Math.ceil(result.data.count / 10);
 
@@ -44,7 +43,7 @@ const UserProductList = () => {
 
     const getCategory = async () => {
         try {
-            const result = await axios.get("http://localhost:8000/api/temp/category")
+            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/temp/category")
             setCategory(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -90,7 +89,7 @@ const UserProductList = () => {
             <Container maxW='container.xl' p={5} mt={5}>
                 <Grid templateColumns='repeat(5, 1fr)' gap={6}>
                     {
-                        product.length > 0 ? product.map(i => <ProductCard image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.Category} />) : "Product Not Found"
+                        product.length > 0 ? product.map(i => <ProductCard key={i.id} image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.Category} />) : "Product Not Found"
                     }
                 </Grid>
             </Container>

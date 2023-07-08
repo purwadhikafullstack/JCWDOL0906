@@ -15,10 +15,13 @@ import {
   Menu,
   Button,
   MenuGroup,
+  Badge,
+  AvatarBadge,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
   CloseIcon,
+  Icon,
 } from "@chakra-ui/icons";
 
 // import {useNavigate, Link} from"react-router-dom";
@@ -32,10 +35,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { BsCart, BsCartPlus } from "react-icons/bs";
 // import { logout } from "../redux/userSlice";
 
 export const Navbar = () => {
+  const navigate = useNavigate()
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
@@ -46,19 +51,23 @@ export const Navbar = () => {
     dispatch(logout())
   };
   const username = useSelector((state) => state.userSlice.value.username)
-
+  const { cart } = useSelector((state) => state.cartSlice)
+  console.log(cart)
   useEffect(() => {
-    console.log(user.value.id)
+    // console.log(user.value.id)
     if (user.value.id || user.value.id === 1) {
       setIsLogin(true)
     } else { setIsLogin(false) }
-    console.log(isLogin)
+    // console.log(isLogin)
   }, [user])
   // const token = localStorage.getItem("token")
   useEffect(() => {
-    console.log(username)
+    // console.log(username)
   }, [username]);
 
+
+  const location = useLocation()
+  const path = location.pathname.split("/")[1]
   return (
     <Box>
       <Flex
@@ -95,9 +104,14 @@ export const Navbar = () => {
             src={logo_gmedsnial}
             height={'30px'}
             alt={"Icon Logo"}
-            fit={"logo"} />
+            fit={"logo"}
+            onClick={() => navigate('store/product')}
+          />
 
-          <Flex ml="auto" alignItems="center" spacing={3}>
+          <Flex ml="auto" alignItems="center" spacing={5}>
+            {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
+              <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
+            </Avatar> : ''}
 
             <SearchBar />
             {isLogin ? (
@@ -106,9 +120,9 @@ export const Navbar = () => {
                 <Menu direction="row">
                   <Avatar
                     as={MenuButton}
-                    mr="4"
+                    mx="4px"
                     name={username}
-                    size="md"
+                    size="sm"
                     bg="blue.300"
                     textColor="white"
                   />

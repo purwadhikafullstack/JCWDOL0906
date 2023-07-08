@@ -1,62 +1,67 @@
 import {
     Flex,
-    Circle,
     Box,
     Image,
     Badge,
     useColorModeValue,
     Icon,
-    chakra,
-    Tooltip,
+    Button,
 } from '@chakra-ui/react';
-import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
-import { FiShoppingCart } from 'react-icons/fi';
+import { BsCartPlus } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { rupiah } from '../../../helper';
+import { add } from '../../../redux/cartSlice';
+import axios from 'axios'
+import { useEffect } from 'react';
 
-const data = {
-    isNew: true,
-    imageURL:
-        'https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80',
-    name: 'Wayfarer Classic',
-    price: 4.5,
-    rating: 4.2,
-    numReviews: 34,
-};
-
-
-
-function Rating({ rating, numReviews }) {
-    return (
-        <Box display="flex" alignItems="center">
-            {Array(5)
-                .fill('')
-                .map((_, i) => {
-                    const roundedRating = Math.round(rating * 2) / 2;
-                    if (roundedRating - i >= 1) {
-                        return (
-                            <BsStarFill
-                                key={i}
-                                style={{ marginLeft: '1' }}
-                                color={i < rating ? 'teal.500' : 'gray.300'}
-                            />
-                        );
-                    }
-                    if (roundedRating - i === 0.5) {
-                        return <BsStarHalf key={i} style={{ marginLeft: '1' }} />;
-                    }
-                    return <BsStar key={i} style={{ marginLeft: '1' }} />;
-                })}
-            <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                {numReviews} review{numReviews > 1 && 's'}
-            </Box>
-        </Box>
-    );
-}
 
 function ProductCard({ image, product_name, price, id, category }) {
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category
+    const user = useSelector((state) => state.userSlice)
+    const addToCart = async () => {
+        // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))
+        //     : alert("Login or verify you're account to continue.")
+        try {
+            const result = await axios.post(process.env.REACT_APP_API_BASE_URL + '/cart', {
+                product_id: id,
+                qty: 1,
+                price: price
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            getCart()
+            // console.log(result)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getCart = async () => {
+        try {
+            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/cart?page=1', {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            let data = result.data.data
+            let total_qty = 0
+            let total_price = 0
+            data.forEach(i => { total_qty += i.qty; total_price += i.total_price })
+            dispatch(add({ cart: total_qty, total_price: total_price }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getCart()
+    }, [])
 
     return (
         <Flex p={5} w="240px" alignItems="center" justifyContent="center">
@@ -67,15 +72,6 @@ function ProductCard({ image, product_name, price, id, category }) {
                 rounded="sm"
                 shadow="sm"
                 position="relative">
-                {data.isNew && (
-                    <Circle
-                        size="10px"
-                        position="absolute"
-                        top={2}
-                        right={2}
-                        bg="red.200"
-                    />
-                )}
 
                 <Image
                     src={image}
@@ -101,16 +97,6 @@ function ProductCard({ image, product_name, price, id, category }) {
                             isTruncated>
                             {product_name}
                         </Box>
-                        <Tooltip
-                            label="Add to cart"
-                            bg="Linkedin"
-                            placement={'top'}
-                            color={'gray.800'}
-                            fontSize={'0.8em'}>
-                            <chakra.a href={'#'} display={'flex'}>
-                                <Icon as={FiShoppingCart} h={5} w={5} alignSelf={'center'} />
-                            </chakra.a>
-                        </Tooltip>
                     </Flex>
 
                     <Flex justifyContent="space-between" alignContent="center">
@@ -120,6 +106,12 @@ function ProductCard({ image, product_name, price, id, category }) {
                             {rupiah(price)}
                         </Box>
                     </Flex>
+
+
+                    <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200' onClick={() => addToCart()}>
+                        Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
+                    </Button>
+
                 </Box>
             </Box>
         </Flex>

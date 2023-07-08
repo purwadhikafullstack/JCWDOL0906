@@ -15,7 +15,7 @@ const ListDefaultUnits = () => {
     const [unitName, setUnitName] = useState("")
     const getData = async () => {
         try {
-            let result = await axios.get("http://localhost:8000/api/unit/default")
+            let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/unit/default")
             setUnits(result.data.data)
             console.log(result)
         } catch (error) {
@@ -29,7 +29,7 @@ const ListDefaultUnits = () => {
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/default", {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/default", {
                 unit: document.getElementById("unit").value
             })
             swalSuccess(result.data.message)
@@ -54,7 +54,7 @@ const ListDefaultUnits = () => {
     const handleUpdate = async () => {
         try {
             if (unitName === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/default/" + dataEdit.id, {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/default/" + dataEdit.id, {
                 unit: unitName
             })
             swalSuccess(result.data.message)

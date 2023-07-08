@@ -25,24 +25,20 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: false,
             },
             description: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "description",
+                type: DataTypes.TEXT,
+                allowNull: true,
             },
             indication: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "indication"
+                type: DataTypes.TEXT,
+                allowNull: true,
             },
             dose: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "dose",
+                type: DataTypes.TEXT,
+                allowNull: true,
             },
             rules: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: "rules"
+                type: DataTypes.TEXT,
+                allowNull: true,
             },
         },
         {
