@@ -1,8 +1,12 @@
-// import axios from "axios";
+// import dependencies
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../src/redux/userSlice";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CheckLogin } from "./utils/checklogin";
 // import logo from "./logo.svg";
 import "./App.css";
-import { useEffect, useState } from "react";
-import { HashRouter, BrowserRouter, Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
@@ -13,14 +17,12 @@ import { ConfirmEmail } from "./pages/confirmemail"
 import Verification from "../src/pages/verification";
 import theme from "../src/theme/theme";
 import Dashboard from "./adminLayouts/Admin";
-
 import "./App.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useDispatch } from "react-redux";
-import { login } from "../src/redux/userSlice";
-import UserProduct from "./pages/user/product";
+// import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
+import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -33,14 +35,25 @@ function App() {
   //     setMessage(data?.message || "");
   //   })();
   // }, []);
-
+  let [user, setUser] = useState(null)
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+
+  let keepLogin = async () => {
+    let response = await CheckLogin()
+    console.log(response);
+    if (response.dataUser !== null) {
+      dispatch(login(response.dataUser));
+      localStorage.setItem("user", JSON.stringify(response.tokenUser))
+    }
+  }
+
   useEffect(() => {
     const userLogin = JSON.parse(localStorage.getItem("user"));
-    if (userLogin) {
-      dispatch(login(userLogin));
-    }
+    // if (userLogin) {
+    //   dispatch(login(userLogin));
+    // }
+    keepLogin()
   }, []);
 
   // useEffect(() => {
@@ -56,15 +69,21 @@ function App() {
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
+          <Route path="/" element={
+          <HomePage />} 
+          errorElement={<ErrorPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
-          <Route path="*" element={<Dashboard />} />
+          <Route path="*" element={
+          // <ProtectedRoute>
+          <Dashboard />
+          // </ProtectedRoute>
+          } />
           <Route path="/resetpassword/:token" element={<ResetPassword/>} />
           <Route path="/confirmemail" element={<ConfirmEmail/>} />
-          <Route path="/store/product" element={<UserProduct />} />
+          {/* <Route path="/store/product" element={<UserProduct />} /> */}
           <Route
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}

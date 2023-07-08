@@ -8,11 +8,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import TableCRUD from "../../components/table";
+import TableCRUD from "../../../admin/components/category/table";
 import axios from "axios";
-import { swalFailed, swalSuccess } from "../../../helper";
-import ModalAddCategory from "../category/modalAddCategory";
-import ModalUpdateCategory from "./modalUpdateCategory";
+import { swalFailed, swalSuccess } from "../../../../helper/index";
+import ModalAddCategory from "../../../admin/components/category/modalAddCategory";
+import ModalUpdateCategory from "../../../admin/components/category/modalUpdateCategory";
 import {useSelector} from 'react-redux';
 // import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
@@ -43,7 +43,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
       let result = await axios.post(
-        "http://localhost:8000/api/categories/",
+        "http://localhost:8000/api/categories/add",
         formData
       );
       // console.log("adminId",adminId);
@@ -95,7 +95,7 @@ const CategoryList = () => {
 
   const deleteCategory = async (e) => {
     try {
-      let result = await axios.delete("http://localhost:8000/api/categories/" + e.target.id);
+      let result = await axios.delete("http://localhost:8000/api/categories/delete" + e.target.id);
       // console.log(result)
       getAllCategory();
       swalSuccess(result.data.message);

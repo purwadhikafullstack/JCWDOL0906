@@ -34,6 +34,7 @@ import { logout } from "../redux/userSlice";
 import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
 import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
+import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
   let navbarIcon = "black";
@@ -48,7 +49,8 @@ export const Navbar = () => {
   const username = useSelector((state)=> state.userSlice.value.username)
  
 useEffect(()=> {
-if (user.value.id || user.value.id ===1 ) {
+  console.log("value",user.value.id);
+if (user.value.id) {
 setIsLogin(true)
 } else {setIsLogin(false)}
 },[user])
@@ -59,16 +61,17 @@ setIsLogin(true)
 
 
   return (
+    <>
     <Box>
       <Flex
-        bg={useColorModeValue("blue.50", "blue.100")}
-        color={useColorModeValue("gray.600", "white")}
+        // bg={useColorModeValue("blue.50", "blue.100")}
+        // color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={3}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
+        // borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
         <Flex
@@ -136,5 +139,6 @@ setIsLogin(true)
         </Flex>
       </Flex>
     </Box>
-  );
+    </>
+  )
 };

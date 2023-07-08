@@ -1,8 +1,8 @@
-const { c_category } = require("../controllers");
+// const { c_category } = require("../controllers");
 
-const router = require("express").Router();
+// const router = require("express").Router();
 
-router.get('/temp/category', c_category.getCategory)
+// router.get('/temp/category', c_category.getCategory)
 
 
-module.exports = router;
+// module.exports = router;

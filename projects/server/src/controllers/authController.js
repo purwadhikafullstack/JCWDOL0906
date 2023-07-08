@@ -122,6 +122,31 @@ module.exports = {
       // res.status(400).send(err);
     }
   },
+  verification: async (req, res) => {
+    try {
+      // const id = req.user.id;
+      const userExist = await user.findOne({
+        where: {
+          id: req.userId,
+        },
+      });
+
+      await user.update(
+        { is_verified: true },
+        {
+          where: {
+            id: req.userId,
+          },
+        }
+      );
+      res.status(200).send({
+        status: true,
+        message: "Your account is verified",
+      });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
   login: async (req, res) => {
     try {
       const { emailOrUsername, password } = req.body;
@@ -153,6 +178,7 @@ module.exports = {
             };
             const payload = {
                 id: userExist.id,
+                username: userExist.username,
                 role: userExist.role,
                 is_verified: userExist.is_verified,
             };
@@ -181,31 +207,6 @@ module.exports = {
               return res.status(400).send(err);
              }
          },
-  verification: async (req, res) => {
-    try {
-      // const id = req.user.id;
-      const userExist = await user.findOne({
-        where: {
-          id: req.userId,
-        },
-      });
-
-      await user.update(
-        { is_verified: true },
-        {
-          where: {
-            id: req.userId,
-          },
-        }
-      );
-      res.status(200).send({
-        status: true,
-        message: "Your account is verified",
-      });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  },
   confirm_email: async (req, res) => {
         try {
             const {email} = req.body;
@@ -364,20 +365,29 @@ module.exports = {
   }, 
  keep_login: async (req, res) => {
         try {
-            let getToken = req.dataToken
+          const { userId } = req;
+            // let getToken = req.dataToken
             // console.log(getToken)
 
-            let tokenUser = await db.user.findOne({
+            const tokenUser = await db.User.findOne({
                 where: {
-                    id: getToken.id
+                    id: userId
                 }
             })
             // console.log(tokenUser)
-
+            const payload = {
+                id: tokenUser.id,
+                username: tokenUser.username,
+                role: tokenUser.role,
+                is_verified: tokenUser.is_verified,
+            };
+            const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
             res.status(201).send({
                 isError: false,
                 message: 'Token still valid',
-                data: tokenUser
+                data: tokenUser,
+                token
+
             })
 
         } catch (error) {

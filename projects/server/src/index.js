@@ -21,7 +21,7 @@ app.get("/api", (req, res) => {
 const authRouter= require("./router/authRouter");
 app.use("/api/auth", authRouter);
 const categoryRouter = require("./router/categoryRouter");
-app.use("/api/categories", categoryRouter);
+app.use("/api", categoryRouter);
 
 const productRouter = require("./router/productRouter");
 app.use("/api", productRouter);

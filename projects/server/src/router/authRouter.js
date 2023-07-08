@@ -6,5 +6,7 @@ router.post("/login", authController.login);
 router.post("/verification", login, authController.verification);
 router.post("/resetpassword", login, authController.reset_password);
 router.post("/confirmemail", authController.confirm_email);
-router.get("/keeplogin", login, authController.keep_login);
+router.get("/keep-login", login, authController.keep_login);
+
+
 module.exports = router;

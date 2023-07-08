@@ -11,7 +11,7 @@ export const Category = () => {
         async function fetchCategories(){
             try {
                 const categoriesData = await axios.get('http://localhost:8000/api/categories' + `?size=10`);
-                // console.log('categoriesdata',categoriesData)
+                console.log('categoriesdata',categoriesData)
                 setCategories(categoriesData.data.data)
             } catch (error) {
                 console.log(error)

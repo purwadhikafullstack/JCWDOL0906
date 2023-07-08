@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Product from "./pages/admin/pages/product";
 import Units from "./pages/admin/pages/units";
-import CategoryList from './admin/pages/category/list';
+import CategoryList from './pages/admin/pages/category/list';
 import {
   HomeIcon,
   StatsIcon,
