@@ -10,13 +10,13 @@ import {
 import React, { useEffect, useState } from "react";
 import TableCRUD from "../../components/table";
 import axios from "axios";
-import { swalFailed, swalSuccess } from "../../../admin/utils";
 import ModalAddCategory from "../category/modalAddCategory";
 import ModalUpdateCategory from "./modalUpdateCategory";
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import { swalFailed, swalSuccess } from "../../../helper";
 
 
 const CategoryList = () => {
@@ -28,7 +28,7 @@ const CategoryList = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
 
-  const adminId = useSelector((state)=> state.userSlice.value.id);
+  const adminId = useSelector((state) => state.userSlice.value.id);
 
   const addCategory = async () => {
 
@@ -69,26 +69,27 @@ const CategoryList = () => {
   const updateCategory = async (e) => {
     try {
       const category_name = document.getElementById("category_name").value
+      const image = document.getElementById("image").value
       let formData = new FormData();
-      let Data = {
+      let data = {
         category_name: category_name,
         updatedBy: adminId,
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      
-      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
-      {
 
-      }
+      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
+        {
+
+        }
       );
 
-        modalUpdate.onClose();
-        getAllCategory();
-        swalSuccess(result.data.message);
+      modalUpdate.onClose();
+      getAllCategory();
+      swalSuccess(result.data.message);
     } catch (error) {
-      console.log("error",error)
-        swalFailed(error.response.data.message);
+      console.log("error", error)
+      swalFailed(error.response.data.message);
     }
   };
 
@@ -102,11 +103,11 @@ const CategoryList = () => {
       swalFailed(error.response.data.message);
     }
   };
-  
+
 
   // setTotalPage(Math.ceil(result.data.count / 5));
   useEffect(() => {
-     getAllCategory();
+    getAllCategory();
   }, [activePage]);
 
   return (
@@ -146,16 +147,16 @@ const CategoryList = () => {
         </Flex>
       </Card>
       <Flex justifyContent={'center'} mt={'20px'}>
-          <Pagination
-                    activePage={activePage}
-                    totalPages={totalPage}
-                    //untuk mengganti halaman
-                    onPageChange={(event, pageInfo) => {
-                        setActivePage(pageInfo.activePage);
-                        console.log(pageInfo);
-                    }}
-                />
-          </Flex>
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          //untuk mengganti halaman
+          onPageChange={(event, pageInfo) => {
+            setActivePage(pageInfo.activePage);
+            console.log(pageInfo);
+          }}
+        />
+      </Flex>
       <ModalAddCategory
         Title="New Category"
         Open={modalAdd.isOpen}
