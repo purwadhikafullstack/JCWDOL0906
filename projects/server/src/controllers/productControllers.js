@@ -75,7 +75,7 @@ module.exports = {
       //   offset: (page - 1) * pageSize,
       // });
 
-      const a = await sequelize.query(`
+      const data = await sequelize.query(`
       SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
@@ -95,11 +95,10 @@ module.exports = {
         replacements: { pageSize: 'active', page: 'active' },
         type: QueryTypes.SELECT
       })
-      console.log(a)
-      // console.log(result);
+
       res.status(200).send({
-        data: a,
-        count: a.length,
+        data: data,
+        count: data.length,
         message: "Get All Product Succesfully",
       });
     } catch (error) {
@@ -201,45 +200,67 @@ module.exports = {
 
   getStoreProduct: async (req, res) => {
     console.log(req.query.page)
-    let sort = ['product_name', 'ASC']
+    let sort = 'p.product_name ASC'
     let limit = 10
     let offset = 0
-    let param = {
-      is_deleted: 0,
-    }
+    let param = 'p.is_deleted=0'
+
 
     if (req.query.sort && req.query.sort === "1") {
-      sort = ['product_name', 'ASC']
+      sort = 'p.product_name ASC'
     }
     if (req.query.sort && req.query.sort === "2") {
-      sort = ['product_name', 'DESC']
+      sort = 'p.product_name DESC'
     }
     if (req.query.sort && req.query.sort === "3") {
-      sort = ['price', 'ASC']
+      sort = 'p.price ASC'
     }
     if (req.query.sort && req.query.sort === "4") {
-      sort = ['price', 'DESC']
+      sort = 'p.price DESC'
     }
 
     if (req.query.page && req.query.page > 1) {
       offset = (Number(req.query.page) - 1) * limit
     }
     if (req.query.category && req.query.category > 0) {
-      param.category_id = Number(req.query.category)
+      param += ` AND p.category_id=${Number(req.query.category)}`
     }
     if (req.query.name && req.query.name !== "") {
-      param.product_name = { [Op.like]: `%${req.query.name}%` }
+      param += ` AND p.product_name LIKE "%${req.query.name}%"`
     }
     try {
-      const { count, rows } = await product.findAndCountAll({
-        include: [category],
-        where: param,
-        order: [sort],
-        offset: offset,
-        limit: 10
+      // const { count, rows } = await product.findAndCountAll({
+      //   include: [category],
+      //   where: param,
+      //   order: [sort],
+      //   offset: offset,
+      //   limit: 10
+      // })
+      const data = await sequelize.query(`
+      SELECT 
+      p.*, 
+      s.default_unit_qty as defaultQty , 
+      s.conversion_unit_qty as conversionQty, 
+      du.unit_name as defaultUnit,
+      c.category_name as category,
+      cu.unit_name as conversionUnit FROM 
+      products p 
+      LEFT JOIN stocks s ON p.id=s.product_id 
+      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN default_unit du ON s.default_unit_id=du.id 
+      LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
+      WHERE ${param}
+      ORDER BY ${sort}
+      LIMIT ${limit}
+      OFFSET ${offset}
+      `, {
+        replacements: { pageSize: 'active', page: 'active' },
+        type: QueryTypes.SELECT
       })
-      res.status(200).json({ count, rows })
+      const count = data.length;
+      res.status(200).json({ count, data })
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error })
     }
   },
