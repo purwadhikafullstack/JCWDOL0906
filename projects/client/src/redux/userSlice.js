@@ -6,7 +6,7 @@ const initialState = {
         username: "",
         email: "",
         phone_number: "",
-        role: "",
+        role: 0,
         is_verified: 0,
         verification_token: ''
     },
@@ -30,9 +30,9 @@ export const userSlice = createSlice({
             state.value.username = "";
             state.value.email = "";
             state.value.phone_number = "";
-            state.value.role = "";
             state.value.is_verified = 0;
             state.value.verification_token = '';
+            state.value.role = 0;
         },
     },
 });

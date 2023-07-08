@@ -6,9 +6,10 @@ import {
     useColorModeValue,
     Icon,
     Button,
+    chakra,
 } from '@chakra-ui/react';
-import { BsCartPlus } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { BsCartPlus, BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { rupiah } from '../../../helper';
 import { add } from '../../../redux/cartSlice';
@@ -16,11 +17,10 @@ import axios from 'axios'
 import { useEffect } from 'react';
 
 
-function ProductCard({ image, product_name, price, id, category }) {
-
+function ProductCard({ image, product_name, price, id, category, description, dose, indication, rules, unit, category_id }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category
+    let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
     const user = useSelector((state) => state.userSlice)
     const addToCart = async () => {
         // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))
@@ -77,14 +77,14 @@ function ProductCard({ image, product_name, price, id, category }) {
                     src={image}
                     alt={`Picture of ${product_name}`}
                     roundedTop="lg"
-                    onClick={() => { navigate('detail/' + id + param) }}
+                    onClick={() => { navigate('../store/product/detail/' + id + param, { replace: true }) }}
                 />
 
                 <Box p="3">
                     <Box d="flex" alignItems="baseline">
 
                         <Badge rounded="full" px="2" fontSize="10px" colorScheme="red">
-                            {category.category_name}
+                            {category}
                         </Badge>
 
                     </Box>

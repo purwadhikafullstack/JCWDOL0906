@@ -1,33 +1,31 @@
 // import
-import React, { Component } from 'react';
-import Product from './pages/admin/pages/product';
-import Units from './pages/admin/pages/units';
-
+import React, { Component } from "react";
+import Product from "./pages/admin/pages/product";
+import Units from "./pages/admin/pages/units";
+import CategoryList from './admin/pages/category/list';
 import {
   HomeIcon,
   StatsIcon,
   CreditIcon,
-  PersonIcon,
-  DocumentIcon,
-  RocketIcon,
   SupportIcon,
-} from "./adminComponents/Icons/Icons";
-import UserProduct from './pages/user/product';
+  DocumentIcon,
+} from "./components/adminComponents/Icons/Icons";
+import UserProduct from "./pages/user/product";
 
 var dashRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color='inherit' />,
+    icon: <HomeIcon color="inherit" />,
     // component: Dashboard,
     layout: "/admin",
   },
   {
-    path: "/product",
-    name: "Product",
+    path: "/products",
+    name: "Products",
     rtlName: "لوحة القيادة",
-    icon: <StatsIcon color='inherit' />,
+    icon: <StatsIcon color="inherit" />,
     component: Product,
     layout: "/admin",
   },
@@ -36,14 +34,15 @@ var dashRoutes = [
     name: "Category",
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
-    // component: Billing,
+    component: CategoryList,
     layout: "/admin",
   },
   {
     path: "/report",
     name: "Report",
     rtlName: "آرتيإل",
-    icon: <DocumentIcon color='inherit' />,
+
+    icon: <SupportIcon color="inherit" />,
     // component: RTLPage,
     layout: "/admin",
   },
@@ -51,7 +50,7 @@ var dashRoutes = [
     path: "/qna",
     name: "Q&A",
     rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
+    icon: <SupportIcon color="inherit" />,
     // component: RTLPage,
     layout: "/admin",
   },
@@ -59,12 +58,10 @@ var dashRoutes = [
     path: "/unit",
     name: "Units",
     rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
+    icon: <SupportIcon color="inherit" />,
     component: Units,
     layout: "/admin",
   },
-
-
 
   // {
   //   name: "ACCOUNT PAGES",

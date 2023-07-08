@@ -1,36 +1,44 @@
 const { join } = require("path");
-require('dotenv').config({ path: join(__dirname, '../.env') });
+require("dotenv").config({ path: join(__dirname, "../.env") });
 const express = require("express");
 const cors = require("cors");
-const router = require('./router');
-const db = require('../src/models')
+const router = require("./router");
+const db = require("../src/models");
+const multer = require("multer");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(cors());
 
 app.use(express.json());
-app.use("/", express.static(__dirname + "/public"));
-
+app.use("/public", express.static(__dirname + "/.." + "/public"));
+console.log(__dirname);
 //#region API ROUTES
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-const
-  authRouter
-    = require("./router/authRouter");
+const authRouter= require("./router/authRouter");
 app.use("/api/auth", authRouter);
+const categoryRouter = require("./router/categoryRouter");
+app.use("/api/categories", categoryRouter);
+
+const productRouter = require("./router/productRouter");
+app.use("/api", productRouter);
 
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
     message: "Hello, Student !",
   });
 });
-// ===========================
+
 // NOTE : Add your routes here
+
+// for (let routes in router.routes) {
+//   app.use("/api", routes);
+
 for (routes of router.routes) {
-  app.use('/api', routes)
+  app.use("/api", routes);
 }
 // ===========================
 
@@ -67,12 +75,10 @@ app.get("*", (req, res) => {
 //#endregion
 
 app.listen(PORT, (err) => {
-  // db.sequelize.sync({ alter: true });
   if (err) {
     console.log(`ERROR: ${err}`);
   } else {
-    // db.sequelize.sync({ alter: true })
+    // db.sequelize.sync({ alter: true });
     console.log(`APP RUNNING at ${PORT} ✅`);
   }
 });
-

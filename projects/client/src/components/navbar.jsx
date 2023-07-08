@@ -28,15 +28,15 @@ import {
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar"
-import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg"
+import logo_gmedsnial from "../assets/svg/logogmedsnial1.png"
 import { useEffect, useState } from "react";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
-import { DocumentIcon, PersonIcon, RocketIcon } from "../adminComponents/Icons/Icons";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { BsCart, BsCartPlus } from "react-icons/bs";
+import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
 // import { logout } from "../redux/userSlice";
 
 export const Navbar = () => {
@@ -102,7 +102,7 @@ export const Navbar = () => {
         >
           <Image
             src={logo_gmedsnial}
-            height={'30px'}
+            height={'60px'}
             alt={"Icon Logo"}
             fit={"logo"}
             onClick={() => navigate('store/product')}
@@ -115,7 +115,6 @@ export const Navbar = () => {
 
             <SearchBar />
             {isLogin ? (
-
               <div>
                 <Menu direction="row">
                   <Avatar
@@ -141,17 +140,6 @@ export const Navbar = () => {
                     </MenuItem>
                   </MenuList>
                 </Menu>
-                {/* <Button
-            display={{base : "solid", md: "inline-flex"}}
-            fontSize={"md"}
-            fontWeight="bold"
-            color={"blue.800"}
-            bg="blue.200"
-            pt={{ base: "3", md: 0}}
-            borderRadius='10px'
-            onClick={() => handleLogOut()}>
-          LogOut
-          </Button> */}
               </div>
             ) : (
               <div>

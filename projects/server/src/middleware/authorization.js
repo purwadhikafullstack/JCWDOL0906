@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const db = require('../models');
+const jwt = require("jsonwebtoken");
+const db = require("../models");
 const User = db.User;
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
       console.log(token)
       if (!token)
         throw {
-          message: 'Unauthorized',
+          message: "Unauthorized",
         };
-      token = token.split(' ')[1];
+      token = token.split(" ")[1];
 
       // Extract user ID from the JWT token
-      const verifiedUser = jwt.verify(token, 'g-medsnial');
+      const verifiedUser = jwt.verify(token, "g-medsnial");
       console.log(verifiedUser);
 
       // Find the user in the database
@@ -26,7 +26,7 @@ module.exports = {
 
       if (!userExist)
         throw {
-          message: 'User not found',
+          message: "User not found",
         };
 
       // Set the user ID in the request object for further use
@@ -35,7 +35,7 @@ module.exports = {
       next();
     } catch (err) {
       console.log(err);
-      res.status(401).json({ message: 'Unauthorized' });
+      res.status(401).json({ message: "Unauthorized" });
     }
   },
 };

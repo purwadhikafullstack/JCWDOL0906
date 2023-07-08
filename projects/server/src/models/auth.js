@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            authorization_token: {
+            reset_token: {
                 type: DataTypes.STRING,
                 allowNull: true,
             },

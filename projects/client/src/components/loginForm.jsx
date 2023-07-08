@@ -1,4 +1,3 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
   Button,
   useDisclosure,
@@ -13,6 +12,7 @@ import {
   FormLabel,
   Input,
   Alert,
+  Link
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -50,8 +50,8 @@ export const LoginForm = () => {
 
       const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
       const result = await Axios.post(url, data);
-      // console.log(result.data);
-      localStorage.setItem("user", JSON.stringify(result.data.data))
+      console.log(result.data);
+      localStorage.setItem("user", JSON.stringify(result.data.token))
       dispatch(login(result.data.data));
 
       Swal.fire({
@@ -140,7 +140,6 @@ export const LoginForm = () => {
                     placeholder="Password"
                   />
                   <ErrorMessage name="password" component="div" style={{ color: "red" }} />
-                  {/* <ResetPassword/> */}
                 </FormControl>
                 <ModalFooter>
                   <Button
@@ -156,6 +155,18 @@ export const LoginForm = () => {
                 </ModalFooter>
               </Form>
             </Formik>
+            <Link
+              as={Button}
+              variant="link"
+              onClick={() => {
+                onClose();
+                navigate("/confirmemail");
+              }}
+              color="blue.400"
+              mt={5}
+            >
+              Forgot password? Reset here
+            </Link>
           </ModalBody>
         </ModalContent>
       </Modal>

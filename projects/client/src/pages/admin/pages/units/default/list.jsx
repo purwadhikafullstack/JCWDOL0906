@@ -43,7 +43,7 @@ const ListDefaultUnits = () => {
 
     const getDataEdit = async (e) => {
         try {
-            let result = await axios.get('http://localhost:8000/api/unit/default/' + e.target.id)
+            let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/default/' + e.target.id)
             console.log(result)
             setDataEdit(result.data.dataValues)
         } catch (error) {

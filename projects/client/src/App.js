@@ -1,22 +1,22 @@
-import { ErrorPage } from "./pages/error";
-import { HomePage } from "./pages/home";
-import { LoginForm } from "../src/components/loginForm";
-import { RegistrationForm } from "../src/components/registerForm";
-import Verification from "../src/pages/verification";
 // import axios from "axios";
 // import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HashRouter, BrowserRouter, Route, Routes } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import theme from '../src/theme/theme';
-import Dashboard from "./adminLayouts/Admin";
+import { ErrorPage } from "./pages/error";
+import { HomePage } from "./pages/home";
+import { LoginForm } from "../src/components/loginForm";
+import { RegistrationForm } from "../src/components/registerForm";
+import { ResetPassword } from "./pages/reset";
+import { ConfirmEmail } from "./pages/confirmemail"
+import Verification from "../src/pages/verification";
+import theme from "../src/theme/theme";
+import Dashboard from "./components/adminLayouts/Admin";
 
 import "./App.css";
-// import UserHome from "./pages/userHome";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import UserProduct from "./pages/user/product";
@@ -24,14 +24,7 @@ import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 
 function App() {
-  const [message, setMessage] = useState("");
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const userLogin = JSON.parse(localStorage.getItem("user"))
-    if (userLogin) {
-      dispatch(login(userLogin))
-    };
-  }, []);
+  // const [message, setMessage] = useState("");
 
   // useEffect(() => {
   //   (async () => {
@@ -42,6 +35,15 @@ function App() {
   //   })();
   // }, []);
 
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const userLogin = JSON.parse(localStorage.getItem("user"));
+    if (userLogin) {
+      dispatch(login(userLogin));
+    }
+  }, []);
+
   return (
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
@@ -50,8 +52,9 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
-          {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={<Dashboard />} />
+          <Route path="/resetpassword/:token" element={<ResetPassword />} />
+          <Route path="/confirmemail" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/store/product/detail/:id" element={<StoreProductDetail />} />
@@ -60,6 +63,6 @@ function App() {
       </BrowserRouter>
     </ChakraProvider>
   );
-};
+}
 
 export default App;

@@ -11,8 +11,8 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-function Verification() {
-  const navigate = useNavigate();
+export const Verification = () =>  {
+  let navigate = useNavigate();
 
   let { token } = useParams();
 
