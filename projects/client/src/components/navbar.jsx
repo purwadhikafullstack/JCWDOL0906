@@ -21,7 +21,7 @@ import {
   CloseIcon,
 } from "@chakra-ui/icons";
 
-// import {useNavigate, Link} from"react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar"
@@ -32,7 +32,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
-import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
 import { login } from "../redux/userSlice";
 
@@ -41,6 +40,7 @@ export const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice)
   const handleLogOut = () => {
     localStorage.removeItem("user")
@@ -49,6 +49,10 @@ export const Navbar = () => {
   const username = useSelector((state)=> state.userSlice.value.username)
  
 useEffect(()=> {
+  console.log("role",user.value.role);
+  if (user.value.role == 2) {
+    navigate("/admin/dashboard")
+  }
   console.log("value",user.value.id);
 if (user.value.id) {
 setIsLogin(true)

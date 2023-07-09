@@ -23,6 +23,7 @@ module.exports = {
                 await category.create({
                     category_name,
                     createdBy,
+                    image
                 });
                 res.status(200).send({
                     message: "Category created successfully"
@@ -69,11 +70,18 @@ module.exports = {
     },
     // update a category
     updateCategory: async (req, res) => {
+        const data = JSON.parse(req.body.data);
+        const {
+            category_name,
+            updatedBy
+        } = data;
+
         try {
             await category.update(
                 {
-                    name: req.body.name,
-                    image: req.file.path
+                    category_name,
+                    image: req.file.path,
+                    updatedBy
                 },
                 {
                     where: {

@@ -45,7 +45,7 @@ import {
               </FormControl>
               <FormControl isInvalid={isError}>
                 <FormLabel>Image</FormLabel>
-                <Input type="" placeholder="Image" id="image" />
+                <Input type="file" placeholder="Image" id="image" />
                 {isError ? (
                   <FormErrorMessage>Field is required.</FormErrorMessage>
                 ) : (

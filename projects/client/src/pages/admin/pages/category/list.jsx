@@ -17,7 +17,6 @@ import {useSelector} from 'react-redux';
 // import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-// import { swalFailed, swalSuccess } from "../../../helper";
 
 
 const CategoryList = () => {
@@ -44,7 +43,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
       let result = await axios.post(
-        "http://localhost:8000/api/categories/add",
+        process.env.REACT_APP_API_BASE_URL + "/categories/",
         formData
       );
       // console.log("adminId",adminId);
@@ -59,7 +58,7 @@ const CategoryList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await axios.get("http://localhost:8000/api/categories" + `?page=${activePage}`);
+      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/categories?page=" + activePage );
       setCategories(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 5));
     } catch (error) {
@@ -79,7 +78,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
+      let result = await axios.patch(process.env.REACT_APP_API_BASE_URL + "/categories/" + selectedCategoryId, formData,
         {
 
         }
@@ -96,7 +95,7 @@ const CategoryList = () => {
 
   const deleteCategory = async (e) => {
     try {
-      let result = await axios.delete("http://localhost:8000/api/categories/delete" + e.target.id);
+      let result = await axios.delete(process.env.REACT_APP_API_BASE_URL + "/categories/" + e.target.id);
       // console.log(result)
       getAllCategory();
       swalSuccess(result.data.message);

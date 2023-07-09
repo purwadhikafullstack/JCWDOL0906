@@ -7,7 +7,7 @@ const { uploadFile } = require("../middleware/multer");
 
 router.get('/categories', c_category.getAllCategory);
 router.patch('/categories/:id', uploadFile, c_category.updateCategory);
-router.post('/categories/add', uploadFile, c_category.addCategory);
-router.delete('/categories/delete/:id', c_category.deleteCategory);
+router.post('/categories', uploadFile, c_category.addCategory);
+router.delete('/categories/:id', c_category.deleteCategory);
 
 module.exports = router;

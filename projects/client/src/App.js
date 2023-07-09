@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CheckLogin } from "./utils/checklogin";
 // import logo from "./logo.svg";
@@ -22,7 +23,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
-import ProtectedRoute from "./protected/protectedroute";
+import UserProduct from "./pages/user/product";
+// import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -38,6 +40,7 @@ function App() {
   let [user, setUser] = useState(null)
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
   let keepLogin = async () => {
     let response = await CheckLogin()
@@ -72,9 +75,9 @@ function App() {
           <Dashboard />
           // </ProtectedRoute>
           } />
-          <Route path="/resetpassword/:token" element={<ResetPassword/>} />
-          <Route path="/confirmemail" element={<ConfirmEmail/>} />
-          {/* <Route path="/store/product" element={<UserProduct />} /> */}
+          <Route path="/reset-password/:token" element={<ResetPassword/>} />
+          <Route path="/confirm-email" element={<ConfirmEmail/>} />
+          <Route path="/store/product" element={<UserProduct />} />
           <Route
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
