@@ -1,33 +1,92 @@
 import {
     Flex,
-    Circle,
     Box,
     Image,
     Badge,
     useColorModeValue,
     Icon,
-    chakra,
-    Tooltip,
     Button,
+    chakra,
+    useToast,
 } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsCartPlus, BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
-import { FiShoppingCart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { rupiah } from '../../../helper';
+import { rupiah, swalFailed } from '../../../helper';
+import { add } from '../../../redux/cartSlice';
+import axios from 'axios'
+import { useEffect, useState } from 'react';
+import { apiRequest } from '../../../helper/api';
 
-const data = {
-    isNew: true,
-    imageURL:
-        'https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80',
-    name: 'Wayfarer Classic',
-    price: 4.5,
-    rating: 4.2,
-    numReviews: 34,
-};
 
 function ProductCard({ image, product_name, price, id, category, description, dose, indication, rules, unit, category_id }) {
+    const toast = useToast()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
+    const user = useSelector((state) => state.userSlice)
+    const addToCart = async () => {
+        // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))
+        //     : alert("Login or verify you're account to continue.")
+        setLoading(true)
+        try {
+            const result = await apiRequest.post('/cart', {
+                product_id: id,
+                qty: 1,
+                price: price
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            getCart()
+            toast({
+                title: '',
+                description: "Barang berhasil ditambahkan ke keranjang",
+                status: 'success',
+                duration: 2000,
+                position: 'top',
+                isClosable: true,
+            })
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
+            if (error.response.status === 400) {
+                toast({
+                    title: '',
+                    description: error.response.data.message,
+                    status: 'error',
+                    duration: 2000,
+                    position: 'top',
+                    isClosable: true,
+                })
+            }
+            setLoading(false)
+        }
+    }
+
+    const getCart = async () => {
+        try {
+            const result = await apiRequest.get('/cart?page=1', {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            let data = result.data.data
+            let total_qty = 0
+            let total_price = 0
+            data.forEach(i => { total_qty += i.qty; total_price += i.total_price })
+            dispatch(add({ cart: total_qty, total_price: total_price }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getCart()
+    }, [])
 
     return (
         <Flex p={5} w="240px" alignItems="center" justifyContent="center">
@@ -38,15 +97,6 @@ function ProductCard({ image, product_name, price, id, category, description, do
                 rounded="sm"
                 shadow="sm"
                 position="relative">
-                {data.isNew && (
-                    <Circle
-                        size="10px"
-                        position="absolute"
-                        top={2}
-                        right={2}
-                        bg="red.200"
-                    />
-                )}
 
                 <Image
                     src={image}
@@ -81,9 +131,15 @@ function ProductCard({ image, product_name, price, id, category, description, do
                             {rupiah(price)}
                         </Box>
                     </Flex>
-                    <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200'>
+
+                    {loading ? <Button w='100%' mt={2} colorScheme='linkedin' d='flex' isLoading
+                        loadingText='Submitting' justifyContent='space-between' fontWeight='200'>
                         Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
-                    </Button>
+                    </Button> : <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200' onClick={() => addToCart()}>
+                        Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
+                    </Button>}
+
+
                 </Box>
             </Box>
         </Flex>

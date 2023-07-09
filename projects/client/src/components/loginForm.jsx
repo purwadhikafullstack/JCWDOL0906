@@ -1,18 +1,18 @@
 import {
-    Button,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    FormControl,
-    FormLabel,
-    Input,
-    Alert,
-    Link
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  Alert,
+  Link
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
+import { apiRequest } from "../helper/api";
 
 
 
@@ -46,13 +47,13 @@ export const LoginForm = () => {
       emailOrUsername: document.getElementById("email").value,
       password: document.getElementById("password").value,
     };
-       try {
-        
-        const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
-        const result = await Axios.post (url, data);
-        console.log(result.data);
-        localStorage.setItem("user", JSON.stringify(result.data.token))
-        dispatch(login(result.data.data));
+    try {
+
+      const url = "/auth/login";
+      const result = await apiRequest.post(url, data);
+      console.log(result.data);
+      localStorage.setItem("user", JSON.stringify(result.data.token))
+      dispatch(login(result.data.data));
 
       Swal.fire({
         icon: "success",
@@ -71,7 +72,7 @@ export const LoginForm = () => {
       }
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Swal.fire({
         icon: "error",
         title: "failed attempt",
@@ -117,43 +118,43 @@ export const LoginForm = () => {
               }}
               validationSchema={LoginSchema}
               onSubmit={onLogin}
-              >
-                <Form>
-              <FormControl>
-                <FormLabel mt={5}>Email</FormLabel>
-                <Field
-                as={Input} 
-                id="email"
-                type="email"
-                name="email"
-                borderColor="blue.300"
-                placeholder="Email Address"
-                />
-                <ErrorMessage name="email" component="div" style={{color:"red"}}/>
-                <FormLabel mt={5}>Password</FormLabel>
-                <Field
-                as={Input}
-                id="password"
-                type="password"
-                name="password"
-                borderColor="blue.300"
-                placeholder="Password"
-                />
-                <ErrorMessage name="password" component="div" style={{color:"red"}} />
-              </FormControl>
-            <ModalFooter>
-              <Button 
-              mr={5} type="submit"
-              colorScheme='blue.800'>
-                Login
-              </Button>
-              <Button 
-              display={{base : "solid", md: "inline-flex"}}
-              fontSize={"md"} fontWeight="bold"
-              color={"blue.800"} bg="blue.100"
-              onClick={()=>onLogin()}>Login</Button>
-            </ModalFooter>
-            </Form>
+            >
+              <Form>
+                <FormControl>
+                  <FormLabel mt={5}>Email</FormLabel>
+                  <Field
+                    as={Input}
+                    id="email"
+                    type="email"
+                    name="email"
+                    borderColor="blue.300"
+                    placeholder="Email Address"
+                  />
+                  <ErrorMessage name="email" component="div" style={{ color: "red" }} />
+                  <FormLabel mt={5}>Password</FormLabel>
+                  <Field
+                    as={Input}
+                    id="password"
+                    type="password"
+                    name="password"
+                    borderColor="blue.300"
+                    placeholder="Password"
+                  />
+                  <ErrorMessage name="password" component="div" style={{ color: "red" }} />
+                </FormControl>
+                <ModalFooter>
+                  <Button
+                    mr={5} type="submit"
+                    colorScheme='blue.800'>
+                    Login
+                  </Button>
+                  <Button
+                    display={{ base: "solid", md: "inline-flex" }}
+                    fontSize={"md"} fontWeight="bold"
+                    color={"blue.800"} bg="blue.100"
+                    onClick={() => onLogin()}>Login</Button>
+                </ModalFooter>
+              </Form>
             </Formik>
             <Link
               as={Button}
@@ -167,9 +168,9 @@ export const LoginForm = () => {
             >
               Forgot password? Reset here
             </Link>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  };
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};

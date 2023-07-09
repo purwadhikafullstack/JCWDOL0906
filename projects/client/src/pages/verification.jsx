@@ -4,14 +4,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 //import verification
 import verification from "../assets/verification.jpg";
-import { 
+import {
   Text,
   Stack,
   Heading,
   Image,
- } from "@chakra-ui/react";
+} from "@chakra-ui/react";
+import { apiRequest } from "../helper/api";
 
-export const Verification = () =>  {
+export const Verification = () => {
   let navigate = useNavigate();
 
   let { token } = useParams();
@@ -20,8 +21,8 @@ export const Verification = () =>  {
     console.log(tokenVerification)
     try {
       if (token) {
-        const response = await axios.post(
-          "http://localhost:8000/api/auth/verification",
+        const response = await apiRequest.post(
+          "/auth/verification",
           {},
           {
             headers: {

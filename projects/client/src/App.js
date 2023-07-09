@@ -23,6 +23,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
+import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 // import ProtectedRoute from "./protected/protectedroute";
 
@@ -64,24 +65,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
-          <HomePage />} 
-          errorElement={<ErrorPage />} />
+            <HomePage />}
+            errorElement={<ErrorPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
           {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route path="*" element={
-          // <ProtectedRoute>
-          <Dashboard />
-          // </ProtectedRoute>
+            // <ProtectedRoute>
+            <Dashboard />
+            // </ProtectedRoute>
           } />
-          <Route path="/reset-password/:token" element={<ResetPassword/>} />
-          <Route path="/confirm-email" element={<ConfirmEmail/>} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
-          <Route
-            path="/store/product/detail/:id"
-            element={<StoreProductDetail />}
-          />
+          <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/store/product/detail/:id" element={<StoreProductDetail />} />
+          {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

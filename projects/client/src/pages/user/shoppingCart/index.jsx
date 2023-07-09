@@ -1,21 +1,19 @@
-import { Box, HStack, useColorModeValue } from '@chakra-ui/react'
+import { Box, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import FilterProduct from '../../../components/filterProduct'
 import FooterUserPage from '../../../components/footer'
 import { Navbar } from '../../../components/navbar'
-import UserProductList from './list'
+import List from './list'
 
-const UserProduct = () => {
+const ShoppingCart = () => {
     return (
         <Box bg={useColorModeValue("blue.50", "blue.100")}>
             <Navbar />
             <div className="home-container">
-                {/* <SimpleSlider/> */}
-                <UserProductList />
+                <List />
             </div>
             <FooterUserPage />
         </Box>
     )
 }
 
-export default UserProduct
+export default ShoppingCart

@@ -7,6 +7,7 @@ import { swalFailed } from '../../../helper'
 import Pagination from '../../../components/pagination'
 import StoreProductFilter from '../../../components/store/product/storeProductFilter'
 import ProductCard from '../../../components/store/product/productCard'
+import { apiRequest } from '../../../helper/api'
 
 
 const UserProductList = () => {
@@ -19,14 +20,13 @@ const UserProductList = () => {
     const [records, setRecords] = useState(0)
     const [pageNumber, setPageNumber] = useState(1)
 
-
     const getData = async () => {
         let params = ""
         if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
         if (filterCategory !== 0) { params += "&category=" + filterCategory } else { params += "&category=" }
         if (filterName !== "") { params += "&name=" + filterName } else { params += "&name=" }
         try {
-            const result = await axios.get("http://localhost:8000/api/store/product" + params + "&page=" + pageNumber)
+            const result = await apiRequest.get("/store/product" + params + "&page=" + pageNumber)
 
             let page = Math.ceil(result.data.count / 10);
 
@@ -45,7 +45,7 @@ const UserProductList = () => {
 
     const getCategory = async () => {
         try {
-            const result = await axios.get("http://localhost:8000/api/categories")
+            const result = await apiRequest.get("/categories")
             setCategory(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)

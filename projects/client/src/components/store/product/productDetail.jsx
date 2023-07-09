@@ -1,3 +1,4 @@
+import { Icon } from '@chakra-ui/icons';
 import {
     Box,
     chakra,
@@ -21,10 +22,12 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { BsDashLg, BsPlusLg } from 'react-icons/bs';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { rupiah, swalFailed } from '../../../helper';
+import { apiRequest } from '../../../helper/api';
 import { Navbar } from '../../navbar';
 import ProductCard from './productCard';
 
@@ -38,7 +41,7 @@ export default function StoreProductDetail() {
         let params = ""
 
         try {
-            const result = await axios.get("http://localhost:8000/api/store/product?category=" + searchParams.get('category_id'))
+            const result = await apiRequest.get("/store/product?category=" + searchParams.get('category_id'))
 
             console.log(result.data)
 
@@ -82,6 +85,13 @@ export default function StoreProductDetail() {
                             w={'100%'}
                             h={{ base: '100%', sm: '200px', lg: '300px' }}
                         />
+                        <Box border='1px' w='sm'>
+                            <Flex alignItems='center'>
+                                <Button w='100%' size='sm' mr={2}><Icon as={BsPlusLg} h={5} w={5} alignSelf={'center'} /></Button>
+                                <Text w='100%'>0</Text>
+                                <Button w='100%' size='sm' ml={2}><Icon as={BsDashLg} h={5} w={5} alignSelf={'center'} /></Button>
+                            </Flex>
+                        </Box>
                         <Stack
                             spacing={{ base: 4, sm: 6 }}
                             direction={'column'}
@@ -215,6 +225,8 @@ export default function StoreProductDetail() {
 
                     </Stack>
                 </SimpleGrid>
+
+
             </Container>
         </>
     );
