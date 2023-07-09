@@ -14,8 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { HSeparator } from "../Separator/Separator";
 import React, { useState } from "react";
+import { logout } from "../../../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Configurator(props) {
+  
   const {
     sidebarVariant,
     setSidebarVariant,
@@ -31,6 +34,12 @@ export default function Configurator(props) {
 
   const bgDrawer = useColorModeValue("white", "navy.800");
   const settingsRef = React.useRef();
+  const user = useSelector((state) => state.userSlice)
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    localStorage.removeItem("user")
+    dispatch(logout())
+  };
   return (
     <>
       <Drawer
@@ -85,6 +94,18 @@ export default function Configurator(props) {
                 >
                   Toggle {colorMode === "light" ? "Dark" : "Light"}
                 </Button>
+              </Flex>
+              <Flex
+                justifyContent="space-between"
+                alignItems="center"
+                mb="24px"
+              >
+                <Text fontSize="md" fontWeight="600" mb="4px"
+                 onClick={() => handleLogOut()}
+                >
+                  Log Out
+                </Text>
+
               </Flex>
 
               <HSeparator />

@@ -67,7 +67,7 @@ export const LoginForm = () => {
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard")
       } else {
-        navigate("/store/product")
+        navigate("/")
       }
 
     } catch (error) {

@@ -1,9 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "../components/navbar";
-// import { Heroes } from "../components/heroes";
 import { Carousel } from "../components/carousel";
 import { Category } from "../components/category";
-// import { Footer } from "../components/footer";
 export const HomePage = () => {
     return (
         <div>
@@ -13,7 +11,6 @@ export const HomePage = () => {
                 <Category/>
                 <Outlet />
             </div>
-            {/* <Footer/> */}
         </div>
     );
 };

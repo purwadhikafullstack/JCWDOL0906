@@ -47,8 +47,10 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage}) => {
                                         border={index === arr.length - 1 ? "none" : null}
                                         borderColor={borderColor}>
                                         { i === "image" ?
-                                        <Image boxSize='50px'
-                                        src= {"http://localhost:8000/" + el[i]} 
+                                        <Image 
+                                        boxSize='50px'
+                                        objectFit='cover'
+                                        src= {process.env.REACT_APP_IMAGE_API + el[i]} 
                                         alt=""
                                         /> : el[i]}
                                     </Td>)}

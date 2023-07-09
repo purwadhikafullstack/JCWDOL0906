@@ -23,6 +23,7 @@ module.exports = {
                 await category.create({
                     category_name,
                     createdBy,
+                    image
                 });
                 res.status(200).send({
                     message: "Category created successfully"
@@ -40,8 +41,10 @@ module.exports = {
     // get all category 
     getAllCategory: async(req, res) => {
         try {
+            console.log("masukkesinigak")
             const page = parseInt(req.query.page) || 1;
             const pageSize = parseInt(req.query.size) || 5;
+            console.log(req.query.size);
             const result = await category.findAndCountAll({
                 where: {
                     is_deleted: false,
@@ -49,6 +52,7 @@ module.exports = {
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
             });
+            console.log(result);
             // const data = await category.findAll({
             //     where: {
             //         is_deleted: false,
@@ -60,17 +64,24 @@ module.exports = {
                 message: ' Get All category succesfully'
             })
         } catch (error) {
+            console.log(error);
             res.status(400).send({error: 'Failed to get all category'});
         }
     },
     // update a category
     updateCategory: async (req, res) => {
+        const data = JSON.parse(req.body.data);
+        const {
+            category_name,
+            updatedBy
+        } = data;
+
         try {
             await category.update(
                 {
-                    name: req.body.name,
                     category_name,
-                    updateBy,
+                    image: req.file.path,
+                    updatedBy
                 },
                 {
                     where: {
@@ -84,6 +95,7 @@ module.exports = {
                 message: "Category Successfully Updated",
             });
         } catch (error) {
+            console.log(error);
             res.status(400).send({
                 status: false,
                 message: error.message,

@@ -10,8 +10,8 @@ export const Category = () => {
         // console.log('categories',categories);
         async function fetchCategories(){
             try {
-                const categoriesData = await axios.get('http://localhost:8000/api/categories' + `?size=10`);
-                // console.log('categoriesdata',categoriesData)
+                const categoriesData = await axios.get(process.env.REACT_APP_API_BASE_URL + "/categories?size=10" );
+                console.log('categoriesdata',categoriesData)
                 setCategories(categoriesData.data.data)
             } catch (error) {
                 console.log(error)
@@ -24,7 +24,7 @@ export const Category = () => {
             {categories.map((category)=> (
                 <Card p={2} m={3}>
                     <Image
-                    src={category.image}
+                    src={process.env.REACT_APP_IMAGE_API + category.image}
                     mb={-2}
                     p={7}
                     />
