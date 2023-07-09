@@ -156,37 +156,3 @@ module.exports = {
     }
   },
 };
-
-// showProduct: async (req, res) => {
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const pageSize = 9;
-
-//     const productName = req.query.product_name || null;
-
-//     // const categoryQuery = categoryId ? { Category_id: categoryId } : {};
-//     const productQuery = productName
-//       ? { name: { [Op.like]: "%" + productName + "%" } }
-//       : {};
-
-//     const totalRows = await product.count();
-//     const totalPage = Math.ceil(totalRows / pageSize);
-
-//     const result = await product.findAndCountAll({
-//       where: {
-//         // ...categoryQuery,
-//         ...productQuery,
-//       },
-//       // order: [[req.query.order, req.query.sort]], // order by ... desc/asc
-//       limit: pageSize,
-//       offset: (page - 1) * pageSize,
-//     });
-//     res.status(200).send({
-//       status: true,
-//       result,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(400).send(err);
-//   }
-// },

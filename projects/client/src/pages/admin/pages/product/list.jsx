@@ -28,6 +28,7 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [category, setCategory] = useState(0);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
 
@@ -188,6 +189,7 @@ const ProductList = () => {
                 "Indication",
                 "Dose",
                 "Rules",
+                "Category",
               ]}
               dataFill={[
                 "product_name",
@@ -197,6 +199,7 @@ const ProductList = () => {
                 "indication",
                 "dose",
                 "rules",
+                "category",
               ]}
               action={[
                 (e) => {

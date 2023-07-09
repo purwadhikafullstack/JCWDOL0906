@@ -110,6 +110,18 @@ const ModalAddProduct = ({
                 ""
               )}
             </FormControl>
+            {/* <FormControl>
+              <FormLabel>Category </FormLabel>
+              <Select
+                // value={gender}
+                // onChange={(e) => setGender(e.target.value)}
+                id="is_default"
+              >
+                <option value="">Choose Category </option>
+                <option value="0">Ibu dan Anak </option>
+                <option value="1">Yes</option>
+              </Select>
+            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
