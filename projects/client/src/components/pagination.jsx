@@ -3,7 +3,6 @@ import { Button, Flex } from '@chakra-ui/react'
 import React from 'react'
 
 const Pagination = ({ prev, next, goTo, paging, pageNumber }) => {
-    console.log(paging.length)
     return (
         <Flex>
             {pageNumber === 1 ? (

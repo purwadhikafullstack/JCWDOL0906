@@ -6,7 +6,7 @@ const StoreProductFilter = ({ sort, setSort, filterCategory, setFilterCategory, 
 
         <Flex alignItems='center' gap={5}>
             <Flex alignItems='center'>
-                <Text mr={1}> Sort by  </Text>
+                <Text mr={3} mb={0}> Sort by  </Text>
                 <Select w='150px' placeholder='Sort By' value={sort} onChange={setSort}>
                     <option value='1'>Product name A-Z</option>
                     <option value='2'>Product name Z-A</option>
@@ -15,7 +15,7 @@ const StoreProductFilter = ({ sort, setSort, filterCategory, setFilterCategory, 
                 </Select>
             </Flex>
             <Flex alignItems='center'>
-                <Text mr={1}> Category  </Text>
+                <Text mr={3} mb={0}> Category  </Text>
                 <Select w='200px' placeholder='Select Category' value={filterCategory} onChange={setFilterCategory}>
                     {category.length > 0 ? category.map(i => <option key={i.id} value={i.id}>{i.category_name}</option>) : <option value='0'>-</option>}
 

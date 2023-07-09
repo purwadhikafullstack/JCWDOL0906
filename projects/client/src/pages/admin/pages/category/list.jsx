@@ -17,6 +17,7 @@ import {useSelector} from 'react-redux';
 // import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+// import { swalFailed, swalSuccess } from "../../../helper";
 
 
 const CategoryList = () => {
@@ -28,7 +29,7 @@ const CategoryList = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
 
-  const adminId = useSelector((state)=> state.userSlice.value.id);
+  const adminId = useSelector((state) => state.userSlice.value.id);
 
   const addCategory = async () => {
 
@@ -77,19 +78,19 @@ const CategoryList = () => {
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      
-      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
-      {
 
-      }
+      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
+        {
+
+        }
       );
 
-        modalUpdate.onClose();
-        getAllCategory();
-        swalSuccess(result.data.message);
+      modalUpdate.onClose();
+      getAllCategory();
+      swalSuccess(result.data.message);
     } catch (error) {
-      console.log("error",error)
-        swalFailed(error.response.data.message);
+      console.log("error", error)
+      swalFailed(error.response.data.message);
     }
   };
 
@@ -103,11 +104,11 @@ const CategoryList = () => {
       swalFailed(error.response.data.message);
     }
   };
-  
+
 
   // setTotalPage(Math.ceil(result.data.count / 5));
   useEffect(() => {
-     getAllCategory();
+    getAllCategory();
   }, [activePage]);
 
   return (
@@ -147,16 +148,16 @@ const CategoryList = () => {
         </Flex>
       </Card>
       <Flex justifyContent={'center'} mt={'20px'}>
-          <Pagination
-                    activePage={activePage}
-                    totalPages={totalPage}
-                    //untuk mengganti halaman
-                    onPageChange={(event, pageInfo) => {
-                        setActivePage(pageInfo.activePage);
-                        console.log(pageInfo);
-                    }}
-                />
-          </Flex>
+        <Pagination
+          activePage={activePage}
+          totalPages={totalPage}
+          //untuk mengganti halaman
+          onPageChange={(event, pageInfo) => {
+            setActivePage(pageInfo.activePage);
+            console.log(pageInfo);
+          }}
+        />
+      </Flex>
       <ModalAddCategory
         Title="New Category"
         Open={modalAdd.isOpen}

@@ -29,7 +29,7 @@ const ListDefaultUnits = () => {
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/default", {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/default", {
                 unit: document.getElementById("unit").value
             })
             swalSuccess(result.data.message)
@@ -43,7 +43,7 @@ const ListDefaultUnits = () => {
 
     const getDataEdit = async (e) => {
         try {
-            let result = await axios.get('http://localhost:8000/api/unit/default/' + e.target.id)
+            let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/default/' + e.target.id)
             console.log(result)
             setDataEdit(result.data.dataValues)
         } catch (error) {
@@ -54,7 +54,7 @@ const ListDefaultUnits = () => {
     const handleUpdate = async () => {
         try {
             if (unitName === '') { setError(true); return; }
-            let result = await axios.post("http://localhost:8000/api/unit/default/" + dataEdit.id, {
+            let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/default/" + dataEdit.id, {
                 unit: unitName
             })
             swalSuccess(result.data.message)

@@ -6,7 +6,7 @@ const initialState = {
         username: "",
         email: "",
         phone_number: "",
-        role: "",
+        role: 0,
     },
 };
 
@@ -27,7 +27,7 @@ export const userSlice = createSlice({
             state.value.username = "";
             state.value.email = "";
             state.value.phone_number = "";
-            state.value.role = "";
+            state.value.role = 0;
         },
     },
 });

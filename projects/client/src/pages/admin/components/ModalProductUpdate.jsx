@@ -26,7 +26,6 @@ const ModalProductUpdate = ({
   Cancel,
   Submit,
 }) => {
-  console.log(Data);
   return (
     <>
       <Modal isOpen={Open} onClose={Close} size="full">

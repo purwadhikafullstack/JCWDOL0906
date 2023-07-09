@@ -34,9 +34,10 @@ const UserProductList = () => {
             for (let i = 0; i < page; i++) {
                 paginate.push({ no: i + 1 });
             }
+            console.log(result.data)
             setPaging(paginate);
             setRecords(result.data.count);
-            setProduct(result.data.rows)
+            setProduct(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
         }
@@ -44,7 +45,7 @@ const UserProductList = () => {
 
     const getCategory = async () => {
         try {
-            const result = await axios.get("http://localhost:8000/api/temp/category")
+            const result = await axios.get("http://localhost:8000/api/categories")
             setCategory(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -58,6 +59,7 @@ const UserProductList = () => {
 
     useEffect(() => {
         getData()
+        console.log(product)
     }, [sort, pageNumber, filterCategory, filterName])
 
     useEffect(() => {
@@ -66,7 +68,7 @@ const UserProductList = () => {
 
 
     return (
-        <Flex flexDirection='column' alignItems='start' p={10} w='100%'>
+        <Flex flexDirection='column' alignItems='center' p={10} w='100%'>
             <Flex w='100%' alignItems='center' justifyContent='space-between' bg='white' p={3} borderRadius='20px'>
                 <StoreProductFilter
                     sort={sort}
@@ -78,7 +80,7 @@ const UserProductList = () => {
                     clearFilter={() => clearFilter()} />
 
                 <Flex alignItems='center' >
-                    <Text p={5}> Page {pageNumber} of {records} data </Text>
+                    <Text p={5} mb={0}> Page {pageNumber} of {records} data </Text>
                     <Pagination
                         prev={() => setPageNumber(Number(pageNumber) - 1)}
                         next={() => setPageNumber(Number(pageNumber) + 1)}
@@ -90,13 +92,13 @@ const UserProductList = () => {
             <Container maxW='container.xl' p={5} mt={5}>
                 <Grid templateColumns='repeat(5, 1fr)' gap={6}>
                     {
-                        product.length > 0 ? product.map(i => <ProductCard image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.Category} />) : "Product Not Found"
+                        product.length > 0 ? product.map(i => <ProductCard image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />) : "Product Not Found"
                     }
                 </Grid>
             </Container>
 
             <Flex w='100%' alignItems='center' justifyContent='end' >
-                <Text p={5}> Page {pageNumber} of {records} data </Text>
+                <Text p={5} mb={0}> Page {pageNumber} of {records} data </Text>
                 <Pagination
                     prev={() => setPageNumber(Number(pageNumber) - 1)}
                     next={() => setPageNumber(Number(pageNumber) + 1)}

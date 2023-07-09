@@ -8,8 +8,9 @@ import {
     Icon,
     chakra,
     Tooltip,
+    Button,
 } from '@chakra-ui/react';
-import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
+import { BsCartPlus, BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { rupiah } from '../../../helper';
@@ -24,39 +25,9 @@ const data = {
     numReviews: 34,
 };
 
-
-
-function Rating({ rating, numReviews }) {
-    return (
-        <Box display="flex" alignItems="center">
-            {Array(5)
-                .fill('')
-                .map((_, i) => {
-                    const roundedRating = Math.round(rating * 2) / 2;
-                    if (roundedRating - i >= 1) {
-                        return (
-                            <BsStarFill
-                                key={i}
-                                style={{ marginLeft: '1' }}
-                                color={i < rating ? 'teal.500' : 'gray.300'}
-                            />
-                        );
-                    }
-                    if (roundedRating - i === 0.5) {
-                        return <BsStarHalf key={i} style={{ marginLeft: '1' }} />;
-                    }
-                    return <BsStar key={i} style={{ marginLeft: '1' }} />;
-                })}
-            <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                {numReviews} review{numReviews > 1 && 's'}
-            </Box>
-        </Box>
-    );
-}
-
-function ProductCard({ image, product_name, price, id, category }) {
+function ProductCard({ image, product_name, price, id, category, description, dose, indication, rules, unit, category_id }) {
     const navigate = useNavigate()
-    let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category
+    let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
 
     return (
         <Flex p={5} w="240px" alignItems="center" justifyContent="center">
@@ -81,14 +52,14 @@ function ProductCard({ image, product_name, price, id, category }) {
                     src={image}
                     alt={`Picture of ${product_name}`}
                     roundedTop="lg"
-                    onClick={() => { navigate('detail/' + id + param) }}
+                    onClick={() => { navigate('../store/product/detail/' + id + param, { replace: true }) }}
                 />
 
                 <Box p="3">
                     <Box d="flex" alignItems="baseline">
 
                         <Badge rounded="full" px="2" fontSize="10px" colorScheme="red">
-                            {category.category_name}
+                            {category}
                         </Badge>
 
                     </Box>
@@ -101,16 +72,6 @@ function ProductCard({ image, product_name, price, id, category }) {
                             isTruncated>
                             {product_name}
                         </Box>
-                        <Tooltip
-                            label="Add to cart"
-                            bg="Linkedin"
-                            placement={'top'}
-                            color={'gray.800'}
-                            fontSize={'0.8em'}>
-                            <chakra.a href={'#'} display={'flex'}>
-                                <Icon as={FiShoppingCart} h={5} w={5} alignSelf={'center'} />
-                            </chakra.a>
-                        </Tooltip>
                     </Flex>
 
                     <Flex justifyContent="space-between" alignContent="center">
@@ -120,6 +81,9 @@ function ProductCard({ image, product_name, price, id, category }) {
                             {rupiah(price)}
                         </Box>
                     </Flex>
+                    <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200'>
+                        Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
+                    </Button>
                 </Box>
             </Box>
         </Flex>

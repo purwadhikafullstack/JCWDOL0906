@@ -29,11 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       //         name: "product_id",
       //     }
       // });
-      // Product.hasMany(models.Stock, {
-      //     foreignKey: {
-      //         name: "product_id"
-      //     }
-      // });
+      product.belongsTo(models.Category, {
+        foreignKey: "category_id"
+      });
+      product.hasMany(models.stock, {
+        foreignKey: "product_id"
+      });
     }
   }
   product.init(

@@ -1,8 +1,8 @@
 import { Box, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Textarea, useDisclosure } from "@chakra-ui/react"
 import React, { useEffect } from "react"
 
-const ModalProductUnit = ({ Open, Close, isError, Data, Title, DefaultUnit, ConversionUnit, SetUnit, Cancel, Submit, setDefaultUnit, SetConversionUnit, setConversionUnitQty, setDefaultUnitQty }) => {
-    console.log(Data)
+const ModalProductUnit = ({ Open, Close, isError, Title, DefaultUnit, ConversionUnit, conversionUnit, defaultUnit, conversionUnitQty, defaultUnitQty, Submit, SetDefaultUnit, SetConversionUnit, SetConversionUnitQty, SetDefaultUnitQty }) => {
+
     return (
         <>
             <Modal
@@ -17,8 +17,8 @@ const ModalProductUnit = ({ Open, Close, isError, Data, Title, DefaultUnit, Conv
                         <HStack spacing='24px'>
                             <Box borderWidth='1px' borderRadius='lg' p='6'>
                                 <FormControl isInvalid={isError}>
-                                    <FormLabel>Default Unit : {Data.default_unit_qty}</FormLabel>
-                                    <Select placeholder='Select Unit' value={Data.default_unit_id} onChange={setDefaultUnit}>
+                                    <FormLabel>Default Unit </FormLabel>
+                                    <Select placeholder='Select Unit' value={defaultUnit} onChange={SetDefaultUnit}>
                                         {
                                             DefaultUnit.map(i => <option key={i.id} value={i.id}>{i.unit_name}</option>)
                                         }
@@ -32,7 +32,7 @@ const ModalProductUnit = ({ Open, Close, isError, Data, Title, DefaultUnit, Conv
                                 </FormControl>
                                 <FormControl isInvalid={isError}>
                                     <FormLabel>Qty</FormLabel>
-                                    <Input placeholder='Unit name' defaultValue={Data.default_unit_qty} onChange={setDefaultUnitQty} />
+                                    <Input placeholder='Unit name' defaultValue={defaultUnitQty} onChange={SetDefaultUnitQty} disabled />
 
                                     {isError ? (
                                         <FormErrorMessage>Field is required.</FormErrorMessage>
@@ -44,9 +44,9 @@ const ModalProductUnit = ({ Open, Close, isError, Data, Title, DefaultUnit, Conv
                             <Box borderWidth='1px' borderRadius='lg' p='6'>
                                 <Divider orientation='horizontal' />
                                 <FormControl isInvalid={isError}>
-                                    <FormLabel>Conversion Unit : {Data.conversion_unit_qty} </FormLabel>
+                                    <FormLabel>Conversion Unit</FormLabel>
 
-                                    <Select placeholder='Select Unit' value={Data.conversion_unit_id} onChange={SetConversionUnit}>
+                                    <Select placeholder='Select Unit' value={conversionUnit} onChange={SetConversionUnit}>
                                         {
                                             ConversionUnit.map(i => <option key={i.id} value={i.id}>{i.unit_name}</option>)
                                         }
@@ -60,7 +60,7 @@ const ModalProductUnit = ({ Open, Close, isError, Data, Title, DefaultUnit, Conv
                                 <FormControl isInvalid={isError}>
                                     <FormLabel>Qty</FormLabel>
 
-                                    <Input placeholder='Unit name' defaultValue={Data.conversion_unit_qty} onChange={setConversionUnitQty} />
+                                    <Input placeholder='Unit name' defaultValue={conversionUnitQty} onChange={SetConversionUnitQty} />
                                     {isError ? (
                                         <FormErrorMessage>Field is required.</FormErrorMessage>
                                     ) : (
