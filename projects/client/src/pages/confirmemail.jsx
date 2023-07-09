@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import Axios from 'axios';
 import { Field, ErrorMessage, Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { apiRequest } from '../helper/api';
 
 export const ConfirmEmail = () => {
   let navigate = useNavigate();
@@ -23,8 +24,8 @@ export const ConfirmEmail = () => {
 
   const confirmEmail = async (values) => {
     try {
-      const url = process.env.REACT_APP_API_BASE_URL + '/auth/confirmemail';
-      const result = await Axios.post(url, values);
+      const url = '/auth/confirmemail';
+      const result = await apiRequest.post(url, values);
       console.log(result);
 
       Swal.fire({
@@ -37,8 +38,8 @@ export const ConfirmEmail = () => {
       });
 
       setTimeout(() => {
-          navigate("/");
-        }, 4000);
+        navigate("/");
+      }, 4000);
 
     } catch (error) {
       console.log(error);

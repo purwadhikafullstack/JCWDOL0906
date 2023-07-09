@@ -27,6 +27,7 @@ import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { rupiah, swalFailed } from '../../../helper';
+import { apiRequest } from '../../../helper/api';
 import { Navbar } from '../../navbar';
 import ProductCard from './productCard';
 
@@ -40,7 +41,7 @@ export default function StoreProductDetail() {
         let params = ""
 
         try {
-            const result = await axios.get("http://localhost:8000/api/store/product?category=" + searchParams.get('category_id'))
+            const result = await apiRequest.get("/store/product?category=" + searchParams.get('category_id'))
 
             console.log(result.data)
 

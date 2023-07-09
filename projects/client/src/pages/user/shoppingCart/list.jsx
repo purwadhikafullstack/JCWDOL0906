@@ -8,6 +8,7 @@ import { BsDash, BsDashCircle, BsDashLg, BsPlus, BsPlusCircle, BsPlusLg, BsTrash
 import { FaArrowRight } from 'react-icons/fa'
 import { add } from '../../../redux/cartSlice'
 import ProductCard from '../../../components/store/product/productCard'
+import { apiRequest } from '../../../helper/api'
 
 const List = () => {
     const toast = useToast()
@@ -26,7 +27,7 @@ const List = () => {
 
     const getCart = async () => {
         try {
-            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/cart?page=1', {
+            const result = await apiRequest.get('/cart?page=1', {
                 headers: {
                     authorization: `Bearer ${user.value.verification_token}`,
                 },
@@ -46,7 +47,7 @@ const List = () => {
 
     const updateItemQty = async (id, method) => {
         try {
-            const result = await axios.patch(process.env.REACT_APP_API_BASE_URL + '/cart/' + id, {
+            const result = await apiRequest.patch('/cart/' + id, {
                 method: method
             }, {
                 headers: {
@@ -71,7 +72,7 @@ const List = () => {
 
     const deleteItem = async (id, method) => {
         try {
-            const result = await axios.delete(process.env.REACT_APP_API_BASE_URL + '/cart/' + id, {
+            const result = await apiRequest.delete('/cart/' + id, {
                 headers: {
                     authorization: `Bearer ${user.value.verification_token}`,
                 },
@@ -90,7 +91,7 @@ const List = () => {
     const getData = async () => {
 
         try {
-            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/store/product?page=" + pageNumber)
+            const result = await apiRequest.get("/store/product?page=" + pageNumber)
             setProduct(result.data.data)
 
         } catch (error) {

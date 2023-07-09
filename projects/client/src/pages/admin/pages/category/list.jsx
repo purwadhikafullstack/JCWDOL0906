@@ -13,10 +13,11 @@ import axios from "axios";
 import { swalFailed, swalSuccess } from "../../../../helper/index";
 import ModalAddCategory from "../../../admin/components/category/modalAddCategory";
 import ModalUpdateCategory from "../../../admin/components/category/modalUpdateCategory";
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 // import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import { apiRequest } from "../../../../helper/api";
 
 
 const CategoryList = () => {
@@ -42,8 +43,7 @@ const CategoryList = () => {
       }
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      let result = await axios.post(
-        process.env.REACT_APP_API_BASE_URL + "/categories/",
+      let result = await apiRequest.post("/categories/",
         formData
       );
       // console.log("adminId",adminId);
@@ -58,7 +58,7 @@ const CategoryList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/categories?page=" + activePage );
+      let result = await apiRequest.get("/categories?page=" + activePage);
       setCategories(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 5));
     } catch (error) {
@@ -78,7 +78,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.patch(process.env.REACT_APP_API_BASE_URL + "/categories/" + selectedCategoryId, formData,
+      let result = await apiRequest.patch("/categories/" + selectedCategoryId, formData,
         {
 
         }
@@ -95,7 +95,7 @@ const CategoryList = () => {
 
   const deleteCategory = async (e) => {
     try {
-      let result = await axios.delete(process.env.REACT_APP_API_BASE_URL + "/categories/" + e.target.id);
+      let result = await apiRequest.delete("/categories/" + e.target.id);
       // console.log(result)
       getAllCategory();
       swalSuccess(result.data.message);

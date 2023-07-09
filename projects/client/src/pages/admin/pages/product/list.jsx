@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import ModalProductStock from "../../components/modalProductStock";
+import { apiRequest } from "../../../../helper/api";
 
 const ProductList = () => {
   const textColor = useColorModeValue("gray.700", "white");
@@ -66,8 +67,8 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.post(
-        process.env.REACT_APP_API_BASE_URL + "/product/add",
+      let result = await apiRequest.post(
+        "/product/add",
         formData
       );
       getData();
@@ -81,8 +82,8 @@ const ProductList = () => {
 
   const getData = async () => {
     try {
-      let result = await axios.get(
-        process.env.REACT_APP_API_BASE_URL + "/product?page=" + activePage
+      let result = await apiRequest.get(
+        "/product?page=" + activePage
       );
       setProducts(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 6));
@@ -94,9 +95,9 @@ const ProductList = () => {
 
   const getDropdownUnits = async () => {
     try {
-      let resultDefault = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/default')
+      let resultDefault = await apiRequest.get('/unit/default')
       setOptionDefaultUnit(resultDefault.data.data)
-      let resultConversion = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/conversion')
+      let resultConversion = await apiRequest.get('/unit/conversion')
       setOptionConversionUnit(resultConversion.data.data)
     } catch (error) {
       swalFailed(error.response.data.message)
@@ -106,7 +107,7 @@ const ProductList = () => {
   const getDataUnit = async (e) => {
     try {
       setProductId(e.target.id)
-      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/unit/product/' + e.target.id)
+      let result = await apiRequest.get('/unit/product/' + e.target.id)
       const data = result.data.dataValues
       setDefaultUnit(data.default_unit_id)
       setConversionUnit(data.conversion_unit_id)
@@ -126,7 +127,7 @@ const ProductList = () => {
     try {
 
       setProductId(e.target.id)
-      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/product/' + e.target.id)
+      let result = await apiRequest.get('/product/' + e.target.id)
       setDefaultUnitQty(result.data.data.defaultQty)
       modalStock.onOpen();
 
@@ -137,7 +138,7 @@ const ProductList = () => {
 
   const updateProductUnit = async () => {
     try {
-      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/unit/product/" + productId, {
+      let result = await apiRequest.post("/unit/product/" + productId, {
         default_unit_qty: defaultUnitQty,
         default_unit_id: defaultUnit,
         conversion_unit_qty: conversionUnitQty,
@@ -153,7 +154,7 @@ const ProductList = () => {
 
   const updateProductStock = async () => {
     try {
-      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/product/" + productId + "/stock", {
+      let result = await apiRequest.post("/product/" + productId + "/stock", {
         qty: defaultUnitQty,
       })
       swalSuccess(result.data.message)
@@ -189,8 +190,8 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.patch(
-        process.env.REACT_APP_API_BASE_URL + "/product/" + e.target.id,
+      let result = await apiRequest.patch(
+        "/product/" + e.target.id,
         data,
         {
           product_name: product_name,
@@ -211,8 +212,7 @@ const ProductList = () => {
 
   async function deleteOperation(e) {
     try {
-      let result = await axios.delete(
-        process.env.REACT_APP_API_BASE_URL + "/product/delete/" + e.target.id
+      let result = await apiRequest.delete("/product/delete/" + e.target.id
       );
       getData();
     } catch (error) {

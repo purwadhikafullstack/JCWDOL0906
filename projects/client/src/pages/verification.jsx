@@ -10,8 +10,9 @@ import {
   Heading,
   Image,
 } from "@chakra-ui/react";
+import { apiRequest } from "../helper/api";
 
-export const Verification = () =>  {
+export const Verification = () => {
   let navigate = useNavigate();
 
   let { token } = useParams();
@@ -20,8 +21,8 @@ export const Verification = () =>  {
     console.log(tokenVerification)
     try {
       if (token) {
-        const response = await axios.post(
-          process.env.REACT_APP_API_BASE_URL + "/auth/verification",
+        const response = await apiRequest.post(
+          "/auth/verification",
           {},
           {
             headers: {

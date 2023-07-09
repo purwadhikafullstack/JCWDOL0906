@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import Axios from 'axios';
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { apiRequest } from '../helper/api';
 
 export const ResetPassword = () => {
   let navigate = useNavigate();
@@ -28,9 +29,9 @@ export const ResetPassword = () => {
 
   const resetPassword = async (values) => {
     try {
-      const url = process.env.REACT_APP_API_BASE_URL + '/auth/resetpassword';
+      const url = '/auth/resetpassword';
       if (token) {
-        const response = await Axios.post(
+        const response = await apiRequest.post(
           url,
           {
             password: values.password,
@@ -60,7 +61,7 @@ export const ResetPassword = () => {
 
     } catch (error) {
       console.log(error);
-       Swal.fire({
+      Swal.fire({
         icon: 'error',
         title: 'Failed Attempt',
         text: error.response.data.message,

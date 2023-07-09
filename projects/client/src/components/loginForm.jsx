@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
+import { apiRequest } from "../helper/api";
 
 
 
@@ -48,8 +49,8 @@ export const LoginForm = () => {
     };
     try {
 
-      const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
-      const result = await Axios.post(url, data);
+      const url = "/auth/login";
+      const result = await apiRequest.post(url, data);
       console.log(result.data);
       localStorage.setItem("user", JSON.stringify(result.data.token))
       dispatch(login(result.data.data));

@@ -16,6 +16,7 @@ import { rupiah, swalFailed } from '../../../helper';
 import { add } from '../../../redux/cartSlice';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
+import { apiRequest } from '../../../helper/api';
 
 
 function ProductCard({ image, product_name, price, id, category, description, dose, indication, rules, unit, category_id }) {
@@ -30,7 +31,7 @@ function ProductCard({ image, product_name, price, id, category, description, do
         //     : alert("Login or verify you're account to continue.")
         setLoading(true)
         try {
-            const result = await axios.post(process.env.REACT_APP_API_BASE_URL + '/cart', {
+            const result = await apiRequest.post('/cart', {
                 product_id: id,
                 qty: 1,
                 price: price
@@ -68,7 +69,7 @@ function ProductCard({ image, product_name, price, id, category, description, do
 
     const getCart = async () => {
         try {
-            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/cart?page=1', {
+            const result = await apiRequest.get('/cart?page=1', {
                 headers: {
                     authorization: `Bearer ${user.value.verification_token}`,
                 },
