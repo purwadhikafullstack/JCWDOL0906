@@ -16,27 +16,32 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Address.init({
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+  Address.init(
+    {
+      detail: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      province_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      city_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      is_default: {
+        type: DataTypes.BOOLEAN,
+      },
+      label: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    province_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    city_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
     {
       sequelize,
       modelName: "Address",
-    });
+    }
+  );
   return Address;
 };

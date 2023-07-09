@@ -20,6 +20,7 @@ import { login } from "../src/redux/userSlice";
 import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
 import MyAccount from "./pages/userProfile/account";
+import Address from "./pages/userProfile/address";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -67,6 +68,7 @@ function App() {
             element={<StoreProductDetail />}
           />
           <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/address" Component={Address} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
