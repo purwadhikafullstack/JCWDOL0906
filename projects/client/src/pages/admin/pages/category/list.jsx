@@ -8,15 +8,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import TableCRUD from "../../components/table";
+import TableCRUD from "../../../admin/components/category/table";
 import axios from "axios";
-import ModalAddCategory from "../category/modalAddCategory";
-import ModalUpdateCategory from "./modalUpdateCategory";
-import { useSelector } from 'react-redux';
-import { AddIcon } from "@chakra-ui/icons";
+import { swalFailed, swalSuccess } from "../../../../helper/index";
+import ModalAddCategory from "../../../admin/components/category/modalAddCategory";
+import ModalUpdateCategory from "../../../admin/components/category/modalUpdateCategory";
+import {useSelector} from 'react-redux';
+// import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { swalFailed, swalSuccess } from "../../../helper";
 
 
 const CategoryList = () => {
@@ -33,8 +33,8 @@ const CategoryList = () => {
   const addCategory = async () => {
 
     try {
-      const category_name = document.getElementById("category_name").value
-      const image = document.getElementById("image").value
+      let category_name = document.getElementById("category_name").value
+      let image = document.getElementById("image").files[0];
       const formData = new FormData();
       let data = {
         category_name: category_name,
@@ -43,7 +43,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
       let result = await axios.post(
-        "http://localhost:8000/api/categories/",
+        process.env.REACT_APP_API_BASE_URL + "/categories/",
         formData
       );
       // console.log("adminId",adminId);
@@ -58,7 +58,7 @@ const CategoryList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await axios.get("http://localhost:8000/api/categories" + `?page=${activePage}`);
+      let result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/categories?page=" + activePage );
       setCategories(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 5));
     } catch (error) {
@@ -68,8 +68,8 @@ const CategoryList = () => {
 
   const updateCategory = async (e) => {
     try {
-      const category_name = document.getElementById("category_name").value
-      const image = document.getElementById("image").value
+      let image = document.getElementById("image").files[0];
+      let category_name = document.getElementById("category_name").value
       let formData = new FormData();
       let data = {
         category_name: category_name,
@@ -78,7 +78,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.patch("http://localhost:8000/api/categories/" + selectedCategoryId, formData,
+      let result = await axios.patch(process.env.REACT_APP_API_BASE_URL + "/categories/" + selectedCategoryId, formData,
         {
 
         }
@@ -95,7 +95,7 @@ const CategoryList = () => {
 
   const deleteCategory = async (e) => {
     try {
-      let result = await axios.delete("http://localhost:8000/api/categories/" + e.target.id);
+      let result = await axios.delete(process.env.REACT_APP_API_BASE_URL + "/categories/" + e.target.id);
       // console.log(result)
       getAllCategory();
       swalSuccess(result.data.message);

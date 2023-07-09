@@ -6,6 +6,7 @@ module.exports = {
   login: async (req, res, next) => {
     try {
       let token = req.headers.authorization;
+      console.log(token);
       if (!token)
         throw {
           message: "Unauthorized",

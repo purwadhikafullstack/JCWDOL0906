@@ -30,6 +30,7 @@ import bgAdmin from "../../assets/img/admin-background.png";
 //=================================================================
 import Sidebar from "../adminComponents/Sidebar/Sidebar";
 import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
+import ProtectedRoute from "../protectedRoute";
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -160,11 +161,13 @@ export default function Dashboard(props) {
         </Portal>
         {getRoute() ? (
           <PanelContent>
+          <ProtectedRoute>
             <PanelContainer>
               <Routes>
                 {getRoutes(routes)}
               </Routes>
             </PanelContainer>
+            </ProtectedRoute>
           </PanelContent>
         ) : null}
         <Footer />

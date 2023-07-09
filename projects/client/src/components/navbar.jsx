@@ -21,7 +21,7 @@ import {
   CloseIcon,
 } from "@chakra-ui/icons";
 
-// import {useNavigate, Link} from"react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar"
@@ -32,42 +32,49 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
-import { NavLink } from "react-router-dom";
 // import { logout } from "../redux/userSlice";
+import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice)
   const handleLogOut = () => {
     localStorage.removeItem("user")
     dispatch(logout())
   };
-  const username = useSelector((state) => state.userSlice.value.username)
-
-  useEffect(() => {
-    if (user.value.id || user.value.id === 1) {
-      setIsLogin(true)
-    } else { setIsLogin(false) }
-  }, [user])
+  const username = useSelector((state)=> state.userSlice.value.username)
+ 
+useEffect(()=> {
+  console.log("role",user.value.role);
+  if (user.value.role == 2) {
+    navigate("/admin/dashboard")
+  }
+  console.log("value",user.value.id);
+if (user.value.id) {
+setIsLogin(true)
+} else {setIsLogin(false)}
+},[user])
   // const token = localStorage.getItem("token")
   useEffect(() => {
   }, [username]);
 
 
   return (
+    <>
     <Box>
       <Flex
-        bg={useColorModeValue("blue.50", "blue.100")}
-        color={useColorModeValue("gray.600", "white")}
+        // bg={useColorModeValue("blue.50", "blue.100")}
+        // color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={3}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
+        // borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
         <Flex
@@ -135,5 +142,6 @@ export const Navbar = () => {
         </Flex>
       </Flex>
     </Box>
-  );
+    </>
+  )
 };
