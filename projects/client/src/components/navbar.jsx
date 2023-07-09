@@ -37,6 +37,7 @@ import { logout } from "../redux/userSlice";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { BsCart, BsCartPlus } from "react-icons/bs";
 import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
+import { clear } from "../redux/cartSlice";
 // import { logout } from "../redux/userSlice";
 
 export const Navbar = () => {
@@ -49,6 +50,7 @@ export const Navbar = () => {
   const handleLogOut = () => {
     localStorage.removeItem("user")
     dispatch(logout())
+    dispatch(clear())
   };
   const username = useSelector((state) => state.userSlice.value.username)
   const { cart } = useSelector((state) => state.cartSlice)

@@ -7,24 +7,28 @@ import {
     Icon,
     Button,
     chakra,
+    useToast,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsCartPlus, BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import { rupiah } from '../../../helper';
+import { rupiah, swalFailed } from '../../../helper';
 import { add } from '../../../redux/cartSlice';
 import axios from 'axios'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function ProductCard({ image, product_name, price, id, category, description, dose, indication, rules, unit, category_id }) {
+    const toast = useToast()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
     const user = useSelector((state) => state.userSlice)
     const addToCart = async () => {
         // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))
         //     : alert("Login or verify you're account to continue.")
+        setLoading(true)
         try {
             const result = await axios.post(process.env.REACT_APP_API_BASE_URL + '/cart', {
                 product_id: id,
@@ -36,9 +40,19 @@ function ProductCard({ image, product_name, price, id, category, description, do
                 },
             })
             getCart()
-            // console.log(result)
+            toast({
+                title: '',
+                description: "Barang berhasil ditambahkan ke keranjang",
+                status: 'success',
+                duration: 2000,
+                position: 'top',
+                isClosable: true,
+            })
+            setLoading(false)
         } catch (error) {
             console.log(error)
+            if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
+            setLoading(false)
         }
     }
 
@@ -107,10 +121,13 @@ function ProductCard({ image, product_name, price, id, category, description, do
                         </Box>
                     </Flex>
 
-
-                    <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200' onClick={() => addToCart()}>
+                    {loading ? <Button w='100%' mt={2} colorScheme='linkedin' d='flex' isLoading
+                        loadingText='Submitting' justifyContent='space-between' fontWeight='200'>
                         Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
-                    </Button>
+                    </Button> : <Button w='100%' mt={2} colorScheme='linkedin' d='flex' justifyContent='space-between' fontWeight='200' onClick={() => addToCart()}>
+                        Add to cart <Icon as={BsCartPlus} h={5} w={5} ml={2} alignSelf={'center'} />
+                    </Button>}
+
 
                 </Box>
             </Box>

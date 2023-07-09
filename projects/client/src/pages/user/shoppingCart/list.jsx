@@ -1,19 +1,28 @@
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Container, Divider, Flex, Heading, HStack, Icon, Image, Stack, Text, useColorModeValue as mode } from '@chakra-ui/react'
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Container, Divider, Flex, Grid, Heading, HStack, Icon, Image, Skeleton, Stack, StackDivider, Text, useColorModeValue as mode, useColorModeValue } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { rupiah } from '../../../helper'
+import { rupiah, swalFailed } from '../../../helper'
 import { Link, useNavigate } from 'react-router-dom'
 import { BsDash, BsDashCircle, BsDashLg, BsPlus, BsPlusCircle, BsPlusLg, BsTrash, BsTrash2 } from 'react-icons/bs'
 import { FaArrowRight } from 'react-icons/fa'
 import { add } from '../../../redux/cartSlice'
+import ProductCard from '../../../components/store/product/productCard'
 
 const List = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [carts, setCart] = useState([])
+    const [recomendItem, setRecomendItem] = useState([])
+    const [isLoading, setLoading] = useState(false)
+    const [paging, setPaging] = useState([])
+    const [records, setRecords] = useState(0)
+    const [pageNumber, setPageNumber] = useState(1)
+    const [product, setProduct] = useState([])
     const user = useSelector((state) => state.userSlice)
     const { cart, total_price } = useSelector((state) => state.cartSlice)
+    console.log('carts1', carts)
+
     const getCart = async () => {
         try {
             const result = await axios.get(process.env.REACT_APP_API_BASE_URL + '/cart?page=1', {
@@ -22,7 +31,7 @@ const List = () => {
                 },
             })
 
-            console.log(result.data.data)
+            // console.log(result.data.data)
             setCart(result.data.data)
             let data = result.data.data
             let total_qty = 0
@@ -43,8 +52,6 @@ const List = () => {
                     authorization: `Bearer ${user.value.verification_token}`,
                 },
             })
-
-            console.log(result.data.data)
             getCart()
         } catch (error) {
             console.log(error)
@@ -58,17 +65,44 @@ const List = () => {
                     authorization: `Bearer ${user.value.verification_token}`,
                 },
             })
-
-            console.log(result.data.data)
             getCart()
         } catch (error) {
             console.log(error)
         }
     }
 
+    const getRecomendItem = () => {
+        let item = product.filter(pr => !carts.find(cr => (cr.product_id === pr.id)))
+        setRecomendItem(item)
+    }
+
+    const getData = async () => {
+
+        try {
+            const result = await axios.get(process.env.REACT_APP_API_BASE_URL + "/store/product?page=" + pageNumber)
+            setProduct(result.data.data)
+
+        } catch (error) {
+            swalFailed(error.response.data.message)
+
+        }
+    }
+    console.log('user', user)
     useEffect(() => {
         getCart()
-    }, [])
+        getData()
+    }, [cart])
+
+    useEffect(() => {
+        if (user.value.username === "") {
+            setCart([])
+            getData()
+        }
+    }, [user.value.username])
+
+    useEffect(() => {
+        getRecomendItem()
+    }, [carts])
 
     const OrderSummaryItem = (props) => {
         const { label, value, children } = props
@@ -94,12 +128,14 @@ const List = () => {
                 spacing={{ base: '8', md: '16' }}
             >
                 <Stack spacing={{ base: '8', md: '10' }} flex="2">
-                    <Heading fontSize="2xl" fontWeight="extrabold">
-                        Shopping Cart ({cart} items)
-                    </Heading>
 
-                    <Stack spacing="6">
+                    <Stack spacing="6" divider={<StackDivider
+                        borderColor={useColorModeValue('gray.200', 'gray.600')}
+                    />}>
                         <Container maxW='container.xl' p={5} mt={5}>
+                            <Heading fontSize="2xl" fontWeight="extrabold">
+                                Keranjang
+                            </Heading>
                             {
                                 carts.length > 0 ? carts.map(i => <Flex borderWidth="1px" rounded="lg" padding="2" width="full" mt={2} justifyContent='space-between' bgColor='white'>
                                     <HStack><Image
@@ -128,59 +164,39 @@ const List = () => {
                                         <Box>
                                             <Flex alignItems='center'>
                                                 <Button variant='ghost' w="fit-content" size='sm' ml={2} onClick={() => updateItemQty(i.product_id, 'minus')}><Icon as={BsDashCircle} h={5} w={5} alignSelf={'center'} /></Button>
-                                                <Text px={3} fontWeight="medium">{i.qty}</Text>
+                                                <Text px={3} mb={0} fontWeight="medium">{i.qty}</Text>
                                                 <Button variant='ghost' w="fit-content" size='sm' mr={2} onClick={() => updateItemQty(i.product_id, 'plus')}><Icon as={BsPlusCircle} h={5} w={5} alignSelf={'center'} /></Button>
                                             </Flex>
                                         </Box>
-                                        {/* <Box pt="4">
-                                            <Stack spacing="0.5">
-                                                <Text fontWeight="medium">{i.total_price}</Text>
-                                            </Stack>
-                                        </Box> */}
                                     </Flex>
-
-                                    {/* <Box>
-                            <Button onClick={() => updateItemQty(i.product_id, 'plus')}> Tambah </Button>
-                            <Text fontWeight="medium">{i.qty}</Text>
-                            <Button onClick={() => updateItemQty(i.product_id, 'minus')}> Kurang </Button>
-                        </Box> */}
-                                    {/* <Box pt="4">
-                            <Stack spacing="0.5">
-                                <Text fontWeight="medium">{i.qty}</Text>
-                            </Stack>z
-                        </Box> */}
 
                                 </Flex>) : 'Cart is Empty'
                             }
 
                         </Container>
+                        <Container maxW='container.xl' p={5} mt={5}>
+                            <Heading fontSize="2xl" fontWeight="extrabold">
+                                Rekomendasi untukmu
+                            </Heading>
+                            <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+                                {
+                                    recomendItem.length === 0 && user.value.username === "" ?
+                                        product.map((i, index) => <ProductCard key={index} image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />) :
+                                        recomendItem.map((i, index) => <ProductCard key={index} image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />)
+                                }
+                            </Grid>
+                        </Container>
                     </Stack>
                 </Stack>
 
                 <Flex direction="column" align="center" flex="1">
-                    {/* <CartOrderSummary />
-                    <HStack mt="6" fontWeight="semibold">
-                        <p>or</p>
-                        <Link color={mode('blue.500', 'blue.200')}>Continue shopping</Link>
-                    </HStack> */}
-                    <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
-                        <Heading size="md">Order Summary</Heading>
+                    <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full" bg='white'>
+                        <Heading size="md">Ringkasan Belanja</Heading>
 
                         <Stack spacing="6">
-                            <OrderSummaryItem label="Subtotal" value={rupiah(597)} />
-                            <OrderSummaryItem label="Shipping + Tax">
-                                <Link href="#" textDecor="underline">
-                                    Calculate shipping
-                                </Link>
-                            </OrderSummaryItem>
-                            <OrderSummaryItem label="Coupon Code">
-                                <Link href="#" textDecor="underline">
-                                    Add coupon code
-                                </Link>
-                            </OrderSummaryItem>
                             <Flex justify="space-between">
                                 <Text fontSize="lg" fontWeight="semibold">
-                                    Total
+                                    Total {cart} Barang
                                 </Text>
                                 <Text fontSize="xl" fontWeight="extrabold">
                                     {rupiah(total_price)}
@@ -188,7 +204,7 @@ const List = () => {
                             </Flex>
                         </Stack>
                         <Button colorScheme="blue" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
-                            Checkout
+                            Beli
                         </Button>
                     </Stack>
                 </Flex>
