@@ -52,6 +52,16 @@ function ProductCard({ image, product_name, price, id, category, description, do
         } catch (error) {
             console.log(error)
             if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
+            if (error.response.status === 400) {
+                toast({
+                    title: '',
+                    description: error.response.data.message,
+                    status: 'error',
+                    duration: 2000,
+                    position: 'top',
+                    isClosable: true,
+                })
+            }
             setLoading(false)
         }
     }

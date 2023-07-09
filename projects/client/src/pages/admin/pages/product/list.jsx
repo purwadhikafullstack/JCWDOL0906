@@ -153,7 +153,7 @@ const ProductList = () => {
 
   const updateProductStock = async () => {
     try {
-      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/product/stock/" + productId, {
+      let result = await axios.post(process.env.REACT_APP_API_BASE_URL + "/product/" + productId + "/stock", {
         qty: defaultUnitQty,
       })
       swalSuccess(result.data.message)

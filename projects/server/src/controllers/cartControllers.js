@@ -4,6 +4,7 @@ const { successResponse, failedResponse } = require('../helpers/apiResponse');
 const cart = db.Cart;
 const product = db.Product;
 const user = db.User;
+const stock = db.stock;
 const { QueryTypes } = require('sequelize');
 const { sequelize } = require('../models');
 
@@ -48,6 +49,14 @@ module.exports = {
     addToCart: async (req, res) => {
         const { product_id, qty, price } = req.body
         try {
+
+            const productStock = await stock.findOne({
+                where: {
+                    product_id: product_id
+                }
+            })
+            const stocks = productStock.dataValues.default_unit_qty
+
             const isExists = await cart.findOne({
                 where: {
                     product_id: product_id
@@ -66,6 +75,7 @@ module.exports = {
             } else {
                 const { dataValues } = isExists
                 const qty = Number(dataValues.qty) + 1
+                if (qty > Number(stocks)) return res.status(400).json(failedResponse("Quantity melebihi stock barang"))
                 const total_price = Number(qty) * Number(dataValues.price)
                 await cart.update(
                     { qty: qty, total_price: total_price },
@@ -86,6 +96,15 @@ module.exports = {
     updateCart: async (req, res) => {
         console.log(req.body)
         try {
+
+            const productStock = await stock.findOne({
+                where: {
+                    product_id: req.params.id
+                }
+            })
+            const stocks = productStock.dataValues.default_unit_qty
+
+            console.log('STOCK', stocks)
             const isExists = await cart.findOne({
                 where: {
                     product_id: req.params.id
@@ -98,6 +117,7 @@ module.exports = {
                 Number(dataValues.qty) > 1 ? qty = Number(dataValues.qty - 1) : qty = Number(dataValues.qty)
             }
 
+            if (qty > Number(stocks)) return res.status(400).json(failedResponse("Quantity melebihi stock barang"))
 
             const total_price = Number(qty) * Number(dataValues.price)
             await cart.update(

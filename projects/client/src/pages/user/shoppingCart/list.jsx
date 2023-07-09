@@ -1,4 +1,4 @@
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Container, Divider, Flex, Grid, Heading, HStack, Icon, Image, Skeleton, Stack, StackDivider, Text, useColorModeValue as mode, useColorModeValue } from '@chakra-ui/react'
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Container, Divider, Flex, Grid, Heading, HStack, Icon, Image, Skeleton, Stack, StackDivider, Text, useColorModeValue as mode, useColorModeValue, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,7 @@ import { add } from '../../../redux/cartSlice'
 import ProductCard from '../../../components/store/product/productCard'
 
 const List = () => {
+    const toast = useToast()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [carts, setCart] = useState([])
@@ -55,6 +56,16 @@ const List = () => {
             getCart()
         } catch (error) {
             console.log(error)
+            if (error.response.status === 400) {
+                toast({
+                    title: '',
+                    description: error.response.data.message,
+                    status: 'error',
+                    duration: 2000,
+                    position: 'top',
+                    isClosable: true,
+                })
+            }
         }
     }
 
@@ -87,7 +98,7 @@ const List = () => {
 
         }
     }
-    console.log('user', user)
+
     useEffect(() => {
         getCart()
         getData()
@@ -101,20 +112,16 @@ const List = () => {
     }, [user.value.username])
 
     useEffect(() => {
+
+        setCart([])
+        getData()
+
+    }, [])
+
+    useEffect(() => {
         getRecomendItem()
     }, [carts])
 
-    const OrderSummaryItem = (props) => {
-        const { label, value, children } = props
-        return (
-            <Flex justify="space-between" fontSize="sm">
-                <Text fontWeight="medium" color={mode('gray.600', 'gray.400')}>
-                    {label}
-                </Text>
-                {value ? <Text fontWeight="medium">{value}</Text> : children}
-            </Flex>
-        )
-    }
     return (
         <Box
             maxW={{ base: '3xl', lg: '7xl' }}
