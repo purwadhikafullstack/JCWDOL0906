@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: "image",
       },
       description: {
-        type: DataTypes.STRING(535),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       indication: {
