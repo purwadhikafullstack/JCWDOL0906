@@ -49,6 +49,7 @@ export const LoginForm = () => {
       const result = await apiRequest.post(url, data);
       console.log(result.data);
       localStorage.setItem("user", JSON.stringify(result.data.token));
+
       dispatch(login(result.data.data));
 
       Swal.fire({
@@ -65,6 +66,7 @@ export const LoginForm = () => {
         navigate("/admin/dashboard");
       } else {
         navigate("/");
+
       }
     } catch (error) {
       // console.log(error);
@@ -138,11 +140,13 @@ export const LoginForm = () => {
                     borderColor="blue.300"
                     placeholder="Password"
                   />
+
                   <ErrorMessage
                     name="password"
                     component="div"
                     style={{ color: "red" }}
                   />
+
                 </FormControl>
                 <ModalFooter>
                   <Button mr={5} type="submit" colorScheme="blue.800">

@@ -18,6 +18,7 @@ import {
   Badge,
   AvatarBadge,
 } from "@chakra-ui/react";
+
 import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
 
 import { RegistrationForm } from "../components/registerForm";
@@ -37,12 +38,15 @@ import {
   PersonIcon,
   RocketIcon,
 } from "../components/adminComponents/Icons/Icons";
+
 import { clear } from "../redux/cartSlice";
 // import { logout } from "../redux/userSlice";
 import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
+
   const navigate = useNavigate();
+
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
@@ -56,6 +60,7 @@ export const Navbar = () => {
   const username = useSelector((state) => state.userSlice.value.username);
   const { cart } = useSelector((state) => state.cartSlice);
 
+
   useEffect(() => {
     console.log("role", user.value.role);
     if (user.value.role == 2) {
@@ -68,6 +73,7 @@ export const Navbar = () => {
       setIsLogin(false);
     }
   }, [user]);
+
   // const token = localStorage.getItem("token")
   useEffect(() => {
     // console.log(username)
@@ -75,6 +81,7 @@ export const Navbar = () => {
 
   const location = useLocation();
   const path = location.pathname.split("/")[1];
+
   return (
     <>
       <Box>
@@ -114,33 +121,17 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={"60px"}
+              height={'60px'}
               alt={"Icon Logo"}
               fit={"logo"}
-              onClick={() => navigate("store/product")}
+              onClick={() => navigate('store/product')}
             />
 
             <Flex ml="auto" alignItems="center" spacing={5}>
-              {path === "store" || path === "cart" ? (
-                <Avatar
-                  size="sm"
-                  bg="blue.300"
-                  mr={3}
-                  icon={<BsCart fontSize="1.2rem" />}
-                  onClick={() => navigate("/cart")}
-                >
-                  <AvatarBadge
-                    placement="bottom-start"
-                    borderColor="papayawhip"
-                    bg="tomato"
-                    boxSize="1.8em"
-                  >
-                    {cart}
-                  </AvatarBadge>
-                </Avatar>
-              ) : (
-                ""
-              )}
+              {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
+                <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
+              </Avatar> : ''}
+
 
               <SearchBar />
               {isLogin ? (
@@ -155,9 +146,16 @@ export const Navbar = () => {
                       textColor="white"
                     />
                     <MenuList>
-                      <MenuItem>My Account</MenuItem>
-                      <MenuItem>Cart</MenuItem>
-                      <MenuItem>Transaction</MenuItem>
+                      <MenuItem>
+                        My Account
+                      </MenuItem>
+                      <MenuItem>
+                        Cart
+                      </MenuItem>
+                      <MenuItem>
+                        Transaction
+                      </MenuItem>
+
                       <MenuItem onClick={() => handleLogOut()}>
                         Log Out
                       </MenuItem>
