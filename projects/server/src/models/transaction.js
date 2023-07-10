@@ -11,20 +11,21 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             Transaction.belongsTo(models.User, {
-                foreignKey: {
-                    name: "user_id",
-                },
-            });
-            Transaction.hasOne(models.Transaction_Details, {
-                foreignKey: {
-                    name: "transaction_id",
-                },
+                foreignKey: "user_id"
+            }
+            );
+            Transaction.hasMany(models.Transaction_Details, {
+                foreignKey: 'transaction_code'
             });
         }
     }
     Transaction.init(
         {
-            useer_id: {
+            transaction_code: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV1
+            },
+            user_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: false,
             },
-            is_confrimed: {
+            is_confirmed: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,

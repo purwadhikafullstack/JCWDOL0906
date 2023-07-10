@@ -1,15 +1,14 @@
 import { Outlet } from "react-router-dom";
 import { Navbar } from "../components/navbar";
-import { Heroes } from "../components/heroes";
-// import SimpleSlider  from "../components/carousel";
-
+import { Carousel } from "../components/carousel";
+import { Category } from "../components/category";
 export const HomePage = () => {
     return (
         <div>
             <Navbar />
             <div className="home-container">
-                {/* <SimpleSlider/> */}
-                <Heroes />
+                <Carousel/>
+                <Category/>
                 <Outlet />
             </div>
         </div>
