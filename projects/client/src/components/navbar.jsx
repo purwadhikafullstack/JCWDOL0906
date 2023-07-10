@@ -18,61 +18,70 @@ import {
   Badge,
   AvatarBadge,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-  Icon,
-} from "@chakra-ui/icons";
+
+import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
 
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
-import { SearchBar } from "../components/searchbar"
-import logo_gmedsnial from "../assets/svg/logogmedsnial1.png"
+import { SearchBar } from "../components/searchbar";
+import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
+import MyAccount from "../pages/userProfile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { BsCart, BsCartPlus } from "react-icons/bs";
-import { DocumentIcon, PersonIcon, RocketIcon } from "../components/adminComponents/Icons/Icons";
+import {
+  DocumentIcon,
+  PersonIcon,
+  RocketIcon,
+} from "../components/adminComponents/Icons/Icons";
+
 import { clear } from "../redux/cartSlice";
 // import { logout } from "../redux/userSlice";
 import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userSlice)
+  const user = useSelector((state) => state.userSlice);
   const handleLogOut = () => {
-    localStorage.removeItem("user")
-    dispatch(logout())
-    dispatch(clear())
+    localStorage.removeItem("user");
+    dispatch(logout());
+    dispatch(clear());
   };
-  const username = useSelector((state) => state.userSlice.value.username)
-  const { cart } = useSelector((state) => state.cartSlice)
+  const username = useSelector((state) => state.userSlice.value.username);
+  const { cart } = useSelector((state) => state.cartSlice);
+
 
   useEffect(() => {
     console.log("role", user.value.role);
     if (user.value.role == 2) {
-      navigate("/admin/dashboard")
+      navigate("/admin/dashboard");
     }
     console.log("value", user.value.id);
     if (user.value.id) {
-      setIsLogin(true)
-    } else { setIsLogin(false) }
-  }, [user])
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [user]);
+
   // const token = localStorage.getItem("token")
   useEffect(() => {
     // console.log(username)
   }, [username]);
 
+  const location = useLocation();
+  const path = location.pathname.split("/")[1];
 
-  const location = useLocation()
-  const path = location.pathname.split("/")[1]
   return (
     <>
       <Box>
@@ -95,7 +104,11 @@ export const Navbar = () => {
             <IconButton
               onClick={onToggle}
               icon={
-                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
               }
               variant={"ghost"}
               aria-label={"Toggle Navigation"}
@@ -119,6 +132,7 @@ export const Navbar = () => {
                 <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
               </Avatar> : ''}
 
+
               <SearchBar />
               {isLogin ? (
                 <div>
@@ -141,6 +155,7 @@ export const Navbar = () => {
                       <MenuItem>
                         Transaction
                       </MenuItem>
+
                       <MenuItem onClick={() => handleLogOut()}>
                         Log Out
                       </MenuItem>
@@ -158,5 +173,5 @@ export const Navbar = () => {
         </Flex>
       </Box>
     </>
-  )
+  );
 };
