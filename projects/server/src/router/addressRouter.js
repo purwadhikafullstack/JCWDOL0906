@@ -5,7 +5,7 @@ const { login } = require("../middleware/authorization");
 const addressController = require("../controllers/addressController");
 
 router.get("/", login, addressController.getAddress);
-router.post("/add", login, addressController.postAddress);
+router.post("/", login, addressController.postAddress);
 router.patch("/edit", login, addressController.updateAddress);
 
 module.exports = router;

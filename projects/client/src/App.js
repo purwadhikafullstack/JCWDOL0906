@@ -21,6 +21,7 @@ import UserProduct from "./pages/user/product";
 import StoreProductDetail from "./components/store/product/productDetail";
 import MyAccount from "./pages/userProfile/account";
 import Address from "./pages/userProfile/address";
+import UserProfile from "./pages/userProfile/user";
 
 function App() {
   // const [message, setMessage] = useState("");
@@ -67,7 +68,7 @@ function App() {
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
-          <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/myaccount" Component={UserProfile} />
           <Route path="/address" Component={Address} />
         </Routes>
       </BrowserRouter>

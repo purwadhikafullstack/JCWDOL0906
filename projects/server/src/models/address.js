@@ -22,7 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      province_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       province_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      city_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -36,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       label: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      postal_code: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {

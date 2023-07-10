@@ -32,15 +32,27 @@ module.exports = {
   },
   postAddress: async (req, res) => {
     try {
-      let { detail, province_id, city_id, is_default, label } = req.body;
+      let {
+        detail,
+        province_name,
+        province_id,
+        city_name,
+        city_id,
+        is_default,
+        label,
+        postal_code,
+      } = req.body;
       console.log(req.body);
       let { userId } = req;
       let data = await address.create({
         detail,
+        province_name,
         province_id,
+        city_name,
         city_id,
         is_default,
         label,
+        postal_code,
         user_id: userId,
       });
       res.status(200).json({
@@ -58,15 +70,27 @@ module.exports = {
   updateAddress: async (req, res) => {
     try {
       const { userId } = req;
-      const { detail, province_id, city_id, is_default, label } = req.body;
+      const {
+        detail,
+        province_name,
+        province_id,
+        city_name,
+        city_id,
+        is_default,
+        label,
+        postal_code,
+      } = req.body;
 
       await address.update(
         {
           detail,
+          province_name,
           province_id,
+          city_name,
           city_id,
           is_default,
           label,
+          postal_code,
         },
         {
           where: {
