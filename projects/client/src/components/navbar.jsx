@@ -120,8 +120,8 @@ export const Navbar = () => {
                     textColor="white"
                   />
                   <MenuList>
-                    <MenuItem onClick={() => handleAccount()}>Account</MenuItem>
-                    <MenuItem>Cart</MenuItem>
+                    <MenuItem onClick={() => handleAccount()}>Profile</MenuItem>
+                    <MenuItem>Address</MenuItem>
                     <MenuItem>Transaction</MenuItem>
                     <MenuItem onClick={() => handleLogOut()}>Log Out</MenuItem>
                   </MenuList>
