@@ -28,12 +28,12 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [categories, setCategories] = useState([]);
 
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
   const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
   const [optionConversionUnit, setOptionConversionUnit] = useState([]);
-  const [category, setCategories] = useState([]);
 
   //Product unit Data
   const [conversionUnit, setConversionUnit] = useState(0);
@@ -58,10 +58,11 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
-      let category = document.getElementById();
+      let category = document.getElementById("category_id").value;
       let formData = new FormData();
       let data = {
         product_name: product_name,
+        // category: category_id,
         price: price,
         description: description,
         indication: indication,
@@ -181,10 +182,12 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+      let category = document.getElementById("category_id").value;
 
       let formData = new FormData();
       let data = {
         product_name: product_name,
+        // category: category_id,
         price: price,
         description: description,
         indication: indication,
@@ -195,8 +198,10 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch("/product/" + e.target.id, data, {
+      let result = await apiRequest.patch("/product/" + e.target.id, formData, {
         product_name: product_name,
+        // category: category_id,
+        price: price,
         description: description,
         indication: indication,
         dose: dose,
@@ -279,7 +284,8 @@ const ProductList = () => {
                   getData(e);
                 },
                 (e) => {
-                  getProductById(e);
+                  // modalUpdate.onOpen();
+                  getProductById(e.target.id);
                 },
                 (e) => {
                   deleteOperation(e);
@@ -309,7 +315,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
-        categories={category}
+        categories={categories}
         SetUnit={() => {}}
         Submit={() => addProduct()}
       />

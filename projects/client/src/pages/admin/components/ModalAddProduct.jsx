@@ -51,11 +51,11 @@ const ModalAddProduct = ({
             {/* <FormControl>
               <FormLabel> Category </FormLabel>
               <Select id="category_id">
-                <option value="category_id">Select categories </option>
+                <option value="">Select categories </option>
                 {categories.map((category, index) => {
                   return (
                     <option value={category.id} key={index}>
-                      {category.category.name}
+                      {category.name}
                     </option>
                   );
                 })}
