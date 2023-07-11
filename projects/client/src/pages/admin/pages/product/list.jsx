@@ -54,6 +54,7 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+      let category = document.getElementById();
       let formData = new FormData();
       let data = {
         product_name: product_name,
@@ -131,7 +132,7 @@ const ProductList = () => {
 
       let result = await axios.patch(
         "http://localhost:8000/api/product/" + e.target.id,
-        data,
+        formDataata,
         {
           product_name: product_name,
           description: description,
