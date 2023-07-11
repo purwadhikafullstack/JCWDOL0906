@@ -244,6 +244,7 @@ const ProductList = () => {
               header={[
                 "Name",
                 "Price",
+                "Category",
                 "Image",
                 "Description",
                 "Indication",

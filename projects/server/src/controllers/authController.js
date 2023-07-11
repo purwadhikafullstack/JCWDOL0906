@@ -21,95 +21,98 @@ module.exports = {
         req.body;
 
       console.log(req.body);
-            if (isNaN(phone_number)) {
-                return res.status(400).send({
-                    message: 'Please input a number'
-                })
-            };
-            if (phone_number.length < 8 || phone_number.length > 13) {
-                return res.status(400).send({
-                    message: 'Please input your valid phone number'
-                })
-            };
-            if (password !== password_confirmation) {
-                return res.status(400).send({
-                    message: 'Password does not match'
-                })
-            };
-            const passwordRegex =
-                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
-            if (!passwordRegex.test(password)) {
-                return res.status(400).send({
-                    message: 'Password must contain at least 8 characters including an uppercase letter, a symbol, and a number'
-                })
-            };
-            const salt = await bcrypt.genSalt(10);
-            const hashPass = await bcrypt.hash(password, salt);
-            const generateVerticationToken = (username) => {
-                let token = jwt.sign({ username }, "g-medsnial", {
-                    expiresIn: "30m",
-                });
-                return token;
-            };
+      if (isNaN(phone_number)) {
+        return res.status(400).send({
+          message: "Please input a number",
+        });
+      }
+      if (phone_number.length < 8 || phone_number.length > 13) {
+        return res.status(400).send({
+          message: "Please input your valid phone number",
+        });
+      }
+      if (password !== password_confirmation) {
+        return res.status(400).send({
+          message: "Password does not match",
+        });
+      }
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+      if (!passwordRegex.test(password)) {
+        return res.status(400).send({
+          message:
+            "Password must contain at least 8 characters including an uppercase letter, a symbol, and a number",
+        });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(password, salt);
+      const generateVerticationToken = (username) => {
+        let token = jwt.sign({ username }, "g-medsnial", {
+          expiresIn: "30m",
+        });
+        return token;
+      };
 
-            const result = await user.create({
-                username,
-                email,
-                phone_number,
-                password: hashPass,
-                role: 1,
-            });
+      const result = await user.create({
+        username,
+        email,
+        phone_number,
+        password: hashPass,
+        role: 1,
+      });
 
-            let payload = { id: result.id };
-            let token = jwt.sign(payload, "g-medsnial", {
-                expiresIn: "9999 years",
-            });
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "9999 years",
+      });
 
-            await user.update(
-                { verification_token: token },
-                {
-                    where: {
-                        id: result.id,
-                    },
-                },
-            );
+      await user.update(
+        { verification_token: token },
+        {
+          where: {
+            id: result.id,
+          },
+        }
+      );
 
-            
-            const verificationLink = `http://localhost:3000/verification/${token}`;
-            const tempEmail = fs.readFileSync(require.resolve("../templates/verification.html"),{ encoding: "utf8"});
-            // console.log (tempEmail);
-            const tempCompile = handlebars.compile(tempEmail);
-            const tempResult = tempCompile({ username, verificationLink });
-      
-            await transporter.sendMail(
-              {
-                from: `G-Medsnial <gmedsnial@gmial.com}>`,
-                to: email,
-                subject: "Verification Account",
-                html: tempResult,
-              },
-              (error, info) => {
-                if (error) {
-                throw new Error();
-                //   console.log(error);
-                } else {
-                  console.log("Email sent: " + info.response);
-                }
-              }
-            );
-            // if (userAlreadyExist) {
-            //     if (userAlreadyExist.is_verified) {
-            //         return res.status(400).send({
-            //             message: 'Your Email is already veriefied, please login'
-            //         });
-            //     } else {
-            //         return res.status(400).send({
-            //             message: 'Your email address exists, but it is not verified. Please verify your email'
-            //         });
-            //     }
-            // };
+      const verificationLink = `http://localhost:3000/verification/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/verification.html"),
+        { encoding: "utf8" }
+      );
+      // console.log (tempEmail);
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ username, verificationLink });
 
-        res.status(200).send({
+      await transporter.sendMail(
+        {
+          from: `G-Medsnial <gmedsnial@gmial.com}>`,
+          to: email,
+          subject: "Verification Account",
+          html: tempResult,
+        },
+        (error, info) => {
+          if (error) {
+            throw new Error();
+            //   console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        }
+      );
+      // if (userAlreadyExist) {
+      //     if (userAlreadyExist.is_verified) {
+      //         return res.status(400).send({
+      //             message: 'Your Email is already veriefied, please login'
+      //         });
+      //     } else {
+      //         return res.status(400).send({
+      //             message: 'Your email address exists, but it is not verified. Please verify your email'
+      //         });
+      //     }
+      // };
+
+      res.status(200).send({
         status: true,
         data: result,
         message: "Register success",
@@ -173,63 +176,60 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { emailOrUsername, password } = req.body;
-            if (!emailOrUsername || !password) {
-                return res.status(400).send({
-                    message: "please complete your data"
-                })
-            };
-            const userExist = await user.findOne({
-                where: {
-                    [Op.or]: [
-                        { email: emailOrUsername },
-                        { username: emailOrUsername },
-                    ],
-                },
-            });
-            if (!userExist) {
-                return res.status(400).send({
-                    status: false,
-                    message: "User not found",
-                }) 
-                };
-            const isvalid = await bcrypt.compare(password, userExist.password);
-            if (!isvalid) {
-                return res.status(400).send({
-                    status: false,
-                    message: "Wrong password",
-                })
-            };
-            const payload = {
-                id: userExist.id,
-                username: userExist.username,
-                role: userExist.role,
-                is_verified: userExist.is_verified,
-            };
-            const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
-            // mengambil id dari bearer token
-            const verifiedUser = jwt.verify(token, "g-medsnial", {
-                expiresIn: "1h",
-            });
+      if (!emailOrUsername || !password) {
+        return res.status(400).send({
+          message: "please complete your data",
+        });
+      }
+      const userExist = await user.findOne({
+        where: {
+          [Op.or]: [{ email: emailOrUsername }, { username: emailOrUsername }],
+        },
+      });
+      if (!userExist) {
+        return res.status(400).send({
+          status: false,
+          message: "User not found",
+        });
+      }
+      const isvalid = await bcrypt.compare(password, userExist.password);
+      if (!isvalid) {
+        return res.status(400).send({
+          status: false,
+          message: "Wrong password",
+        });
+      }
+      const payload = {
+        id: userExist.id,
+        username: userExist.username,
+        role: userExist.role,
+        is_verified: userExist.is_verified,
+      };
+      const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
+      // mengambil id dari bearer token
+      const verifiedUser = jwt.verify(token, "g-medsnial", {
+        expiresIn: "1h",
+      });
 
-            console.log(verifiedUser);
-            // pengecekan verifikasi
-            if (!verifiedUser.is_verified) {
-                return res.status(400).send({
-                    message: "please verify your account"
-                })
-              } else {
-            return res.status(200).send({
-            status: true,
-            message: "login success",
-           data: userExist,
-            token,
-             });
-            }
-             } catch (err) {
-               console.log(err);
-              return res.status(400).send(err);
-             }
-         },
+      console.log(verifiedUser);
+      // pengecekan verifikasi
+      if (!verifiedUser.is_verified) {
+        return res.status(400).send({
+          message: "please verify your account",
+        });
+      } else {
+        return res.status(200).send({
+          status: true,
+          message: "login success",
+          data: userExist,
+          token,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(400).send(err);
+    }
+  },
   reset_password: async (req, res) => {
     try {
       const { password, confirmPassword } = req.body;
@@ -372,6 +372,57 @@ module.exports = {
       });
     }
   },
+  confirm_email: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).send({
+          message: "Please Input Your Email Address",
+        });
+      }
+
+      if (!email.includes("@") || !email.endsWith(".com")) {
+        return res.status(400).send({
+          message: "Please enter a Valid Email Address",
+        });
+      }
+      let result = await user.findOne({ where: { email } });
+
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "1h",
+      });
+
+      await user.update(
+        { reset_token: token },
+        {
+          where: {
+            id: result.id,
+          },
+        }
+      );
+      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/reset.html"),
+        { encoding: "utf8" }
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ resetLink });
+
+      await transporter.sendMail({
+        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        to: email,
+        subject: "Reset Password",
+        html: tempResult,
+      });
+      res.status(200).send({
+        message: " Please Check Your Email",
+        result,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getProfile: async (req, res) => {
     try {
       const { userId } = req;
@@ -489,5 +540,4 @@ module.exports = {
       res.status(400).send(er);
     }
   },
-  
 };
