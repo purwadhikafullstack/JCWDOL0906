@@ -28,7 +28,6 @@ import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 
 import MyAccount from "./pages/userProfile/account";
-
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
