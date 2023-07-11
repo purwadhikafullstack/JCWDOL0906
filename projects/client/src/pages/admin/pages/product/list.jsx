@@ -28,7 +28,7 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [category, setCategory] = useState(0);
+  const [category, setCategories] = useState(0);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
   const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);

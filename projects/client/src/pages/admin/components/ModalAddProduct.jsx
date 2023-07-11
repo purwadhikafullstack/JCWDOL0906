@@ -45,16 +45,24 @@ const ModalAddProduct = ({
                 ""
               )}
             </FormControl>
+
             <FormControl>
-              <FormLabel>Category </FormLabel>
+              <FormLabel> Category </FormLabel>
               <Select
-                // value={category}
-                // onChange={(e) => setGender(e.target.value)}
-                id="is_default"
+                onChange={(e) => setCategory(e.target.value)}
+                id="category_id"
               >
-                <option value="">Choose Category </option>
-                <option value="0">Ibu dan Anak </option>
-                <option value="1">Yes</option>
+                <option value="">Select categories </option>
+                {newCategory.map((category, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={city.city_id + "/" + city.city_name}
+                    >
+                      {city.city_name}
+                    </option>
+                  );
+                })}
               </Select>
             </FormControl>
             <FormControl isInvalid={isError}>
