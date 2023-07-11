@@ -62,7 +62,6 @@ var dashRoutes = [
     component: Units,
     layout: "/admin",
   },
-
   // {
   //   name: "ACCOUNT PAGES",
   //   category: "account",

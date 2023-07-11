@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 // import model
 const db = require("../models");
 const user = db.User;
+const profile = db.Profile;
 // import jwt
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -20,7 +21,6 @@ module.exports = {
         req.body;
 
       console.log(req.body);
-
             if (isNaN(phone_number)) {
                 return res.status(400).send({
                     message: 'Please input a number'
@@ -43,10 +43,8 @@ module.exports = {
                     message: 'Password must contain at least 8 characters including an uppercase letter, a symbol, and a number'
                 })
             };
-
             const salt = await bcrypt.genSalt(10);
             const hashPass = await bcrypt.hash(password, salt);
-
             const generateVerticationToken = (username) => {
                 let token = jwt.sign({ username }, "g-medsnial", {
                     expiresIn: "30m",
@@ -99,7 +97,6 @@ module.exports = {
                 }
               }
             );
-
             // if (userAlreadyExist) {
             //     if (userAlreadyExist.is_verified) {
             //         return res.status(400).send({
@@ -124,27 +121,53 @@ module.exports = {
   },
   verification: async (req, res) => {
     try {
-      // const id = req.user.id;
-      const userExist = await user.findOne({
-        where: {
-          id: req.userId,
-        },
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).send({
+          message: "Please Input Your Email Address",
+        });
+      }
+
+      if (!email.includes("@") || !email.endsWith(".com")) {
+        return res.status(400).send({
+          message: "Please enter a Valid Email Address",
+        });
+      }
+      let result = await user.findOne({ where: { email } });
+
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "1h",
       });
 
       await user.update(
-        { is_verified: true },
+        { reset_token: token },
         {
           where: {
-            id: req.userId,
+            id: result.id,
           },
         }
       );
+      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/reset.html"),
+        { encoding: "utf8" }
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ resetLink });
+
+      await transporter.sendMail({
+        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        to: email,
+        subject: "Reset Password",
+        html: tempResult,
+      });
       res.status(200).send({
-        status: true,
-        message: "Your account is verified",
+        message: " Please Check Your Email",
+        result,
       });
     } catch (error) {
-      res.status(500).send(error);
+      console.log(error);
     }
   },
   login: async (req, res) => {
@@ -207,103 +230,55 @@ module.exports = {
               return res.status(400).send(err);
              }
          },
-  confirm_email: async (req, res) => {
-        try {
-            const {email} = req.body;
-            if(!email) {
-                return res.status(400).send({
-                    message: "Please Input Your Email Address",
-                });
-            }
+  reset_password: async (req, res) => {
+    try {
+      const { password, confirmPassword } = req.body;
+      console.log(password, confirmPassword);
+      if (!password || !confirmPassword)
+        return res.status(400).send({
+          message: "Please Complate Your Data",
+        });
+      if (password !== confirmPassword) {
+        return res.status(400).sedn({
+          message: "Password does not match",
+        });
+      }
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
 
-            if(!email.includes("@") || !email.endsWith(".com")) {
-                return res.status(400).send({
-                    message: "Please enter a Valid Email Address",
-                });
-            }
-            let result = await user.findOne ({ where: {email} });
-            
-            let payload = { id: result.id };
-            let token = jwt.sign(payload, "g-medsnial", {
-                expiresIn: "1h",
-            });
+      if (!passwordRegex.test(password)) {
+        return res.status(400).send({
+          message:
+            "Password must contain at least 8 characters including an uppercase letter, a symbol, and a number",
+        });
+      }
 
-            await user.update(
-                {reset_token: token},
-                {
-                where: {
-                    id: result.id,
-                }
-                }
-            )
-            const resetLink = `http://localhost:3000/resetpassword/${token}`;
-            const tempEmail = fs.readFileSync(require.resolve("../templates/reset.html"),{ encoding: "utf8"});
-            const tempCompile = handlebars.compile(tempEmail);
-            const tempResult = tempCompile({ resetLink });
-      
-            await transporter.sendMail(
-              {
-                from: `G-Medsnial <gmedsnial@gmial.com}>`,
-                to: email,
-                subject: "Reset Password",
-                html: tempResult,
-              });
-              res.status(200).send({
-                message: " Please Check Your Email",
-                result,
-              })
-        } catch (error) {
-            console.log(error);
-        }
-      },
-   reset_password: async (req, res) => {
-        try {
-            const { password, confirmPassword } = req.body;
-            console.log(password, confirmPassword)
-            if (!password || !confirmPassword)
-            return res.status(400).send({
-                message: "Please Complate Your Data",
-            })
-            if (password !== confirmPassword) {
-                return res.status(400).sedn({
-                    message: "Password does not match"
-                });
-            }
-            const passwordRegex =
-            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/;
+      let token = req.headers.authorization;
+      token = token.split(" ")[1];
+      const data = jwt.verify(token, "g-medsnial");
 
-            if (!passwordRegex.test(password)) {
-            return res.status(400).send({
-                message: 'Password must contain at least 8 characters including an uppercase letter, a symbol, and a number'
-                 });
-           }
+      console.log(data);
 
-           let token = req.headers.authorization;
-           token = token.split(" ") [1];
-           const data = jwt.verify(token, "g-medsnial");
+      const salt = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(password, salt);
 
-           console.log(data);
+      const userPassword = await user.update(
+        { password: hashPass },
+        { where: { id: data.id } }
+      );
 
-           const salt = await bcrypt.genSalt(10);
-           const hashPass = await bcrypt.hash(password, salt);
-
-           const userPassword = await user.update(
-            {password: hashPass},
-            { where: {id: data.id}}
-           );
-
-           res.send({
-            message: "Reset Password Succes",
-            data: userPassword,
-           });
-        } catch (error) {
-            console.log(error);
-            res.status(400).send({
-                message: "Server Error!"
-            });
-        }
-      },
- changePassword: async (req, res) => {
+      res.send({
+        message: "Reset Password Succes",
+        data: userPassword,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send({
+        message: "Server Error!",
+      });
+    }
+  },
+  changePassword: async (req, res) => {
     try {
       const { id, password, newPassword, confirmPassword } = req.body;
 
@@ -362,41 +337,157 @@ module.exports = {
         message: "Server Error!",
       });
     }
-  }, 
- keep_login: async (req, res) => {
-        try {
-          const { userId } = req;
-            // let getToken = req.dataToken
-            // console.log(getToken)
+  },
+  keep_login: async (req, res) => {
+    try {
+      const { userId } = req;
+      // let getToken = req.dataToken
+      // console.log(getToken)
 
-            const tokenUser = await db.User.findOne({
-                where: {
-                    id: userId
-                }
-            })
-            // console.log(tokenUser)
-            const payload = {
-                id: tokenUser.id,
-                username: tokenUser.username,
-                role: tokenUser.role,
-                is_verified: tokenUser.is_verified,
-            };
-            const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
-            res.status(201).send({
-                isError: false,
-                message: 'Token still valid',
-                data: tokenUser,
-                token
+      const tokenUser = await db.User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      // console.log(tokenUser)
+      const payload = {
+        id: tokenUser.id,
+        username: tokenUser.username,
+        role: tokenUser.role,
+        is_verified: tokenUser.is_verified,
+      };
+      const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
+      res.status(201).send({
+        isError: false,
+        message: "Token still valid",
+        data: tokenUser,
+        token,
+      });
+    } catch (error) {
+      // console.log(error)
+      res.status(401).send({
+        isError: true,
+        message: error.message,
+        data: null,
+      });
+    }
+  },
+  getProfile: async (req, res) => {
+    try {
+      const { userId } = req;
+      console.log(userId);
 
-            })
+      const profileData = await profile.findOne({
+        where: {
+          user_id: userId,
+        },
+      });
+      console.log(profileData);
+      if (!profileData) {
+        return res.status(400).send({
+          message: "No UserId found",
+        });
+      }
+      return res.status(200).json({
+        message: "Successfully get profile data",
+        result: profileData,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Error",
+      });
+    }
+  },
+  editProfile: async (req, res) => {
+    try {
+      const { userId } = req;
+      const { full_name, gender, birthdate } = req.body;
+      console.log("body:", req.body);
+      console.log("userId:", userId);
+      let fileUploaded = req.file;
+      console.log("fileUpload:", fileUploaded);
 
-        } catch (error) {
-            // console.log(error)
-            res.status(401).send({
-                isError: true,
-                message: error.message,
-                data: null
-            })
+      await profile.update(
+        {
+          full_name,
+          gender,
+          birthdate,
+          picture: `/public/profile/${fileUploaded.filename}`,
+        },
+        {
+          where: {
+            user_id: userId,
+          },
         }
-    },
+      );
+
+      const profileData = await profile.findOne({
+        where: {
+          user_id: userId,
+        },
+      });
+      console.log(profileData);
+
+      return res.status(200).json({
+        message: "Changes Saved",
+        result: profileData,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Error",
+      });
+    }
+  },
+  settingEmail: async (req, res) => {
+    try {
+      const { userId } = req;
+      const { email } = req.body;
+
+      const checkEmail = await user.findOne({
+        where: { email: email },
+        raw: true,
+      });
+      if (checkEmail) throw "Email have been used";
+
+      await user.update(
+        { email: email, is_verified: 0 },
+        {
+          where: { id: userId },
+        }
+      );
+
+      res.status(201).send({
+        status: "Success",
+        message: "Success change email",
+      });
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
+  editProfilePic: async (req, res) => {
+    try {
+      const { userId } = req;
+      let fileUploaded = req.file;
+
+      await profile.update(
+        {
+          picture: `/public/profile/${fileUploaded.filename}`,
+        },
+        {
+          where: {
+            id: userId,
+          },
+        }
+      );
+      res.status(200).send({
+        status: "Success",
+        message: "Succes upload user image",
+      });
+    } catch (err) {
+      res.status(400).send(er);
+    }
+  },
+  
 };
