@@ -27,7 +27,8 @@ import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 
-import MyAccount from "./pages/userProfile/account";
+import MyAccount from "./pages/user/profile/account";
+import UserTransaction from "./pages/user/transaction";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
@@ -97,6 +98,14 @@ function App() {
             element={<StoreProductDetail />}
           />
           <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/mytransaction" element={<UserTransaction />} />
+          <Route path="/mytransaction/waiting-payment" element={<UserTransaction />} />
+          <Route path="/mytransaction/waiting-confirmation" element={<UserTransaction />} />
+          <Route path="/mytransaction/received" element={<UserTransaction />} />
+          <Route path="/mytransaction/payment" element={<UserTransaction />} />
+          <Route path="/mytransaction/on-the-way" element={<UserTransaction />} />
+          <Route path="/mytransaction/on-process" element={<UserTransaction />} />
+          <Route path="/mytransaction/cancelled" element={<UserTransaction />} />
 
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>

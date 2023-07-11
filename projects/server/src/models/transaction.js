@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Transaction.belongsTo(models.User, {
-                foreignKey: "user_id"
-            }
-            );
-            Transaction.hasMany(models.Transaction_Details, {
-                foreignKey: 'transaction_code'
-            });
+            // Transaction.belongsTo(models.User, {
+            //     foreignKey: "user_id"
+            // }
+            // );
+            // Transaction.hasMany(models.Transaction_Details, {
+            //     foreignKey: 'transaction_code'
+            // });
         }
     }
     Transaction.init(
@@ -45,9 +45,8 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: false,
             },
             status: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: false,
+                type: DataTypes.STRING,
+                allowNull: true,
             },
             payment: {
                 type: DataTypes.INTEGER,

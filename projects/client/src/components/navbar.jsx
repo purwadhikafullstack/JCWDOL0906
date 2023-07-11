@@ -26,7 +26,7 @@ import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar";
 import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
-import MyAccount from "../pages/userProfile/account";
+import MyAccount from "../pages/user/profile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";

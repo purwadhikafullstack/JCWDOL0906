@@ -48,7 +48,7 @@ const ModalAddProduct = ({
 
             <FormControl>
               <FormLabel> Category </FormLabel>
-              <Select
+              {/* <Select
                 onChange={(e) => setCategory(e.target.value)}
                 id="category_id"
               >
@@ -63,7 +63,7 @@ const ModalAddProduct = ({
                     </option>
                   );
                 })}
-              </Select>
+              </Select> */}
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>

@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class Transaction_Details extends Model {
+    class TransactionDetails extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -19,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "product_id",
             //     },
             // });
-            Transaction_Details.belongsTo(models.Transaction, {
+            TransactionDetails.belongsTo(models.Transaction, {
                 foreignKey: 'transaction_code'
             })
 
         }
     }
-    Transaction_Details.init(
+    TransactionDetails.init(
         {
             transaction_code: {
                 type: DataTypes.UUID,
@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {
             sequelize,
-            modelName: "Transaction_Details",
+            modelName: "transaction_details",
         }
     );
-    return Transaction_Details;
+    return TransactionDetails;
 };
