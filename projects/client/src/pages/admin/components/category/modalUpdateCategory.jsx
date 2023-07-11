@@ -1,5 +1,3 @@
-/** @format */
-
 import {
 	Button,
 	FormControl,
@@ -13,8 +11,6 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	Textarea,
-	useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
@@ -22,12 +18,9 @@ const ModalUpdateCategory = ({
 	Open,
 	Close,
 	isError,
-	Data,
 	Title,
-	SetUnit,
 	Cancel,
 	Submit,
-	setNewProduct,
 }) => {
 	// console.log(Data);
 	return (
