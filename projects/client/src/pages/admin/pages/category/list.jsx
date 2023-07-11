@@ -13,12 +13,11 @@ import axios from "axios";
 import { swalFailed, swalSuccess } from "../../../../helper/index";
 import ModalAddCategory from "../../../admin/components/category/modalAddCategory";
 import ModalUpdateCategory from "../../../admin/components/category/modalUpdateCategory";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 // import { AddIcon } from "@chakra-ui/icons";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { apiRequest } from "../../../../helper/api";
-
 
 const CategoryList = () => {
   const textColor = useColorModeValue("gray.700", "white");
@@ -32,20 +31,17 @@ const CategoryList = () => {
   const adminId = useSelector((state) => state.userSlice.value.id);
 
   const addCategory = async () => {
-
     try {
-      let category_name = document.getElementById("category_name").value
+      let category_name = document.getElementById("category_name").value;
       let image = document.getElementById("image").files[0];
       const formData = new FormData();
       let data = {
         category_name: category_name,
         createdBy: adminId,
-      }
+      };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      let result = await apiRequest.post("/categories/",
-        formData
-      );
+      let result = await apiRequest.post("/categories/", formData);
       // console.log("adminId",adminId);
       console.log(result);
       modalAdd.onClose();
@@ -69,7 +65,7 @@ const CategoryList = () => {
   const updateCategory = async (e) => {
     try {
       let image = document.getElementById("image").files[0];
-      let category_name = document.getElementById("category_name").value
+      let category_name = document.getElementById("category_name").value;
       let formData = new FormData();
       let data = {
         category_name: category_name,
@@ -78,17 +74,17 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch("/categories/" + selectedCategoryId, formData,
-        {
-
-        }
+      let result = await apiRequest.patch(
+        "/categories/" + selectedCategoryId,
+        formData,
+        {}
       );
 
       modalUpdate.onClose();
       getAllCategory();
       swalSuccess(result.data.message);
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
       swalFailed(error.response.data.message);
     }
   };
@@ -103,7 +99,6 @@ const CategoryList = () => {
       swalFailed(error.response.data.message);
     }
   };
-
 
   // setTotalPage(Math.ceil(result.data.count / 5));
   useEffect(() => {
@@ -146,7 +141,7 @@ const CategoryList = () => {
           </Box>
         </Flex>
       </Card>
-      <Flex justifyContent={'center'} mt={'20px'}>
+      <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
           activePage={activePage}
           totalPages={totalPage}

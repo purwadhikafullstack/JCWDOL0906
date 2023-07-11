@@ -14,7 +14,7 @@ import { swalFailed, swalSuccess } from "../../../../helper";
 // import ModalEditForm from "../Modals/Modal";
 import ModalProductUpdate from "../../components/ModalProductUpdate";
 import ModalAddProduct from "../../components/ModalAddProduct";
-import ModalProductUnit from '../../components/modalProductUnit';
+import ModalProductUnit from "../../components/modalProductUnit";
 import { useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
@@ -28,14 +28,17 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [optionDefaultUnit, setOptionDefaultUnit] = useState([])
-  const [optionConversionUnit, setOptionConversionUnit] = useState([])
+  const [category, setCategories] = useState(0);
+  // const [sortType, setSortType] = useState('')
+  // const [query, setQuery] = useState()
+  const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
+  const [optionConversionUnit, setOptionConversionUnit] = useState([]);
 
   //Product unit Data
-  const [conversionUnit, setConversionUnit] = useState(0)
-  const [defaultUnit, setDefaultUnit] = useState(0)
-  const [conversionUnitQty, setConversionUnitQty] = useState(0)
-  const [defaultUnitQty, setDefaultUnitQty] = useState(1)
+  const [conversionUnit, setConversionUnit] = useState(0);
+  const [defaultUnit, setDefaultUnit] = useState(0);
+  const [conversionUnitQty, setConversionUnitQty] = useState(0);
+  const [defaultUnitQty, setDefaultUnitQty] = useState(1);
 
   //Modal Events
   const modalUnits = useDisclosure();
@@ -54,6 +57,7 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+      let category = document.getElementById();
       let formData = new FormData();
       let data = {
         product_name: product_name,
@@ -67,10 +71,7 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.post(
-        "/product/add",
-        formData
-      );
+      let result = await apiRequest.post("/product/add", formData);
       getData();
       modalAdd.onClose();
       swalSuccess(result.data.message);
@@ -82,9 +83,7 @@ const ProductList = () => {
 
   const getData = async () => {
     try {
-      let result = await apiRequest.get(
-        "/product?page=" + activePage
-      );
+      let result = await apiRequest.get("/product?page=" + activePage);
       setProducts(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
@@ -93,48 +92,55 @@ const ProductList = () => {
     }
   };
 
+  const getAllCategory = async () => {
+    try {
+      let result = await apiRequest.get("/categories/");
+      setCategories(result.data.data);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
   const getDropdownUnits = async () => {
     try {
-      let resultDefault = await apiRequest.get('/unit/default')
-      setOptionDefaultUnit(resultDefault.data.data)
-      let resultConversion = await apiRequest.get('/unit/conversion')
-      setOptionConversionUnit(resultConversion.data.data)
+      let resultDefault = await apiRequest.get("/unit/default");
+      setOptionDefaultUnit(resultDefault.data.data);
+      let resultConversion = await apiRequest.get("/unit/conversion");
+      setOptionConversionUnit(resultConversion.data.data);
     } catch (error) {
-      swalFailed(error.response.data.message)
+      swalFailed(error.response.data.message);
     }
-  }
+  };
 
   const getDataUnit = async (e) => {
     try {
-      setProductId(e.target.id)
-      let result = await apiRequest.get('/unit/product/' + e.target.id)
-      const data = result.data.dataValues
-      setDefaultUnit(data.default_unit_id)
-      setConversionUnit(data.conversion_unit_id)
-      setConversionUnitQty(data.conversion_unit_qty)
-      setDefaultUnitQty(data.default_unit_qty)
+      setProductId(e.target.id);
+      let result = await apiRequest.get("/unit/product/" + e.target.id);
+      const data = result.data.dataValues;
+      setDefaultUnit(data.default_unit_id);
+      setConversionUnit(data.conversion_unit_id);
+      setConversionUnitQty(data.conversion_unit_qty);
+      setDefaultUnitQty(data.default_unit_qty);
       modalUnits.onOpen();
     } catch (error) {
       modalUnits.onOpen();
-      setDefaultUnit(0)
-      setConversionUnit(0)
-      setConversionUnitQty(0)
-      setDefaultUnitQty(1)
+      setDefaultUnit(0);
+      setConversionUnit(0);
+      setConversionUnitQty(0);
+      setDefaultUnitQty(1);
     }
-  }
+  };
 
   const getProductById = async (e) => {
     try {
-
-      setProductId(e.target.id)
-      let result = await apiRequest.get('/product/' + e.target.id)
-      setDefaultUnitQty(result.data.data.defaultQty)
+      setProductId(e.target.id);
+      let result = await apiRequest.get("/product/" + e.target.id);
+      setDefaultUnitQty(result.data.data.defaultQty);
       modalStock.onOpen();
-
     } catch (error) {
-      swalFailed(error.response.data.message)
+      swalFailed(error.response.data.message);
     }
-  }
+  };
 
   const updateProductUnit = async () => {
     try {
@@ -142,30 +148,28 @@ const ProductList = () => {
         default_unit_qty: defaultUnitQty,
         default_unit_id: defaultUnit,
         conversion_unit_qty: conversionUnitQty,
-        conversion_unit_id: conversionUnit
-      })
-      swalSuccess(result.data.message)
-      getData()
-      modalUnits.onClose()
+        conversion_unit_id: conversionUnit,
+      });
+      swalSuccess(result.data.message);
+      getData();
+      modalUnits.onClose();
     } catch (error) {
-      swalFailed(error.response.data.message)
+      swalFailed(error.response.data.message);
     }
-  }
+  };
 
   const updateProductStock = async () => {
     try {
       let result = await apiRequest.post("/product/" + productId + "/stock", {
         qty: defaultUnitQty,
-      })
-      swalSuccess(result.data.message)
-      getData()
-      modalStock.onClose()
+      });
+      swalSuccess(result.data.message);
+      getData();
+      modalStock.onClose();
     } catch (error) {
-      swalFailed(error.response.data.message)
+      swalFailed(error.response.data.message);
     }
-  }
-
-
+  };
 
   const updateDetailProduct = async (e) => {
     try {
@@ -190,18 +194,14 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch(
-        "/product/" + e.target.id,
-        data,
-        {
-          product_name: product_name,
-          description: description,
-          indication: indication,
-          dose: dose,
-          rules: rules,
-          updatedBy: adminId,
-        }
-      );
+      let result = await apiRequest.patch("/product/" + e.target.id, data, {
+        product_name: product_name,
+        description: description,
+        indication: indication,
+        dose: dose,
+        rules: rules,
+        updatedBy: adminId,
+      });
       modalUpdate.onClose();
       getData();
       swalSuccess(result.data.message);
@@ -212,8 +212,7 @@ const ProductList = () => {
 
   async function deleteOperation(e) {
     try {
-      let result = await apiRequest.delete("/product/delete/" + e.target.id
-      );
+      let result = await apiRequest.delete("/product/delete/" + e.target.id);
       getData();
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -249,10 +248,11 @@ const ProductList = () => {
                 "Indication",
                 "Dose",
                 "Rules",
+                "Category",
                 "Default Qty",
                 "Conversion Qty",
                 "Default Unit",
-                "Conversion Unit"
+                "Conversion Unit",
               ]}
               dataFill={[
                 "product_name",
@@ -260,23 +260,29 @@ const ProductList = () => {
                 "image",
                 "description",
                 "indication",
+                "category",
                 "dose",
                 "rules",
                 "defaultQty",
                 "conversionQty",
                 "defaultUnit",
-                "conversionUnit"
+                "conversionUnit",
               ]}
               action={[
                 (e) => {
                   modalAdd.onOpen();
                   getData(e);
                 },
-                (e) => { getProductById(e) },
+                (e) => {
+                  getProductById(e);
+                },
                 (e) => {
                   deleteOperation(e);
                 },
-                (e) => { getDataUnit(e); getDropdownUnits() }
+                (e) => {
+                  getDataUnit(e);
+                  getDropdownUnits();
+                },
               ]}
             />
           </Box>
@@ -298,7 +304,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
-        SetUnit={() => { }}
+        SetUnit={() => {}}
         Submit={() => addProduct()}
       />
 
@@ -307,7 +313,7 @@ const ProductList = () => {
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
         Data={dataDetail}
-        SetUnit={() => { }}
+        SetUnit={() => {}}
         Cancel={() => {
           modalUpdate.onClose();
         }}
@@ -317,12 +323,12 @@ const ProductList = () => {
       <ModalProductUnit
         Title="Product Unit"
         Open={modalUnits.isOpen}
-        Close={() => { modalUnits.onClose() }}
+        Close={() => {
+          modalUnits.onClose();
+        }}
         Submit={() => updateProductUnit()}
-
         DefaultUnit={optionDefaultUnit}
         ConversionUnit={optionConversionUnit}
-
         conversionUnit={conversionUnit}
         defaultUnit={defaultUnit}
         conversionUnitQty={conversionUnitQty}
@@ -336,7 +342,9 @@ const ProductList = () => {
       <ModalProductStock
         Title="Product Add Stock"
         Open={modalStock.isOpen}
-        Close={() => { modalStock.onClose() }}
+        Close={() => {
+          modalStock.onClose();
+        }}
         defaultUnitQty={defaultUnitQty}
         Submit={() => updateProductStock()}
         setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}

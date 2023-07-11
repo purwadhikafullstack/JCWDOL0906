@@ -44,18 +44,20 @@ import { clear } from "../redux/cartSlice";
 import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
-
-  const navigate = useNavigate();
-
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice);
   const handleLogOut = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(clear());
+    navigate('/')
+  };
+  const handleAccount = () => {
+    navigate("/myaccount");
   };
   const username = useSelector((state) => state.userSlice.value.username);
   const { cart } = useSelector((state) => state.cartSlice);
@@ -78,7 +80,6 @@ export const Navbar = () => {
   useEffect(() => {
     // console.log(username)
   }, [username]);
-
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
@@ -126,13 +127,10 @@ export const Navbar = () => {
               fit={"logo"}
               onClick={() => navigate('store/product')}
             />
-
             <Flex ml="auto" alignItems="center" spacing={5}>
               {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
                 <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
               </Avatar> : ''}
-
-
               <SearchBar />
               {isLogin ? (
                 <div>
@@ -146,7 +144,7 @@ export const Navbar = () => {
                       textColor="white"
                     />
                     <MenuList>
-                      <MenuItem>
+                      <MenuItem onClick={() => handleAccount()}>
                         My Account
                       </MenuItem>
                       <MenuItem>
@@ -155,7 +153,6 @@ export const Navbar = () => {
                       <MenuItem onClick={() => navigate("/mytransaction")}>
                         Transaction
                       </MenuItem>
-
                       <MenuItem onClick={() => handleLogOut()}>
                         Log Out
                       </MenuItem>

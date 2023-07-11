@@ -14,12 +14,28 @@ module.exports = (sequelize, DataTypes) => {
       //         name: "product_id",
       //     },
       // });
-      Product.hasOne(models.Cart, { foreignKey: 'product_id', as: 'Cart' });
+      // Product.hasOne(models.Cart, { foreignKey: "product_id", as: "Cart" });
       // Product.belongsTo(models.Cart, { foreignKey: 'product_id' });
       Product.belongsTo(models.Category, {
         foreignKey: "category_id",
       });
     }
+
+    // Product.hasMany(models.Discount, {
+    //     foreignKey: {
+    //         name: "product_id",
+    //     }
+    // });
+    // Product.hasMany(models.Transaction_Detail, {
+    //     foreignKey: {
+    //         name: "product_id",
+    //     }
+    // });
+    // Product.hasMany(models.Stock, {
+    //     foreignKey: {
+    //         name: "product_id"
+    //     }
+    // });
   }
   Product.init(
     {

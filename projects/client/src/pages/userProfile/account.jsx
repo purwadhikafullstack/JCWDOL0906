@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
+// import Address from "./address";
 
 const MyAccount = () => {
   const [fullName, setFullName] = useState();
@@ -198,55 +199,7 @@ const MyAccount = () => {
             </VStack>
           </form>
         )}
-        {currentBreadcrumb === "Address" && (
-          <Accordion mt={8} defaultIndex={[0]} allowMultiple>
-            <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Box flex="1" textAlign="left">
-                    Address
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                <VStack spacing={4} align="flex-start">
-                  {addresses.map((address, index) => (
-                    <Box
-                      key={index}
-                      w="100%"
-                      bg="gray.100"
-                      p={2}
-                      borderRadius="md"
-                    >
-                      {address}
-                      <IconButton
-                        icon={<CloseIcon />}
-                        size="sm"
-                        ml={2}
-                        onClick={() => handleDeleteAddress(index)}
-                      />
-                    </Box>
-                  ))}
-                  <FormControl>
-                    <Textarea
-                      value={newAddress}
-                      onChange={(e) => setNewAddress(e.target.value)}
-                      placeholder="Enter new address"
-                    />
-                  </FormControl>
-                  <Button
-                    leftIcon={<AddIcon />}
-                    colorScheme="blue"
-                    onClick={handleAddAddress}
-                  >
-                    Add Address
-                  </Button>
-                </VStack>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
-        )}
+        {/* {currentBreadcrumb === "Address" && <Address />} */}
       </Box>
     </Box>
   );
