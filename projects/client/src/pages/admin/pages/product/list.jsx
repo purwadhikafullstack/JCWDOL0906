@@ -28,11 +28,12 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [category, setCategories] = useState(0);
+
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
   const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
   const [optionConversionUnit, setOptionConversionUnit] = useState([]);
+  const [category, setCategories] = useState([]);
 
   //Product unit Data
   const [conversionUnit, setConversionUnit] = useState(0);
@@ -223,6 +224,10 @@ const ProductList = () => {
     getData();
   }, [activePage]);
 
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -242,13 +247,13 @@ const ProductList = () => {
               data={products}
               header={[
                 "Name",
+                "Category",
                 "Price",
                 "Image",
                 "Description",
                 "Indication",
                 "Dose",
                 "Rules",
-                "Category",
                 "Default Qty",
                 "Conversion Qty",
                 "Default Unit",
@@ -256,11 +261,11 @@ const ProductList = () => {
               ]}
               dataFill={[
                 "product_name",
+                "category_id",
                 "price",
                 "image",
                 "description",
                 "indication",
-                "category",
                 "dose",
                 "rules",
                 "defaultQty",
@@ -304,6 +309,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
+        categories={category}
         SetUnit={() => {}}
         Submit={() => addProduct()}
       />
