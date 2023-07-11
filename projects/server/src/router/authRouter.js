@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { c_auth } = require("../controllers");
 const { login } = require("../middleware/authorization.js");
+const { uploadProfileUser } = require("../helpers/multer");
 
 router.post("/auth/register", c_auth.register);
 router.post("/auth/login", c_auth.login);
@@ -15,6 +16,5 @@ router.patch(
   uploadProfileUser.single("picture"),
   c_auth.editProfile
 );
-
 
 module.exports = router;

@@ -92,6 +92,15 @@ const ProductList = () => {
     }
   };
 
+  const getAllCategory = async () => {
+    try {
+      let result = await apiRequest.get("/categories/");
+      setCategories(result.data.data);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
   const getDropdownUnits = async () => {
     try {
       let resultDefault = await apiRequest.get("/unit/default");
@@ -251,6 +260,7 @@ const ProductList = () => {
                 "image",
                 "description",
                 "indication",
+                "category",
                 "dose",
                 "rules",
                 "defaultQty",
