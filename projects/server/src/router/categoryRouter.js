@@ -1,7 +1,7 @@
 const express = require('express');
 const router = require('express').Router()
 const {c_category} = require('../controllers');
-const { uploadFile } = require("../middleware/multer");
+const { uploadFile } = require('../middleware/multer');
 
 
 router.get('/categories', c_category.getAllCategory);
