@@ -1,4 +1,3 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
   Button,
   useDisclosure,
@@ -13,30 +12,29 @@ import {
   FormLabel,
   Input,
   Alert,
+  Link,
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
 // import decode from "jwt-decode";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import { Field, Formik, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup'
+import { Field, Formik, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
-
-
+import { apiRequest } from "../helper/api";
 
 export const LoginForm = () => {
-
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid Email').required('Email is Required'),
-    password: Yup.string().required('Password is Required'),
-  })
+    email: Yup.string().email("Invalid Email").required("Email is Required"),
+    password: Yup.string().required("Password is Required"),
+  });
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,11 +45,11 @@ export const LoginForm = () => {
       password: document.getElementById("password").value,
     };
     try {
-
-      const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
-      const result = await Axios.post(url, data);
+      const url = "/auth/login";
+      const result = await apiRequest.post(url, data);
       console.log(result.data);
-      localStorage.setItem("user", JSON.stringify(result.data.data))
+      localStorage.setItem("user", JSON.stringify(result.data.token));
+
       dispatch(login(result.data.data));
 
       Swal.fire({
@@ -63,15 +61,15 @@ export const LoginForm = () => {
           container: "my-swal",
         },
       });
-      onClose()
+      onClose();
       if (result.data.data.role === 2) {
-        navigate("/admin/dashboard")
+        navigate("/admin/dashboard");
       } else {
-        navigate("/store/product")
-      }
+        navigate("/");
 
+      }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Swal.fire({
         icon: "error",
         title: "failed attempt",
@@ -81,7 +79,7 @@ export const LoginForm = () => {
 
         customClass: {
           container: "my-swal",
-        }
+        },
       });
     }
   };
@@ -97,23 +95,22 @@ export const LoginForm = () => {
         href={"#"}
         onClick={onOpen}
         pt={{ base: "3", md: 0 }}
-        borderRadius='10px'
+        borderRadius="10px"
       >
         Login
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign={"center"} color="blue.800">Login Now!</ModalHeader>
+          <ModalHeader textAlign={"center"} color="blue.800">
+            Login Now!
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={5}>
             <Formik
               initialValues={{
-                email: '',
-                password: '',
+                email: "",
+                password: "",
               }}
               validationSchema={LoginSchema}
               onSubmit={onLogin}
@@ -129,7 +126,11 @@ export const LoginForm = () => {
                     borderColor="blue.300"
                     placeholder="Email Address"
                   />
-                  <ErrorMessage name="email" component="div" style={{ color: "red" }} />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    style={{ color: "red" }}
+                  />
                   <FormLabel mt={5}>Password</FormLabel>
                   <Field
                     as={Input}
@@ -139,23 +140,43 @@ export const LoginForm = () => {
                     borderColor="blue.300"
                     placeholder="Password"
                   />
-                  <ErrorMessage name="password" component="div" style={{ color: "red" }} />
-                  {/* <ResetPassword/> */}
+
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    style={{ color: "red" }}
+                  />
+
                 </FormControl>
                 <ModalFooter>
-                  <Button
-                    mr={5} type="submit"
-                    colorScheme='blue.800'>
+                  <Button mr={5} type="submit" colorScheme="blue.800">
                     Login
                   </Button>
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
-                    fontSize={"md"} fontWeight="bold"
-                    color={"blue.800"} bg="blue.100"
-                    onClick={() => onLogin()}>Login</Button>
+                    fontSize={"md"}
+                    fontWeight="bold"
+                    color={"blue.800"}
+                    bg="blue.100"
+                    onClick={() => onLogin()}
+                  >
+                    Login
+                  </Button>
                 </ModalFooter>
               </Form>
             </Formik>
+            <Link
+              as={Button}
+              variant="link"
+              onClick={() => {
+                onClose();
+                navigate("/confirmemail");
+              }}
+              color="blue.400"
+              mt={5}
+            >
+              Forgot password? Reset here
+            </Link>
           </ModalBody>
         </ModalContent>
       </Modal>

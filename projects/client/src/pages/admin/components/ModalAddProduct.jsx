@@ -27,8 +27,6 @@ const ModalAddProduct = ({
   Submit,
   setNewProduct,
 }) => {
-  // console.log(Data);
-
   return (
     <>
       <Modal isOpen={Open} onClose={Close} size="2xl">

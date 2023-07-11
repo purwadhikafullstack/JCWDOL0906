@@ -9,7 +9,7 @@ router.get("/unit/default", c_units.getDefaultUnit);
 router.get("/unit/conversion", c_units.getConversionUnit);
 router.get("/unit/default/:id", c_units.getDefaultUnitById);
 router.get("/unit/conversion/:id", c_units.getConversionUnitById);
-router.post("/unit/product", c_units.addProductUnit);
+router.post("/unit/product/:id", c_units.addProductUnit);
 router.get("/unit/product/:id", c_units.getProductUnitById);
 router.get("/unit/test/:id", c_units.test);
 

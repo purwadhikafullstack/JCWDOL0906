@@ -23,9 +23,7 @@ const ModalEditForm = ({ Open, Close, isError, Data, Title, SetUnit, Cancel, Sub
                                 ""
                             )}
                         </FormControl>
-
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={Submit}>
                             Save

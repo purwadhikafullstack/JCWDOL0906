@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Product.hasOne(models.Product_Details, {
+      //     foreignKey: {
+      //         name: "product_id",
+      //     },
+      // });
+      Product.hasOne(models.Cart, { foreignKey: "product_id", as: "Cart" });
       // Product.belongsTo(models.Cart, { foreignKey: 'product_id' });
       Product.belongsTo(models.Category, {
         foreignKey: "category_id",
@@ -49,19 +55,23 @@ module.exports = (sequelize, DataTypes) => {
         unique: "image",
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       indication: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       dose: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       rules: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      category_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       is_deleted: {
@@ -82,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "product",
+      modelName: "Product",
     }
   );
   return Product;

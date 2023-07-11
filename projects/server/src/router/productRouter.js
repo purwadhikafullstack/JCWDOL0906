@@ -1,14 +1,15 @@
 const router = require("express").Router();
-const product = require("../models/product");
-const { uploadFile } = require("../middleware/productMulter");
-// const authorize = require('../')
+const { uploadFile } = require("../middleware/multer");
 const { c_products } = require("../controllers");
 
-router.post("/product/add", uploadFile, c_products.addProduct);
+router.post("/product", uploadFile, c_products.addProduct);
 router.get("/product", c_products.getProduct);
-router.delete("/product/delete/:id", c_products.deleteProduct);
-router.patch("/product/:id", c_products.updateProduct);
+router.get("/product/:id", c_products.getProductById);
+
+router.delete("/product/:id", c_products.deleteProduct);
+router.post("/product/:id/stock", c_products.addProductStock);
+
+router.patch("/product/:id", uploadFile, c_products.updateProduct);
 router.get("/store/product", c_products.getStoreProduct);
-router.get("/store/product/detail/:id", c_products.getStoreProductDetail);
 
 module.exports = router;

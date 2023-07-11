@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
                 }
             });
 
+            User.hasMany(models.Cart, {
+                foreignKey: 'user_id'
+            })
+
         }
     }
     User.init(
@@ -70,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            authorization_token: {
+            reset_token: {
                 type: DataTypes.STRING,
                 allowNull: true,
             },

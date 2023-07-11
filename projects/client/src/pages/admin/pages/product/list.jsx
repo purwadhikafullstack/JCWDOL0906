@@ -14,16 +14,16 @@ import { swalFailed, swalSuccess } from "../../../../helper";
 // import ModalEditForm from "../Modals/Modal";
 import ModalProductUpdate from "../../components/ModalProductUpdate";
 import ModalAddProduct from "../../components/ModalAddProduct";
-// import ModalProductUnit from '../../components/modalProductUnit';
+import ModalProductUnit from "../../components/modalProductUnit";
 import { useSelector } from "react-redux";
 import { Pagination } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import ModalProductStock from "../../components/modalProductStock";
+import { apiRequest } from "../../../../helper/api";
 
 const ProductList = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const [dataDetail, setDataDetail] = useState([]);
-  const [product_name, description, indication, dose, rules] = useState({});
-  const [NewProduct, setNewProduct] = useState("");
   const [productId, setProductId] = useState(0);
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
@@ -31,15 +31,18 @@ const ProductList = () => {
   const [category, setCategory] = useState(0);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
+  const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
+  const [optionConversionUnit, setOptionConversionUnit] = useState([]);
 
-  // const [defaultUnit, setDefaultUnit] = useState(0);
-  // const [conversionUnitQty, setConversionUnitQty] = useState(0);
-  // const [defaultUnitQty, setDefaultUnitQty] = useState(0);
+  //Product unit Data
+  const [conversionUnit, setConversionUnit] = useState(0);
+  const [defaultUnit, setDefaultUnit] = useState(0);
+  const [conversionUnitQty, setConversionUnitQty] = useState(0);
+  const [defaultUnitQty, setDefaultUnitQty] = useState(1);
 
   //Modal Events
-  const { onOpen } = useDisclosure();
-  // const modalUnits = useDisclosure();
-  // const modalStock = useDisclosure();
+  const modalUnits = useDisclosure();
+  const modalStock = useDisclosure();
   const modalAdd = useDisclosure();
   const modalUpdate = useDisclosure();
 
@@ -68,11 +71,7 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.post(
-        "http://localhost:8000/api/product/add",
-        formData
-      );
-      console.log(result);
+      let result = await apiRequest.post("/product/add", formData);
       getData();
       modalAdd.onClose();
       swalSuccess(result.data.message);
@@ -84,11 +83,8 @@ const ProductList = () => {
 
   const getData = async () => {
     try {
-      let result = await axios.get(
-        "http://localhost:8000/api/product" + `?page=${activePage}`
-      );
+      let result = await apiRequest.get("/product?page=" + activePage);
       setProducts(result.data.data);
-      console.log(result.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -96,17 +92,75 @@ const ProductList = () => {
     }
   };
 
-  // const getDataDetail = async (e) => {
-  //   try {
-  //     let result = await axios.get(
-  //       "http://localhost:8000/api/product/detail?detail=" + e.target.id
-  //     );
-  //     console.log(result);
-  //     setDataDetail(result.data.dataValues);
-  //   } catch (error) {
-  //     swalFailed(error.response.data.message);
-  //   }
-  // };
+  const getDropdownUnits = async () => {
+    try {
+      let resultDefault = await apiRequest.get("/unit/default");
+      setOptionDefaultUnit(resultDefault.data.data);
+      let resultConversion = await apiRequest.get("/unit/conversion");
+      setOptionConversionUnit(resultConversion.data.data);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
+  const getDataUnit = async (e) => {
+    try {
+      setProductId(e.target.id);
+      let result = await apiRequest.get("/unit/product/" + e.target.id);
+      const data = result.data.dataValues;
+      setDefaultUnit(data.default_unit_id);
+      setConversionUnit(data.conversion_unit_id);
+      setConversionUnitQty(data.conversion_unit_qty);
+      setDefaultUnitQty(data.default_unit_qty);
+      modalUnits.onOpen();
+    } catch (error) {
+      modalUnits.onOpen();
+      setDefaultUnit(0);
+      setConversionUnit(0);
+      setConversionUnitQty(0);
+      setDefaultUnitQty(1);
+    }
+  };
+
+  const getProductById = async (e) => {
+    try {
+      setProductId(e.target.id);
+      let result = await apiRequest.get("/product/" + e.target.id);
+      setDefaultUnitQty(result.data.data.defaultQty);
+      modalStock.onOpen();
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
+  const updateProductUnit = async () => {
+    try {
+      let result = await apiRequest.post("/unit/product/" + productId, {
+        default_unit_qty: defaultUnitQty,
+        default_unit_id: defaultUnit,
+        conversion_unit_qty: conversionUnitQty,
+        conversion_unit_id: conversionUnit,
+      });
+      swalSuccess(result.data.message);
+      getData();
+      modalUnits.onClose();
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
+  const updateProductStock = async () => {
+    try {
+      let result = await apiRequest.post("/product/" + productId + "/stock", {
+        qty: defaultUnitQty,
+      });
+      swalSuccess(result.data.message);
+      getData();
+      modalStock.onClose();
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
 
   const updateDetailProduct = async (e) => {
     try {
@@ -117,6 +171,7 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+
       let formData = new FormData();
       let data = {
         product_name: product_name,
@@ -130,18 +185,14 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await axios.patch(
-        "http://localhost:8000/api/product/" + e.target.id,
-        formDataata,
-        {
-          product_name: product_name,
-          description: description,
-          indication: indication,
-          dose: dose,
-          rules: rules,
-          updatedBy: adminId,
-        }
-      );
+      let result = await apiRequest.patch("/product/" + e.target.id, data, {
+        product_name: product_name,
+        description: description,
+        indication: indication,
+        dose: dose,
+        rules: rules,
+        updatedBy: adminId,
+      });
       modalUpdate.onClose();
       getData();
       swalSuccess(result.data.message);
@@ -152,9 +203,7 @@ const ProductList = () => {
 
   async function deleteOperation(e) {
     try {
-      let result = await axios.delete(
-        "http://localhost:8000/api/product/delete/" + e.target.id
-      );
+      let result = await apiRequest.delete("/product/delete/" + e.target.id);
       getData();
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -191,6 +240,10 @@ const ProductList = () => {
                 "Dose",
                 "Rules",
                 "Category",
+                "Default Qty",
+                "Conversion Qty",
+                "Default Unit",
+                "Conversion Unit",
               ]}
               dataFill={[
                 "product_name",
@@ -200,7 +253,10 @@ const ProductList = () => {
                 "indication",
                 "dose",
                 "rules",
-                "category",
+                "defaultQty",
+                "conversionQty",
+                "defaultUnit",
+                "conversionUnit",
               ]}
               action={[
                 (e) => {
@@ -208,10 +264,14 @@ const ProductList = () => {
                   getData(e);
                 },
                 (e) => {
-                  updateDetailProduct(e);
+                  getProductById(e);
                 },
                 (e) => {
                   deleteOperation(e);
+                },
+                (e) => {
+                  getDataUnit(e);
+                  getDropdownUnits();
                 },
               ]}
             />
@@ -221,11 +281,10 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePages={activePage}
+          defaultActivePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
-            console.log(pageInfo);
           }}
         />
       </Flex>
@@ -251,20 +310,35 @@ const ProductList = () => {
         Submit={() => updateDetailProduct()}
       />
 
-      {/* <ModalProductUnit
-                Title="Product Stock"
-                Open={modalStock.isOpen}
-                Close={() => { modalStock.onClose(); setDataUnit([]); setDefaultUnit([]); setConversionUnit([]) }}
-                Data={dataUnit}
-                DefaultUnit={optionDefaultUnit}
-                ConversionUnit={optionConversionUnit}
-                SetUnit={() => { }}
-                Submit={() => updateProductUnitStock()}
-                setDefaultUnit={(e) => setDefaultUnit(e.target.value)}
-                SetConversionUnit={(e) => setConversionUnit(e.target.value)}
-                setConversionUnitQty={(e) => setConversionUnitQty(e.target.value)}
-                setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
-            /> */}
+      <ModalProductUnit
+        Title="Product Unit"
+        Open={modalUnits.isOpen}
+        Close={() => {
+          modalUnits.onClose();
+        }}
+        Submit={() => updateProductUnit()}
+        DefaultUnit={optionDefaultUnit}
+        ConversionUnit={optionConversionUnit}
+        conversionUnit={conversionUnit}
+        defaultUnit={defaultUnit}
+        conversionUnitQty={conversionUnitQty}
+        defaultUnitQty={defaultUnitQty}
+        SetDefaultUnit={(e) => setDefaultUnit(e.target.value)}
+        SetConversionUnit={(e) => setConversionUnit(e.target.value)}
+        SetConversionUnitQty={(e) => setConversionUnitQty(e.target.value)}
+        SetDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
+      />
+
+      <ModalProductStock
+        Title="Product Add Stock"
+        Open={modalStock.isOpen}
+        Close={() => {
+          modalStock.onClose();
+        }}
+        defaultUnitQty={defaultUnitQty}
+        Submit={() => updateProductStock()}
+        setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
+      />
     </>
   );
 };

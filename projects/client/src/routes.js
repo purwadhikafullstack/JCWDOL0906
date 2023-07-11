@@ -2,14 +2,14 @@
 import React, { Component } from "react";
 import Product from "./pages/admin/pages/product";
 import Units from "./pages/admin/pages/units";
-
+import CategoryList from './pages/admin/pages/category/list';
 import {
   HomeIcon,
   StatsIcon,
   CreditIcon,
   SupportIcon,
   DocumentIcon,
-} from "./adminComponents/Icons/Icons";
+} from "./components/adminComponents/Icons/Icons";
 import UserProduct from "./pages/user/product";
 
 var dashRoutes = [
@@ -33,8 +33,8 @@ var dashRoutes = [
     path: "/category",
     name: "Category",
     rtlName: "لوحة القيادة",
-    icon: <CreditIcon color="inherit" />,
-    // component: Billing,
+    icon: <CreditIcon color='inherit' />,
+    component: CategoryList,
     layout: "/admin",
   },
   {
@@ -62,7 +62,6 @@ var dashRoutes = [
     component: Units,
     layout: "/admin",
   },
-
   // {
   //   name: "ACCOUNT PAGES",
   //   category: "account",

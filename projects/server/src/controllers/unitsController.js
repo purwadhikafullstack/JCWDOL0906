@@ -1,4 +1,4 @@
-const { addStock, updateStock } = require('../helpers/units')
+const { addStock, updateStock, recalculateStock } = require('../helpers/units')
 const db = require('../models')
 const conversion_unit = db.conversion_unit
 const default_unit = db.default_unit
@@ -21,7 +21,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.status(400).json({ status: 'failed', message: error })
+            res.status(500).json({ status: 'failed', message: error })
         }
     },
     updateDefaultUnit: async (req, res) => {
@@ -40,7 +40,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.status(400).json({ status: 'failed', message: error })
+            res.status(500).json({ status: 'failed', message: error })
         }
     },
     addConversionUnit: async (req, res) => {
@@ -60,7 +60,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.status(400).json({ status: 'failed', message: error })
+            res.status(500).json({ status: 'failed', message: error })
         }
     },
     updateConversionUnit: async (req, res) => {
@@ -81,7 +81,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.status(400).json({ status: 'failed', message: error })
+            res.status(500).json({ status: 'failed', message: error })
         }
     },
 
@@ -94,7 +94,7 @@ module.exports = {
                 return res.status(400).json({ status: 'failed', data: {} })
             }
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
     getConversionUnit: async (req, res) => {
@@ -106,7 +106,7 @@ module.exports = {
                 return res.status(400).json({ status: 'failed', message: 'data not found', data: {} })
             }
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
     getDefaultUnitById: async (req, res) => {
@@ -123,7 +123,7 @@ module.exports = {
                 return res.status(400).json({ status: 'failed', data: {} })
             }
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
     getConversionUnitById: async (req, res) => {
@@ -140,11 +140,12 @@ module.exports = {
                 return res.status(400).json({ status: 'failed', message: 'data not found', data: {} })
             }
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
     addProductUnit: async (req, res) => {
-        const { product_id, default_unit_qty, default_unit_id, conversion_unit_qty, conversion_unit_id } = req.body
+        const { default_unit_qty, default_unit_id, conversion_unit_qty, conversion_unit_id } = req.body
+        const product_id = req.params.id
         try {
             const isExist = await product_unit.findOne({
                 where: {
@@ -158,13 +159,18 @@ module.exports = {
 
                 return res.status(200).json({ status: 'success', message: 'add product unit successfully' })
             } else {
-                await product_unit.update({
-                    default_unit_qty: default_unit_qty, default_unit_id: default_unit_id, conversion_unit_qty: conversion_unit_qty, conversion_unit_id: conversion_unit_id
-                }, { where: { product_id: product_id } })
-                return res.status(200).json({ status: 'success', message: 'add product unit successfully' })
+
+                const recalculate = await recalculateStock(product_id, conversion_unit_qty)
+                if (recalculate) {
+                    await product_unit.update({
+                        default_unit_qty: default_unit_qty, default_unit_id: default_unit_id, conversion_unit_qty: conversion_unit_qty, conversion_unit_id: conversion_unit_id
+                    }, { where: { product_id: product_id } })
+
+                    return res.status(200).json({ status: 'success', message: 'add product unit successfully' })
+                }
             }
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
     getProductUnitById: async (req, res) => {
@@ -179,7 +185,7 @@ module.exports = {
             return res.status(200).json({ status: 'success', dataValues })
 
         } catch (error) {
-            return res.status(400).json({ status: 'failed', message: error })
+            return res.status(500).json({ status: 'failed', message: error })
         }
     },
 

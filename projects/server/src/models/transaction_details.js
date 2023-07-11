@@ -19,15 +19,16 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "product_id",
             //     },
             // });
+            Transaction_Details.belongsTo(models.Transaction, {
+                foreignKey: 'transaction_code'
+            })
 
         }
     }
     Transaction_Details.init(
         {
-            transaction_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: false,
+            transaction_code: {
+                type: DataTypes.UUID,
             },
             product_id: {
                 type: DataTypes.INTEGER,

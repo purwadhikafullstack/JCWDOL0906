@@ -18,14 +18,12 @@ app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-// const authRouter = require("./router/authRouter");
-
-const authRouter = require("./router/authRouter");
-
-app.use("/api/auth", authRouter);
-
-const productRouter = require("./router/productRouter");
-app.use("/api", productRouter);
+// const authRouter= require("./router/authRouter");
+// app.use("/api/auth", authRouter);
+// const categoryRouter = require("./router/categoryRouter");
+// app.use("/api", categoryRouter);
+// const productRouter = require("./router/productRouter");
+// app.use("/api", productRouter);
 
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
@@ -38,9 +36,9 @@ app.get("/api/greetings", (req, res, next) => {
 // for (let routes in router.routes) {
 //   app.use("/api", routes);
 
-// for (routes of router.routes) {
-//   app.use("/api", routes);
-// }
+for (routes of router.routes) {
+  app.use("/api", routes);
+}
 // ===========================
 
 // not found
