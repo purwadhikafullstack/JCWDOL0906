@@ -5,9 +5,9 @@ const c_cart = require("./cartControllers");
 const c_category = require("./categoryController.js");
 
 module.exports = {
-	c_units,
-	c_products,
-	c_auth,
-	c_category,
-	c_cart,
+  c_units,
+  c_products,
+  c_auth,
+  c_category,
+  c_cart,
 };
