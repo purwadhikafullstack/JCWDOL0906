@@ -152,7 +152,7 @@ export const Navbar = () => {
                       <MenuItem>
                         Cart
                       </MenuItem>
-                      <MenuItem>
+                      <MenuItem onClick={() => navigate("/mytransaction")}>
                         Transaction
                       </MenuItem>
 
