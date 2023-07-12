@@ -28,7 +28,8 @@ import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 
 import MyAccount from "./pages/userProfile/account";
-
+import Address from "./pages/userProfile/address";
+import UserProfile from "./pages/userProfile/user";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
@@ -50,7 +51,6 @@ function App() {
   // const navigate = useNavigate();
 
   let keepLogin = async () => {
-
     let response = await CheckLogin();
     console.log(response);
     if (response.dataUser !== null) {
@@ -65,16 +65,13 @@ function App() {
     // }
 
     keepLogin();
-
   }, []);
 
   return (
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <HomePage />}
-            errorElement={<ErrorPage />} />
+          <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />

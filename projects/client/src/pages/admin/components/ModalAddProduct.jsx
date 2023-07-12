@@ -25,6 +25,7 @@ const ModalAddProduct = ({
   SetUnit,
   Cancel,
   Submit,
+  categories,
   setNewProduct,
 }) => {
   return (
@@ -44,6 +45,26 @@ const ModalAddProduct = ({
               ) : (
                 ""
               )}
+            </FormControl>
+
+            <FormControl>
+              <FormLabel> Category </FormLabel>
+              <Select
+                onChange={(e) => setCategory(e.target.value)}
+                id="category_id"
+              >
+                <option value="">Select categories </option>
+                {newCategory.map((category, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={city.city_id + "/" + city.city_name}
+                    >
+                      {city.city_name}
+                    </option>
+                  );
+                })}
+              </Select>
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>

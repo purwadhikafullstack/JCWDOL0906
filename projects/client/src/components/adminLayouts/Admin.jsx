@@ -5,6 +5,7 @@ import {
   Stack,
   Box,
   useColorMode,
+  Image
 } from "@chakra-ui/react";
 import Configurator from "../adminComponents/Configurator/Configurator";
 import Footer from "../adminComponents/Footer/Footer";
@@ -31,6 +32,7 @@ import bgAdmin from "../../assets/img/admin-background.png";
 import Sidebar from "../adminComponents/Sidebar/Sidebar";
 import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
 import ProtectedRoute from "../protectedRoute";
+import logo_gmedsnial from "../../assets/svg/logogmedsnial1.png"
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -126,11 +128,19 @@ export default function Dashboard(props) {
         logo={
           <Stack direction='row' spacing='12px' align='center' justify='center'>
             {colorMode === "dark" ? (
-              <GMedsnialLogo w='84px' h='40px' />
+             <Image
+              src={logo_gmedsnial}
+              height={'40px'}
+              weight={'84px'}
+             />
             ) : (
-              <GMedsnialLogo w='84px' h='40px' />
+              <Image
+              src={logo_gmedsnial}
+              height={'60px'}
+              weight={'84px'}
+             />
             )}
-            <Box
+            {/* <Box
               w='1px'
               h='20px'
               bg={colorMode === "dark" ? "white" : "gray.700"}
@@ -139,7 +149,7 @@ export default function Dashboard(props) {
               <ChakraLogoLight w='82px' h='21px' />
             ) : (
               <ChakraLogoDark w='82px' h='21px' />
-            )}
+            )} */}
           </Stack>
         }
         display='none'

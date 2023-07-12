@@ -124,53 +124,27 @@ module.exports = {
   },
   verification: async (req, res) => {
     try {
-      const { email } = req.body;
-      if (!email) {
-        return res.status(400).send({
-          message: "Please Input Your Email Address",
-        });
-      }
-
-      if (!email.includes("@") || !email.endsWith(".com")) {
-        return res.status(400).send({
-          message: "Please enter a Valid Email Address",
-        });
-      }
-      let result = await user.findOne({ where: { email } });
-
-      let payload = { id: result.id };
-      let token = jwt.sign(payload, "g-medsnial", {
-        expiresIn: "1h",
+      // const id = req.user.id;
+      const userExist = await user.findOne({
+        where: {
+          id: req.userId,
+        },
       });
 
       await user.update(
-        { reset_token: token },
+        { is_verified: true },
         {
           where: {
-            id: result.id,
+            id: req.userId,
           },
         }
       );
-      const resetLink = `http://localhost:3000/resetpassword/${token}`;
-      const tempEmail = fs.readFileSync(
-        require.resolve("../templates/reset.html"),
-        { encoding: "utf8" }
-      );
-      const tempCompile = handlebars.compile(tempEmail);
-      const tempResult = tempCompile({ resetLink });
-
-      await transporter.sendMail({
-        from: `G-Medsnial <gmedsnial@gmial.com}>`,
-        to: email,
-        subject: "Reset Password",
-        html: tempResult,
-      });
       res.status(200).send({
-        message: " Please Check Your Email",
-        result,
+        status: true,
+        message: "Your account is verified",
       });
     } catch (error) {
-      console.log(error);
+      res.status(500).send(error);
     }
   },
   login: async (req, res) => {
@@ -228,6 +202,57 @@ module.exports = {
     } catch (err) {
       console.log(err);
       return res.status(400).send(err);
+    }
+  },
+  confirm_email: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).send({
+          message: "Please Input Your Email Address",
+        });
+      }
+
+      if (!email.includes("@") || !email.endsWith(".com")) {
+        return res.status(400).send({
+          message: "Please enter a Valid Email Address",
+        });
+      }
+      let result = await user.findOne({ where: { email } });
+
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "1h",
+      });
+
+      await user.update(
+        { reset_token: token },
+        {
+          where: {
+            id: result.id,
+          },
+        }
+      );
+      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/reset.html"),
+        { encoding: "utf8" }
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ resetLink });
+
+      await transporter.sendMail({
+        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        to: email,
+        subject: "Reset Password",
+        html: tempResult,
+      });
+      res.status(200).send({
+        message: " Please Check Your Email",
+        result,
+      });
+    } catch (error) {
+      console.log(error);
     }
   },
   reset_password: async (req, res) => {

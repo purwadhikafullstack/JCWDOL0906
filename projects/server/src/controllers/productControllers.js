@@ -4,12 +4,12 @@ const { Op, QueryTypes } = require("sequelize");
 const { sequelize } = require("../models");
 const { addStock } = require("../helpers/units");
 const { successResponse, failedResponse } = require("../helpers/apiResponse");
-const default_unit = db.default_unit
+const default_unit = db.default_unit;
 
 const auth = db.auth;
 const product = db.product;
 const category = db.Category;
-const stock = db.stock
+const stock = db.stock;
 
 module.exports = {
   addProduct: async (req, res) => {
@@ -30,6 +30,7 @@ module.exports = {
       indication,
       dose,
       rules,
+      category,
       createdBy,
     } = data;
 
@@ -51,6 +52,7 @@ module.exports = {
           indication,
           dose,
           rules,
+          category,
           createdBy,
         });
         return res.status(200).json({ message: "Product added successfully" });
@@ -75,7 +77,8 @@ module.exports = {
       //   offset: (page - 1) * pageSize,
       // });
 
-      const data = await sequelize.query(`
+      const data = await sequelize.query(
+        `
       SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
@@ -91,10 +94,12 @@ module.exports = {
       WHERE p.is_deleted=0
       LIMIT ${pageSize}
       OFFSET ${(page - 1) * pageSize}
-      `, {
-        replacements: { pageSize: 'active', page: 'active' },
-        type: QueryTypes.SELECT
-      })
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
 
       res.status(200).send({
         data: data,
@@ -110,8 +115,9 @@ module.exports = {
   },
   getProductById: async (req, res) => {
     try {
-      const id = req.params.id
-      const [data] = await sequelize.query(`
+      const id = req.params.id;
+      const [data] = await sequelize.query(
+        `
       SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
@@ -125,13 +131,17 @@ module.exports = {
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE p.is_deleted=0 AND p.id=${id}
-      `, {
-        replacements: { id: 'active' },
-        type: QueryTypes.SELECT
-      })
-      res.status(200).json(successResponse("get data product success", data, ""));
+      `,
+        {
+          replacements: { id: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
+      res
+        .status(200)
+        .json(successResponse("get data product success", data, ""));
     } catch (error) {
-      res.status(500).json(failedResponse(error));;
+      res.status(500).json(failedResponse(error));
     }
   },
   updateProduct: async (req, res) => {
@@ -179,54 +189,60 @@ module.exports = {
   },
   addProductStock: async (req, res) => {
     try {
-      const data = await addStock(req.params.id, req.body.qty)
+      const data = await addStock(req.params.id, req.body.qty);
 
-      if (data) return res.status(200).json(successResponse("success add stock", "", ""))
-      res.status(400).json(failedResponse("add product stock failed, product unit not exists"))
+      if (data)
+        return res
+          .status(200)
+          .json(successResponse("success add stock", "", ""));
+      res
+        .status(400)
+        .json(
+          failedResponse("add product stock failed, product unit not exists")
+        );
     } catch (error) {
-      res.status(500).json(failedResponse(error))
+      res.status(500).json(failedResponse(error));
     }
   },
 
   updateProductStock: async (req, res) => {
     try {
-      const data = await updateStock(req.params.id, req.body.qty)
+      const data = await updateStock(req.params.id, req.body.qty);
 
-      res.status(200).json(successResponse("success add stock", "", ""))
+      res.status(200).json(successResponse("success add stock", "", ""));
     } catch (error) {
-      res.status(500).json(failedResponse(error))
+      res.status(500).json(failedResponse(error));
     }
   },
 
   getStoreProduct: async (req, res) => {
-    console.log(req.query.page)
-    let sort = 'p.product_name ASC'
-    let limit = 10
-    let offset = 0
-    let param = 'p.is_deleted=0'
-
+    console.log(req.query.page);
+    let sort = "p.product_name ASC";
+    let limit = 10;
+    let offset = 0;
+    let param = "p.is_deleted=0";
 
     if (req.query.sort && req.query.sort === "1") {
-      sort = 'p.product_name ASC'
+      sort = "p.product_name ASC";
     }
     if (req.query.sort && req.query.sort === "2") {
-      sort = 'p.product_name DESC'
+      sort = "p.product_name DESC";
     }
     if (req.query.sort && req.query.sort === "3") {
-      sort = 'p.price ASC'
+      sort = "p.price ASC";
     }
     if (req.query.sort && req.query.sort === "4") {
-      sort = 'p.price DESC'
+      sort = "p.price DESC";
     }
 
     if (req.query.page && req.query.page > 1) {
-      offset = (Number(req.query.page) - 1) * limit
+      offset = (Number(req.query.page) - 1) * limit;
     }
     if (req.query.category && req.query.category > 0) {
-      param += ` AND p.category_id=${Number(req.query.category)}`
+      param += ` AND p.category_id=${Number(req.query.category)}`;
     }
     if (req.query.name && req.query.name !== "") {
-      param += ` AND p.product_name LIKE "%${req.query.name}%"`
+      param += ` AND p.product_name LIKE "%${req.query.name}%"`;
     }
     try {
       // const { count, rows } = await product.findAndCountAll({
@@ -236,7 +252,8 @@ module.exports = {
       //   offset: offset,
       //   limit: 10
       // })
-      const data = await sequelize.query(`
+      const data = await sequelize.query(
+        `
       SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
@@ -253,34 +270,34 @@ module.exports = {
       ORDER BY ${sort}
       LIMIT ${limit}
       OFFSET ${offset}
-      `, {
-        replacements: { pageSize: 'active', page: 'active' },
-        type: QueryTypes.SELECT
-      })
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
       const count = data.length;
-      res.status(200).json({ count, data })
+      res.status(200).json({ count, data });
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ error })
+      console.log(error);
+      res.status(500).json({ error });
     }
   },
   getStoreProductDetail: async (req, res) => {
     try {
       let data = await product_detail.findOne({
         where: {
-          product_id: req.params.id
-        }
-      })
-      const { dataValues } = data
+          product_id: req.params.id,
+        },
+      });
+      const { dataValues } = data;
       if (dataValues) {
-        return res.status(200).json({ status: 'success', dataValues })
+        return res.status(200).json({ status: "success", dataValues });
       } else {
-        return res.status(400).json({ status: 'failed', data: {} })
+        return res.status(400).json({ status: "failed", data: {} });
       }
     } catch (error) {
-      return res.status(500).json({ status: 'failed', message: error })
+      return res.status(500).json({ status: "failed", message: error });
     }
-  }
+  },
 };
-
-
