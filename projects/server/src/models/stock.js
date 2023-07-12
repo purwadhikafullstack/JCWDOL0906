@@ -9,9 +9,15 @@ module.exports = (sequelize, DataTypes) => {
          */
         static asscociate(models) {
 
+            stock.hasMany(models.product, {
+                foreignKey: 'product_id'
+            })
+
             stock.belongsTo(models.product, {
                 foreignKey: 'product_id'
             })
+
+
         }
     }
     stock.init(

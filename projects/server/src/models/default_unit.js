@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
             //         name: "user_id",
             //     },
             // });
+            default_unit.hasMany(models.stock, {
+                foreignKey: 'default_unit_id'
+            })
         }
     }
     default_unit.init(

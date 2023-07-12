@@ -1,4 +1,3 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
   Button,
   useDisclosure,
@@ -13,6 +12,7 @@ import {
   FormLabel,
   Input,
   Alert,
+  Link,
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
+import { apiRequest } from "../helper/api";
 
 export const LoginForm = () => {
   const LoginSchema = Yup.object().shape({
@@ -44,11 +45,11 @@ export const LoginForm = () => {
       password: document.getElementById("password").value,
     };
     try {
-      const url = process.env.REACT_APP_API_BASE_URL + "/auth/login";
-      const result = await Axios.post(url, data);
+      const url = "/auth/login";
+      const result = await apiRequest.post(url, data);
       console.log(result.data);
-      localStorage.setItem("user", JSON.stringify(result.data.data));
-      localStorage.setItem("userToken", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.token));
+
       dispatch(login(result.data.data));
 
       Swal.fire({
@@ -64,10 +65,11 @@ export const LoginForm = () => {
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
       } else {
-        navigate("/store/product");
+        navigate("/");
+
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Swal.fire({
         icon: "error",
         title: "failed attempt",
@@ -138,12 +140,13 @@ export const LoginForm = () => {
                     borderColor="blue.300"
                     placeholder="Password"
                   />
+
                   <ErrorMessage
                     name="password"
                     component="div"
                     style={{ color: "red" }}
                   />
-                  {/* <ResetPassword/> */}
+
                 </FormControl>
                 <ModalFooter>
                   <Button mr={5} type="submit" colorScheme="blue.800">
@@ -162,6 +165,18 @@ export const LoginForm = () => {
                 </ModalFooter>
               </Form>
             </Formik>
+            <Link
+              as={Button}
+              variant="link"
+              onClick={() => {
+                onClose();
+                navigate("/confirmemail");
+              }}
+              color="blue.400"
+              mt={5}
+            >
+              Forgot password? Reset here
+            </Link>
           </ModalBody>
         </ModalContent>
       </Modal>

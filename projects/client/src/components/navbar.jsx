@@ -15,138 +15,172 @@ import {
   Menu,
   Button,
   MenuGroup,
+  Badge,
+  AvatarBadge,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
-// import {useNavigate, Link} from"react-router-dom";
+import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
+
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar";
-import logo_gmedsnial from "../assets/svg/logo_gmedsnial.svg";
+import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
 import MyAccount from "../pages/userProfile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { BsCart, BsCartPlus } from "react-icons/bs";
 import {
   DocumentIcon,
   PersonIcon,
   RocketIcon,
-} from "../adminComponents/Icons/Icons";
-import { NavLink, useNavigate } from "react-router-dom";
+} from "../components/adminComponents/Icons/Icons";
+
+import { clear } from "../redux/cartSlice";
 // import { logout } from "../redux/userSlice";
+import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
   let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userSlice);
   const navigate = useNavigate();
-  const handleAccount = () => {
-    navigate("/myaccount");
-  };
+  const user = useSelector((state) => state.userSlice);
   const handleLogOut = () => {
     localStorage.removeItem("user");
     dispatch(logout());
+    dispatch(clear());
+    navigate("/");
+  };
+  const handleAccount = () => {
+    navigate("/myaccount");
   };
   const username = useSelector((state) => state.userSlice.value.username);
+  const { cart } = useSelector((state) => state.cartSlice);
 
   useEffect(() => {
-    console.log(user.value.id);
-    if (user.value.id || user.value.id === 1) {
+    console.log("role", user.value.role);
+    if (user.value.role == 2) {
+      navigate("/admin/dashboard");
+    }
+    console.log("value", user.value.id);
+    if (user.value.id) {
       setIsLogin(true);
     } else {
       setIsLogin(false);
     }
-    console.log(isLogin);
   }, [user]);
+
   // const token = localStorage.getItem("token")
   useEffect(() => {
-    console.log(username);
+    // console.log(username)
   }, [username]);
+  const location = useLocation();
+  const path = location.pathname.split("/")[1];
 
   return (
-    <Box>
-      <Flex
-        bg={useColorModeValue("blue.50", "blue.100")}
-        color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={3}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
-        align={"center"}
-      >
+    <>
+      <Box>
         <Flex
-          flex={{ base: 1, md: "auto" }}
-          ml={{ base: -2 }}
-          display={{ base: "flex", md: "none" }}
+          // bg={useColorModeValue("blue.50", "blue.100")}
+          // color={useColorModeValue("gray.600", "white")}
+          minH={"60px"}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
+          borderBottom={3}
+          borderStyle={"solid"}
+          // borderColor={useColorModeValue("gray.200", "gray.900")}
+          align={"center"}
         >
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={"ghost"}
-            aria-label={"Toggle Navigation"}
-          />
-        </Flex>
-        <Flex
-          flex={{ base: 1 }}
-          justify={{ base: "center", md: "start", lg: "flex-end" }}
-          alignItems="center"
-        >
-          <Image
-            src={logo_gmedsnial}
-            height={"30px"}
-            alt={"Icon Logo"}
-            fit={"logo"}
-          />
-
-          <Flex ml="auto" alignItems="center" spacing={3}>
-            <SearchBar />
-            {isLogin ? (
-              <div>
-                <Menu direction="row">
-                  <Avatar
-                    as={MenuButton}
-                    mr="4"
-                    name={username}
-                    size="md"
-                    bg="blue.300"
-                    textColor="white"
-                  />
-                  <MenuList>
-                    <MenuItem onClick={() => handleAccount()}>Profile</MenuItem>
-                    <MenuItem>Address</MenuItem>
-                    <MenuItem>Transaction</MenuItem>
-                    <MenuItem onClick={() => handleLogOut()}>Log Out</MenuItem>
-                  </MenuList>
-                </Menu>
-                {/* <Button
-            display={{base : "solid", md: "inline-flex"}}
-            fontSize={"md"}
-            fontWeight="bold"
-            color={"blue.800"}
-            bg="blue.200"
-            pt={{ base: "3", md: 0}}
-            borderRadius='10px'
-            onClick={() => handleLogOut()}>
-          LogOut
-          </Button> */}
-              </div>
-            ) : (
-              <div>
-                <RegistrationForm />
-                <LoginForm />
-              </div>
-            )}
+          <Flex
+            flex={{ base: 1, md: "auto" }}
+            ml={{ base: -2 }}
+            display={{ base: "flex", md: "none" }}
+          >
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
+              }
+              variant={"ghost"}
+              aria-label={"Toggle Navigation"}
+            />
+          </Flex>
+          <Flex
+            flex={{ base: 1 }}
+            justify={{ base: "center", md: "start", lg: "flex-end" }}
+            alignItems="center"
+          >
+            <Image
+              src={logo_gmedsnial}
+              height={"60px"}
+              alt={"Icon Logo"}
+              fit={"logo"}
+              onClick={() => navigate("store/product")}
+            />
+            <Flex ml="auto" alignItems="center" spacing={5}>
+              {path === "store" || path === "cart" ? (
+                <Avatar
+                  size="sm"
+                  bg="blue.300"
+                  mr={3}
+                  icon={<BsCart fontSize="1.2rem" />}
+                  onClick={() => navigate("/cart")}
+                >
+                  <AvatarBadge
+                    placement="bottom-start"
+                    borderColor="papayawhip"
+                    bg="tomato"
+                    boxSize="1.8em"
+                  >
+                    {cart}
+                  </AvatarBadge>
+                </Avatar>
+              ) : (
+                ""
+              )}
+              <SearchBar />
+              {isLogin ? (
+                <div>
+                  <Menu direction="row">
+                    <Avatar
+                      as={MenuButton}
+                      mx="4px"
+                      name={username}
+                      size="sm"
+                      bg="blue.300"
+                      textColor="white"
+                    />
+                    <MenuList>
+                      <MenuItem onClick={() => handleAccount()}>
+                        My Account
+                      </MenuItem>
+                      <MenuItem>Cart</MenuItem>
+                      <MenuItem>Transaction</MenuItem>
+                      <MenuItem onClick={() => handleLogOut()}>
+                        Log Out
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+              ) : (
+                <div>
+                  <RegistrationForm />
+                  <LoginForm />
+                </div>
+              )}
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </>
   );
 };

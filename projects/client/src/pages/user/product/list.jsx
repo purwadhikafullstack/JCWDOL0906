@@ -1,43 +1,14 @@
 /* eslint-disable no-undef */
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Grid,
-  IconButton,
-  Image,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  Text,
-  Tooltip,
-  useColorModeValue,
-  VStack,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { swalFailed } from "../../../helper";
-import Pagination from "../../../components/pagination";
-import StoreProductFilter from "../../../components/store/product/storeProductFilter";
-import ProductCard from "../../../components/store/product/productCard";
+import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { Box, Button, Container, Flex, Grid, IconButton, Image, Input, Menu, MenuButton, MenuItem, MenuList, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Text, Tooltip, useColorModeValue, VStack, Wrap, WrapItem } from '@chakra-ui/react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { swalFailed } from '../../../helper'
+import Pagination from '../../../components/pagination'
+import StoreProductFilter from '../../../components/store/product/storeProductFilter'
+import ProductCard from '../../../components/store/product/productCard'
+import { apiRequest } from '../../../helper/api'
+
 
 const UserProductList = () => {
   const [product, setProduct] = useState([]);
@@ -49,17 +20,36 @@ const UserProductList = () => {
   const [records, setRecords] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const getData = async () => {
-    let params = "";
-    if (sort !== "") {
-      params = "?sort=" + sort;
-    } else {
-      params = "?sort=";
+    const getData = async () => {
+        let params = ""
+        if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
+        if (filterCategory !== 0) { params += "&category=" + filterCategory } else { params += "&category=" }
+        if (filterName !== "") { params += "&name=" + filterName } else { params += "&name=" }
+        try {
+            const result = await apiRequest.get("/store/product" + params + "&page=" + pageNumber)
+
+            let page = Math.ceil(result.data.count / 10);
+
+            let paginate = [];
+            for (let i = 0; i < page; i++) {
+                paginate.push({ no: i + 1 });
+            }
+            console.log(result.data)
+            setPaging(paginate);
+            setRecords(result.data.count);
+            setProduct(result.data.data)
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
     }
-    if (filterCategory !== 0) {
-      params += "&category=" + filterCategory;
-    } else {
-      params += "&category=";
+
+    const getCategory = async () => {
+        try {
+            const result = await apiRequest.get("/categories")
+            setCategory(result.data.data)
+        } catch (error) {
+            swalFailed(error.response.data.message)
+        }
     }
     if (filterName !== "") {
       params += "&name=" + filterName;
@@ -75,6 +65,10 @@ const UserProductList = () => {
       );
 
       let page = Math.ceil(result.data.count / 10);
+    useEffect(() => {
+        getData()
+        console.log(product)
+    }, [sort, pageNumber, filterCategory, filterName])
 
       let paginate = [];
       for (let i = 0; i < page; i++) {
@@ -88,27 +82,8 @@ const UserProductList = () => {
     }
   };
 
-  const getCategory = async () => {
-    try {
-      const result = await axios.get("http://localhost:8000/api/temp/category");
-      setCategory(result.data.data);
-    } catch (error) {
-      swalFailed(error.response.data.message);
-    }
-  };
-
-  const clearFilter = () => {
-    setFilterCategory(0);
-    setSort("");
-  };
-
-  useEffect(() => {
-    getData();
-  }, [sort, pageNumber, filterCategory, filterName]);
-
-  useEffect(() => {
-    getCategory();
-  }, []);
+  
+   
 
   return (
     <Flex flexDirection="column" alignItems="start" p={10} w="100%">
@@ -174,7 +149,7 @@ const UserProductList = () => {
         />
       </Flex>
     </Flex>
-  );
-};
+  )
 
-export default UserProductList;
+
+export default UserProductList
