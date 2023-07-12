@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       //     },
       // });
       // Product.hasOne(models.Cart, { foreignKey: "product_id", as: "Cart" });
-      // Product.belongsTo(models.Cart, { foreignKey: 'product_id' });
+      // Product.belongsTo(models.Cart, { foreignKey: "product_id" });
       Product.belongsTo(models.Category, {
         foreignKey: "category_id",
       });

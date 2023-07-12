@@ -62,7 +62,7 @@ const ProductList = () => {
       let formData = new FormData();
       let data = {
         product_name: product_name,
-        // category: category_id,
+        category_id: category,
         price: price,
         description: description,
         indication: indication,
@@ -73,7 +73,7 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.post("/product/add", formData);
+      let result = await apiRequest.post("/product", formData);
       getData();
       modalAdd.onClose();
       swalSuccess(result.data.message);
@@ -96,7 +96,7 @@ const ProductList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await apiRequest.get("/categories/");
+      let result = await apiRequest.get("/categories");
       setCategories(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -187,7 +187,7 @@ const ProductList = () => {
       let formData = new FormData();
       let data = {
         product_name: product_name,
-        // category: category_id,
+        category_id: category,
         price: price,
         description: description,
         indication: indication,
@@ -200,7 +200,7 @@ const ProductList = () => {
 
       let result = await apiRequest.patch("/product/" + e.target.id, formData, {
         product_name: product_name,
-        // category: category_id,
+        category_id: category,
         price: price,
         description: description,
         indication: indication,
@@ -218,7 +218,7 @@ const ProductList = () => {
 
   async function deleteOperation(e) {
     try {
-      let result = await apiRequest.delete("/product/delete/" + e.target.id);
+      let result = await apiRequest.delete("/product/" + e.target.id);
       getData();
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -266,7 +266,7 @@ const ProductList = () => {
               ]}
               dataFill={[
                 "product_name",
-                "category_id",
+                "category",
                 "price",
                 "image",
                 "description",
