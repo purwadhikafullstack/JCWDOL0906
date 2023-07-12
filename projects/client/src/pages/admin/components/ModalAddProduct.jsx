@@ -38,17 +38,15 @@ const ModalAddProduct = ({
             <FormControl isInvalid={isError}>
               <FormLabel>Product Name</FormLabel>
               <Input type="text" placeholder="Product Name" id="product_name" />
-
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
               ) : (
                 ""
               )}
             </FormControl>
-
             <FormControl>
               <FormLabel> Category </FormLabel>
-              <Select
+              {/* <Select
                 onChange={(e) => setCategory(e.target.value)}
                 id="category_id"
               >
@@ -63,7 +61,7 @@ const ModalAddProduct = ({
                     </option>
                   );
                 })}
-              </Select>
+              </Select> */}
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>

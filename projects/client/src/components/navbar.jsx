@@ -23,7 +23,7 @@ import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
 
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
-import { SearchBar } from "../components/searchbar";
+// import { SearchBar } from "../components/searchbar";
 import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
 import MyAccount from "../pages/userProfile/account";
@@ -131,7 +131,7 @@ export const Navbar = () => {
               {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
                 <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
               </Avatar> : ''}
-              <SearchBar />
+              {/* <SearchBar /> */}
               {isLogin ? (
                 <div>
                   <Menu direction="row">

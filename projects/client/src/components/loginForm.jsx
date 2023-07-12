@@ -64,10 +64,11 @@ export const LoginForm = () => {
       onClose();
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
-      } else {
-        navigate("/");
+      } 
+      // else {
+      //   navigate("/");
 
-      }
+      // }
     } catch (error) {
       // console.log(error);
       Swal.fire({
