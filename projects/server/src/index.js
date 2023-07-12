@@ -31,6 +31,9 @@ app.get("/api/greetings", (req, res, next) => {
   });
 });
 
+const addressRouter = require("./router/addressRouter");
+app.use("/api/address", addressRouter);
+
 // NOTE : Add your routes here
 
 // for (let routes in router.routes) {

@@ -95,7 +95,6 @@ const Address = () => {
       getAddress();
       // swalSuccess(result.data.message);
     } catch (error) {
-      
       // swalFailed(error.response.data.message);
     }
   };
