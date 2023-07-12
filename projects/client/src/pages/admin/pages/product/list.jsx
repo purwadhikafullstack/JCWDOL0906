@@ -28,6 +28,7 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [categories, setCategories] = useState([]);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
 
@@ -148,6 +149,15 @@ const ProductList = () => {
     }
   };
 
+  const getAllCategory = async () => {
+    try {
+      let result = await apiRequest.get("/categories");
+      setCategories(result.data.data);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
   async function deleteOperation(e) {
     try {
       let result = await axios.delete(
@@ -162,6 +172,10 @@ const ProductList = () => {
   useEffect(() => {
     getData();
   }, [activePage]);
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
 
   return (
     <>
@@ -231,6 +245,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
+        categories={categories}
         SetUnit={() => {}}
         Submit={() => addProduct()}
       />

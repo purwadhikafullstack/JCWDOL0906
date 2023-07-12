@@ -25,6 +25,7 @@ const ModalAddProduct = ({
   SetUnit,
   Cancel,
   Submit,
+  categories,
   setNewProduct,
 }) => {
   // console.log(Data);
