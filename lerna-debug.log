@@ -1,0 +1,16 @@
+0 silly argv {
+0 silly argv   _: [ 'add' ],
+0 silly argv   globs: [],
+0 silly argv   lernaVersion: '6.6.2',
+0 silly argv   '$0': '..\\..\\..\\AppData\\Roaming\\npm\\node_modules\\lerna\\dist\\cli.js',
+0 silly argv   pkg: 'bcrypt'
+0 silly argv }
+1 notice cli v6.6.2
+2 verbose rootPath C:\Users\LENOVO\JCWDOL0906
+3 error FetchError: request to https://registry.npmjs.org/bcrypt failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+3 error     at ClientRequest.<anonymous> (C:\Users\LENOVO\AppData\Roaming\npm\node_modules\lerna\node_modules\npm-registry-fetch\node_modules\minipass-fetch\lib\index.js:130:14)
+3 error     at ClientRequest.emit (node:events:513:28)
+3 error     at TLSSocket.socketErrorListener (node:_http_client:502:9)
+3 error     at TLSSocket.emit (node:events:525:35)
+3 error     at emitErrorNT (node:internal/streams/destroy:151:8)
+3 error     at emitErrorCloseNT (node:internal/streams/destroy:116:3)
