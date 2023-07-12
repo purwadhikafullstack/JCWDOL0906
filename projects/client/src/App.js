@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CheckLogin } from "./utils/checklogin";
 // import logo from "./logo.svg";
 import "./App.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Img } from "@chakra-ui/react";
 import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
 import { LoginForm } from "../src/components/loginForm";
@@ -26,10 +26,10 @@ import "slick-carousel/slick/slick-theme.css";
 import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
-
+import logo_gmedsnial from "./assets/svg/logogmedsnial1.png"
 import MyAccount from "./pages/userProfile/account";
 // import ProtectedRoute from "./protected/protectedroute";
-
+import { Loading } from "./components/loading";
 function App() {
   // const [message, setMessage] = useState("");
 
@@ -46,31 +46,67 @@ function App() {
 
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const [isLoading, setisLoading] = useState(true);
+  
 
   let keepLogin = async () => {
-
     let response = await CheckLogin();
     console.log(response);
     if (response.dataUser !== null) {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
     }
+    // setisLoading(false);
   };
   useEffect(() => {
+    // setisLoading(true);
     const userLogin = JSON.parse(localStorage.getItem("user"));
     // if (userLogin) {
     //   dispatch(login(userLogin));
     // }
+    setTimeout(() => {
+      setisLoading(false);
+    },3000);
 
     keepLogin();
-
   }, []);
 
   return (
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <BrowserRouter>
-        <Routes>
+        {/* <Routes>
+          <Route path="/" element={
+            <HomePage />}
+            errorElement={<ErrorPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/verification/:token" element={<Verification />} />
+          <Route path="/userhome" element={<UserHome /> }/>
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+              <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/confirm-email" element={<ConfirmEmail />} />
+          <Route path="/store/product" element={<UserProduct />} />
+          <Route path="/cart" element={<ShoppingCart />} />
+
+          <Route
+            path="/store/product/detail/:id"
+            element={<StoreProductDetail />}
+          />
+          <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/admin/unit" Component={Dashboard} />
+        </Routes> */}
+        {isLoading ? (
+          <Loading/>
+          ) : (
+            <Routes>
           <Route path="/" element={
             <HomePage />}
             errorElement={<ErrorPage />} />
@@ -97,12 +133,27 @@ function App() {
             element={<StoreProductDetail />}
           />
           <Route path="/myaccount" Component={MyAccount} />
-
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
+          )}
       </BrowserRouter>
     </ChakraProvider>
   );
 }
 
 export default App;
+
+ /* <div
+            style={{
+              display: "flex",
+              height: "80vh",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            > 
+            <Img
+              src={logo_gmedsnial}
+              className="w-30 h-25 align-middle rounded-full animate-bounce"
+            />
+            </div> */

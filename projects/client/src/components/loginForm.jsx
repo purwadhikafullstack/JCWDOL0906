@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-
+// import { Loading } from "./loading";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
@@ -150,9 +150,9 @@ export const LoginForm = () => {
 
                 </FormControl>
                 <ModalFooter>
-                  <Button mr={5} type="submit" colorScheme="blue.800">
+                  {/* <Button mr={5} type="submit" colorScheme="blue.800">
                     Login
-                  </Button>
+                  </Button> */}
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
                     fontSize={"md"}

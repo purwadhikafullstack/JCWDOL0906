@@ -41,10 +41,10 @@ import {
 
 import { clear } from "../redux/cartSlice";
 // import { logout } from "../redux/userSlice";
-import { login } from "../redux/userSlice";
+// import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
-  let navbarIcon = "black";
+  // let navbarIcon = "black";
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
