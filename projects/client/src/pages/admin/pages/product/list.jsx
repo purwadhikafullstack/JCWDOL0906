@@ -316,7 +316,7 @@ const ProductList = () => {
         Close={modalAdd.onClose}
         Data={dataDetail}
         categories={categories}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
@@ -325,7 +325,7 @@ const ProductList = () => {
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
         Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Cancel={() => {
           modalUpdate.onClose();
         }}
