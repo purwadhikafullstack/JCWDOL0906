@@ -54,14 +54,13 @@ export const Navbar = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(clear());
-    navigate('/')
+    navigate("/");
   };
   const handleAccount = () => {
     navigate("/myaccount");
   };
   const username = useSelector((state) => state.userSlice.value.username);
   const { cart } = useSelector((state) => state.cartSlice);
-
 
   useEffect(() => {
     console.log("role", user.value.role);
@@ -122,15 +121,32 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={'60px'}
+              height={"60px"}
               alt={"Icon Logo"}
               fit={"logo"}
-              onClick={() => navigate('store/product')}
+              onClick={() => navigate("store/product")}
             />
             <Flex ml="auto" alignItems="center" spacing={5}>
-              {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
-                <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
-              </Avatar> : ''}
+              {path === "store" || path === "cart" ? (
+                <Avatar
+                  size="sm"
+                  bg="blue.300"
+                  mr={3}
+                  icon={<BsCart fontSize="1.2rem" />}
+                  onClick={() => navigate("/cart")}
+                >
+                  <AvatarBadge
+                    placement="bottom-start"
+                    borderColor="papayawhip"
+                    bg="tomato"
+                    boxSize="1.8em"
+                  >
+                    {cart}
+                  </AvatarBadge>
+                </Avatar>
+              ) : (
+                ""
+              )}
               {/* <SearchBar /> */}
               {isLogin ? (
                 <div>
@@ -147,12 +163,8 @@ export const Navbar = () => {
                       <MenuItem onClick={() => handleAccount()}>
                         My Account
                       </MenuItem>
-                      <MenuItem>
-                        Cart
-                      </MenuItem>
-                      <MenuItem>
-                        Transaction
-                      </MenuItem>
+                      <MenuItem>Cart</MenuItem>
+                      <MenuItem>Transaction</MenuItem>
                       <MenuItem onClick={() => handleLogOut()}>
                         Log Out
                       </MenuItem>

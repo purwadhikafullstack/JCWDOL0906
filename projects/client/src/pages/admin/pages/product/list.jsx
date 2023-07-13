@@ -28,7 +28,7 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [category, setCategories] = useState(0);
+  const [category, setCategories] = useState([]);
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
   const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
@@ -223,6 +223,10 @@ const ProductList = () => {
     getData();
   }, [activePage]);
 
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -304,6 +308,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         Data={dataDetail}
+        categories={categories}
         SetUnit={() => {}}
         Submit={() => addProduct()}
       />

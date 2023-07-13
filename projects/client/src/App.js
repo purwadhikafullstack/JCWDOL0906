@@ -27,6 +27,8 @@ import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 import logo_gmedsnial from "./assets/svg/logogmedsnial1.png"
 import MyAccount from "./pages/userProfile/account";
+import Address from "./pages/userProfile/address";
+import UserProfile from "./pages/userProfile/user";
 // import ProtectedRoute from "./protected/protectedroute";
 import { Loading } from "./components/loading";
 import UploadPrescriptionPage from "./pages/prescriptionpage";
