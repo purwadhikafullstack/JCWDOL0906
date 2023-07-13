@@ -28,7 +28,8 @@ const ProductList = () => {
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [category, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
   const [optionDefaultUnit, setOptionDefaultUnit] = useState([]);
@@ -57,10 +58,11 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
-      let category = document.getElementById();
+      let category = document.getElementById("category_id").value;
       let formData = new FormData();
       let data = {
         product_name: product_name,
+        category_id: category,
         price: price,
         description: description,
         indication: indication,
@@ -71,7 +73,7 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.post("/product/add", formData);
+      let result = await apiRequest.post("/product", formData);
       getData();
       modalAdd.onClose();
       swalSuccess(result.data.message);
@@ -94,7 +96,7 @@ const ProductList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await apiRequest.get("/categories/");
+      let result = await apiRequest.get("/categories");
       setCategories(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -180,10 +182,12 @@ const ProductList = () => {
       let indication = document.getElementById("indication").value;
       let dose = document.getElementById("dose").value;
       let rules = document.getElementById("rules").value;
+      let category = document.getElementById("category_id").value;
 
       let formData = new FormData();
       let data = {
         product_name: product_name,
+        category_id: category,
         price: price,
         description: description,
         indication: indication,
@@ -194,8 +198,10 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch("/product/" + e.target.id, data, {
+      let result = await apiRequest.patch("/product/" + e.target.id, formData, {
         product_name: product_name,
+        category_id: category,
+        price: price,
         description: description,
         indication: indication,
         dose: dose,
@@ -212,7 +218,7 @@ const ProductList = () => {
 
   async function deleteOperation(e) {
     try {
-      let result = await apiRequest.delete("/product/delete/" + e.target.id);
+      let result = await apiRequest.delete("/product/" + e.target.id);
       getData();
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -246,13 +252,13 @@ const ProductList = () => {
               data={products}
               header={[
                 "Name",
+                "Category",
                 "Price",
                 "Image",
                 "Description",
                 "Indication",
                 "Dose",
                 "Rules",
-                "Category",
                 "Default Qty",
                 "Conversion Qty",
                 "Default Unit",
@@ -260,11 +266,11 @@ const ProductList = () => {
               ]}
               dataFill={[
                 "product_name",
+                "category",
                 "price",
                 "image",
                 "description",
                 "indication",
-                "category",
                 "dose",
                 "rules",
                 "defaultQty",
@@ -278,7 +284,8 @@ const ProductList = () => {
                   getData(e);
                 },
                 (e) => {
-                  getProductById(e);
+                  // modalUpdate.onOpen();
+                  getProductById(e.target.id);
                 },
                 (e) => {
                   deleteOperation(e);
@@ -309,7 +316,7 @@ const ProductList = () => {
         Close={modalAdd.onClose}
         Data={dataDetail}
         categories={categories}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
@@ -318,7 +325,7 @@ const ProductList = () => {
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
         Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Cancel={() => {
           modalUpdate.onClose();
         }}

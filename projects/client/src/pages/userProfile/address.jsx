@@ -95,6 +95,7 @@ const Address = () => {
       getAddress();
       // swalSuccess(result.data.message);
     } catch (error) {
+
       // swalFailed(error.response.data.message);
     }
   };
@@ -106,7 +107,7 @@ const Address = () => {
       );
       setNewCity(arrayCity);
       console.log(arrayCity);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const codeFilter = (e) => {
