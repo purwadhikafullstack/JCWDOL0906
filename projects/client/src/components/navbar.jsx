@@ -87,14 +87,14 @@ export const Navbar = () => {
     <>
       <Box>
         <Flex
-          // bg={useColorModeValue("blue.50", "blue.100")}
-          // color={useColorModeValue("gray.600", "white")}
+          bg={useColorModeValue("blue.50", "blue.100")}
+          color={useColorModeValue("gray.600", "white")}
           minH={"60px"}
           py={{ base: 2 }}
           px={{ base: 4 }}
           borderBottom={3}
           borderStyle={"solid"}
-          // borderColor={useColorModeValue("gray.200", "gray.900")}
+          borderColor={useColorModeValue("black")}
           align={"center"}
         >
           <Flex

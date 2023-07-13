@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             Transaction.belongsTo(models.User, {
                 foreignKey: "user_id"
-            }
-            );
+            });
             Transaction.hasMany(models.Transaction_Details, {
                 foreignKey: 'transaction_code'
+            });
+            Transaction.belongsTo(models.Address, {
+                foreignKey: "address_id"
             });
         }
     }
@@ -25,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV1
             },
             user_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false,
+            },
+            address_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false,
@@ -54,10 +61,13 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: false,
             },
+            prescription: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             shipping: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 allowNull: false,
-                defaultValue: false,
             },
             payment_receipt: {
                 type: DataTypes.STRING,

@@ -14,7 +14,6 @@ import { HomePage } from "./pages/home";
 import { LoginForm } from "../src/components/loginForm";
 import { RegistrationForm } from "../src/components/registerForm";
 import { ResetPassword } from "./pages/reset";
-
 import { ConfirmEmail } from "./pages/confirmemail";
 import Verification from "../src/pages/verification";
 import theme from "../src/theme/theme";
@@ -30,6 +29,8 @@ import logo_gmedsnial from "./assets/svg/logogmedsnial1.png"
 import MyAccount from "./pages/userProfile/account";
 // import ProtectedRoute from "./protected/protectedroute";
 import { Loading } from "./components/loading";
+import UploadPrescriptionPage from "./pages/prescriptionpage";
+import Prescription from "./pages/prescription";
 function App() {
   // const [message, setMessage] = useState("");
 
@@ -127,7 +128,7 @@ function App() {
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
-
+          <Route path="/prescription" element={<Prescription />} />
           <Route
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
