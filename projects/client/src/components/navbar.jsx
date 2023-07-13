@@ -65,7 +65,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     console.log("role", user.value.role);
-    if (user.value.role == 2) {
+    if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
     console.log("value", user.value.id);

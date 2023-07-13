@@ -31,7 +31,7 @@ module.exports = {
         const status = req.params.status
         try {
             const data = await sequelize.query(`
-            SELECT * FROM transactions WHERE status="${status}"
+            SELECT ts.*,ad.address FROM Transactions ts JOIN Addresses ad ON ts.addres_id=ad.id WHERE status="${status}"
             `, { type: QueryTypes.SELECT, })
 
             res.status(200).json(successResponse("", data, ""))
