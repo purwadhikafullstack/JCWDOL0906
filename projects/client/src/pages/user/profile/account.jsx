@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
-// import Address from "./address";
+import Address from "./address";
 
 const MyAccount = () => {
   const [fullName, setFullName] = useState();
@@ -199,7 +199,7 @@ const MyAccount = () => {
             </VStack>
           </form>
         )}
-        {/* {currentBreadcrumb === "Address" && <Address />} */}
+        {currentBreadcrumb === "Address" && <Address />}
       </Box>
     </Box>
   );
