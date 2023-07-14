@@ -7,7 +7,7 @@ const { successResponse, failedResponse } = require("../helpers/apiResponse");
 const default_unit = db.default_unit;
 
 const auth = db.auth;
-const product = db.product;
+const product = db.Product;
 const category = db.Category;
 const stock = db.stock;
 
@@ -30,7 +30,7 @@ module.exports = {
       indication,
       dose,
       rules,
-      category,
+      category_id,
       createdBy,
     } = data;
 
@@ -46,13 +46,13 @@ module.exports = {
       if (!isExist) {
         await product.create({
           product_name,
+          category_id,
           price,
           image,
           description,
           indication,
           dose,
           rules,
-          category,
           createdBy,
         });
         return res.status(200).json({ message: "Product added successfully" });
