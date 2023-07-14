@@ -48,20 +48,17 @@ const ModalAddProduct = ({
             </FormControl>
             <FormControl>
               <FormLabel> Category </FormLabel>
-              {/* <Select
-                onChange={(e) => setCategory(e.target.value)}
-                id="category_id"
-              >
+              <Select  id="category_id">
                 <option value="">Select categories </option>
                 {categories.map((category, index) => {
-                  return (
-                    <option value={category.id} key={index}>
-                      {category.category_name}
-                    </option>
-                  );
+                  return {
+                    /* <option value={category.id} key={index}>
+                      {category.name}
+                    </option> */
+                  };
                 })}
-              </Select> */}
-            </FormControl>
+              </Select>
+            </FormControl> 
 
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>

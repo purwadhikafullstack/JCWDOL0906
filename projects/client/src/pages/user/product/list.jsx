@@ -42,7 +42,6 @@ const UserProductList = () => {
             swalFailed(error.response.data.message)
         }
     }
-
     const getCategory = async () => {
         try {
             const result = await apiRequest.get("/categories")
@@ -51,41 +50,14 @@ const UserProductList = () => {
             swalFailed(error.response.data.message)
         }
     }
-    if (filterName !== "") {
-      params += "&name=" + filterName;
-    } else {
-      params += "&name=";
-    }
-    try {
-      const result = await axios.get(
-        "http://localhost:8000/api/store/product" +
-          params +
-          "&page=" +
-          pageNumber
-      );
-
-      let page = Math.ceil(result.data.count / 10);
-    useEffect(() => {
-        getData()
-        console.log(product)
-    }, [sort, pageNumber, filterCategory, filterName])
-
-      let paginate = [];
-      for (let i = 0; i < page; i++) {
-        paginate.push({ no: i + 1 });
-      }
-      setPaging(paginate);
-      setRecords(result.data.count);
-      setProduct(result.data.rows);
-    } catch (error) {
-      swalFailed(error.response.data.message);
-    }
-  };
-
   
-   
+  useEffect(() => {
+      getData()
+      console.log(product)
+  }, [sort, pageNumber, filterCategory, filterName])
 
   return (
+    <>
     <Flex flexDirection="column" alignItems="start" p={10} w="100%">
       <Flex
         w="100%"
@@ -149,7 +121,7 @@ const UserProductList = () => {
         />
       </Flex>
     </Flex>
-  )
-
-
-export default UserProductList
+    </>
+  );
+};
+// export default UserProductList
