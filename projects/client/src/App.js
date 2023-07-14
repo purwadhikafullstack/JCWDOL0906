@@ -29,6 +29,7 @@ import UserProduct from "./pages/user/product";
 
 import MyAccount from "./pages/userProfile/account";
 import UserProfile from "./pages/userProfile/user";
+import CheckOut from "./pages/user/checkOut";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/checkout" element={<CheckOut />} />
 
           <Route
             path="/store/product/detail/:id"

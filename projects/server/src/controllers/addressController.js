@@ -117,4 +117,20 @@ module.exports = {
       });
     }
   },
+  deleteAddress: async (req, res) => {
+    try {
+      const data = await address.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      if (data) {
+        return res.status(200).json({ message: "Delete address successfully" });
+      } else {
+        return res.status(200).json({ message: "Address not found" });
+      }
+    } catch (error) {
+      return res.status(500).json({ status: "failed", message: error });
+    }
+  },
 };

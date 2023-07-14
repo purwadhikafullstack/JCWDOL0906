@@ -3,17 +3,21 @@ import React, { useEffect, useState } from "react";
 import FooterUserPage from "../../../components/footer";
 import { Navbar } from "../../../components/navbar";
 import List from "./list";
+import Shipping from "./shipping";
 
-const ShoppingCart = () => {
+const CheckOut = () => {
+  const [serviceCost, setServiceCost] = useState(0);
+
   return (
     <Box bg={useColorModeValue("blue.50", "blue.100")}>
       <Navbar />
       <div className="home-container">
-        <List />
+        <List serviceCost={serviceCost} />
+        <Shipping serviceCost={serviceCost} setServiceCost={setServiceCost} />
       </div>
       <FooterUserPage />
     </Box>
   );
 };
 
-export default ShoppingCart;
+export default CheckOut;

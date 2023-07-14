@@ -25,7 +25,7 @@ app.get("/api", (req, res) => {
 // const productRouter = require("./router/productRouter");
 // app.use("/api", productRouter);
 
-app.get("/api/greetings", (req, res, next) => {
+app.get("/api/greetings", (req, res, next) => { 
   res.status(200).json({
     message: "Hello, Student !",
   });
@@ -33,6 +33,9 @@ app.get("/api/greetings", (req, res, next) => {
 
 const addressRouter = require("./router/addressRouter");
 app.use("/api/address", addressRouter);
+
+const rajaOngkirRouter = require("./router/rajaOngkirRouter");
+app.use("/api/shipping", rajaOngkirRouter);
 
 // NOTE : Add your routes here
 

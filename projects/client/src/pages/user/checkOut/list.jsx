@@ -40,7 +40,7 @@ import { add } from "../../../redux/cartSlice";
 import ProductCard from "../../../components/store/product/productCard";
 import { apiRequest } from "../../../helper/api";
 
-const List = () => {
+const List = ({ serviceCost }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -157,10 +157,6 @@ const List = () => {
     getRecomendItem();
   }, [carts]);
 
-  const handleAccount = () => {
-    navigate("/checkout");
-  };
-
   return (
     <Box
       maxW={{ base: "3xl", lg: "7xl" }}
@@ -276,7 +272,7 @@ const List = () => {
                   ))
                 : "Cart is Empty"}
             </Container>
-            <Container maxW="container.xl" p={5} mt={5}>
+            {/* <Container maxW="container.xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
                 Our Recommendations
               </Heading>
@@ -315,7 +311,7 @@ const List = () => {
                       />
                     ))}
               </Grid>
-            </Container>
+            </Container> */}
           </Stack>
         </Stack>
 
@@ -339,13 +335,28 @@ const List = () => {
                   {rupiah(total_price)}
                 </Text>
               </Flex>
+              <Flex justify="space-between">
+                <Text fontSize="lg" fontWeight="semibold">
+                  Shipping cost
+                </Text>
+                <Text fontSize="xl" fontWeight="extrabold">
+                  {rupiah(serviceCost)}
+                </Text>
+              </Flex>
+              <Flex justify="space-between">
+                <Text fontSize="lg" fontWeight="semibold">
+                  Total cost
+                </Text>
+                <Text fontSize="xl" fontWeight="extrabold">
+                  {rupiah(Number(serviceCost) + Number(total_price))}
+                </Text>
+              </Flex>
             </Stack>
             <Button
               colorScheme="blue"
               size="lg"
               fontSize="md"
               rightIcon={<FaArrowRight />}
-              onClick={() => handleAccount()}
             >
               Beli
             </Button>
