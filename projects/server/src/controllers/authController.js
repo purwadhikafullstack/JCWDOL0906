@@ -381,7 +381,7 @@ module.exports = {
         role: tokenUser.role,
         is_verified: tokenUser.is_verified,
       };
-      const token = jwt.sign(payload, "g-medsnial", { expiresIn: "2m" });
+      const token = jwt.sign(payload, "g-medsnial", { expiresIn: "24h" });
       res.status(201).send({
         isError: false,
         message: "Token still valid",
