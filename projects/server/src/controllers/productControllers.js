@@ -7,7 +7,7 @@ const { successResponse, failedResponse } = require("../helpers/apiResponse");
 const default_unit = db.default_unit;
 
 const auth = db.auth;
-const product = db.product;
+const product = db.Product;
 const category = db.Category;
 const stock = db.stock;
 
@@ -30,7 +30,7 @@ module.exports = {
       indication,
       dose,
       rules,
-      category,
+      category_id,
       createdBy,
     } = data;
 
@@ -46,13 +46,13 @@ module.exports = {
       if (!isExist) {
         await product.create({
           product_name,
+          category_id,
           price,
           image,
           description,
           indication,
           dose,
           rules,
-          category,
           createdBy,
         });
         return res.status(200).json({ message: "Product added successfully" });
@@ -86,9 +86,9 @@ module.exports = {
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE p.is_deleted=0
@@ -117,17 +117,16 @@ module.exports = {
     try {
       const id = req.params.id;
       const [data] = await sequelize.query(
-        `
-      SELECT 
+        `SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
       s.conversion_unit_qty as conversionQty, 
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE p.is_deleted=0 AND p.id=${id}
@@ -261,9 +260,9 @@ module.exports = {
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE ${param}

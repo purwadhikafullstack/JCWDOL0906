@@ -29,8 +29,6 @@ import UserProduct from "./pages/user/product";
 
 import MyAccount from "./pages/user/profile/account";
 import UserTransaction from "./pages/user/transaction";
-import Address from "./pages/userProfile/address";
-import UserProfile from "./pages/userProfile/user";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {

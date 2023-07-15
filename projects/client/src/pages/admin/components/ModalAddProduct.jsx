@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -27,6 +28,7 @@ const ModalAddProduct = ({
   Submit,
   categories,
   setNewProduct,
+  setCategory
 }) => {
   return (
     <>
@@ -49,23 +51,21 @@ const ModalAddProduct = ({
 
             <FormControl>
               <FormLabel> Category </FormLabel>
-              {/* <Select
+              <Select
                 onChange={(e) => setCategory(e.target.value)}
                 id="category_id"
               >
                 <option value="">Select categories </option>
-                {newCategory.map((category, index) => {
+                {categories.map((category, index) => {
                   return (
-                    <option
-                      key={index}
-                      value={city.city_id + "/" + city.city_name}
-                    >
-                      {city.city_name}
+                    <option value={category.id} key={index}>
+                      {category.category_name}
                     </option>
                   );
                 })}
-              </Select> */}
+              </Select>
             </FormControl>
+
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>
               <Input type="text" placeholder="Price" id="price" />

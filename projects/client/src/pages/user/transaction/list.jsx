@@ -43,7 +43,7 @@ const List = () => {
                 <CardBody>
                     <Stack spacing='4'>
                         {transaction.map(i => <Card variant='outline'>
-                            <CardBody>
+                            <CardBody onClick={() => navigate('/mytransaction?status=' + i.status)} cursor='pointer'>
                                 <Flex alignItems='center'>
                                     {i.status} <Spacer /> <Badge p={1} mr={3} variant='subtle' colorScheme={i.status === 'Menunggu Pembayaran' ? 'orange' : i.status === 'Menunggu Konfirmasi' ? 'teal' : i.status === 'Pembayaran' ? 'blue' : i.status === 'Diproses' ? 'purple' : i.status === 'Dibatalkan' ? 'red' : i.status === 'Dikirim' ? 'yellow' : 'green'} fontSize='1.2em' borderRadius='lg'>
                                         {i.n_status}
