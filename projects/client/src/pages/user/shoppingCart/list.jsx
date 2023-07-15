@@ -34,6 +34,7 @@ const List = () => {
             })
 
             // console.log(result.data.data)
+            console.log('GET')
             setCart(result.data.data)
             let data = result.data.data
             let total_qty = 0
@@ -104,20 +105,16 @@ const List = () => {
         getCart()
         getData()
     }, [cart])
-
+    console.log('DATA USER', user.value.username)
     useEffect(() => {
         if (user.value.username === "") {
             setCart([])
             getData()
+        } else {
+            getCart()
         }
-    }, [user.value.username])
 
-    useEffect(() => {
-
-        setCart([])
-        getData()
-
-    }, [])
+    }, [user])
 
     useEffect(() => {
         getRecomendItem()
@@ -151,7 +148,7 @@ const List = () => {
                                         width="120px"
                                         height="120px"
                                         fit="cover"
-                                        src={i.image}
+                                        src={process.env.REACT_APP_IMAGE_API + i.image}
                                         alt=''
                                         draggable="false"
                                         loading="lazy"
@@ -189,8 +186,8 @@ const List = () => {
                             <Grid templateColumns='repeat(5, 1fr)' gap={6}>
                                 {
                                     recomendItem.length === 0 && user.value.username === "" ?
-                                        product.map((i, index) => <ProductCard key={index} image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />) :
-                                        recomendItem.map((i, index) => <ProductCard key={index} image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />)
+                                        product.map((i, index) => <ProductCard key={index} image={process.env.REACT_APP_IMAGE_API + i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />) :
+                                        recomendItem.map((i, index) => <ProductCard key={index} image={process.env.REACT_APP_IMAGE_API + i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} />)
                                 }
                             </Grid>
                         </Container>

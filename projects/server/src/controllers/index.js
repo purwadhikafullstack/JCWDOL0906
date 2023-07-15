@@ -3,6 +3,7 @@ const c_products = require("./productControllers");
 const c_auth = require("./authController.js");
 const c_cart = require("./cartControllers");
 const c_category = require("./categoryController.js");
+const c_transaction = require('./transactionControllers.js')
 
 module.exports = {
   c_units,
@@ -10,4 +11,5 @@ module.exports = {
   c_auth,
   c_category,
   c_cart,
+  c_transaction
 };

@@ -83,7 +83,7 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                         <Image
                           boxSize="100px"
                           objectFit="cover"
-                          src={process.env.REACT_APP_API_ADDRESS + el[i]}
+                          src={process.env.REACT_APP_IMAGE_API + el[i]}
                           alt=""
                         />
                       ) : (

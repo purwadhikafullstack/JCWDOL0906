@@ -93,7 +93,7 @@ const ListDefaultUnits = () => {
                         </Button>
                     </Flex>
                     <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-                        <TableCRUD data={units} header={['Unit Name']} dataFill={['unit_name']} action={(e) => { modalEdit.onOpen(); getDataEdit(e) }} />
+                        <TableCRUD data={units} header={['Unit Name']} dataFill={['unit_name']} action={[(e) => { modalEdit.onOpen(); getDataEdit(e) }]} />
                     </Box>
                 </Flex>
             </Card>

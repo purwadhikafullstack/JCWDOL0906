@@ -285,7 +285,7 @@ const ProductList = () => {
                 },
                 (e) => {
                   // modalUpdate.onOpen();
-                  getProductById(e.target.id);
+                  getProductById(e);
                 },
                 (e) => {
                   deleteOperation(e);
@@ -331,16 +331,15 @@ const ProductList = () => {
         }}
         Submit={() => updateDetailProduct()}
       />
-
       <ModalProductUnit
         Title="Product Unit"
         Open={modalUnits.isOpen}
-        Close={() => {
-          modalUnits.onClose();
-        }}
+        Close={() => { modalUnits.onClose() }}
         Submit={() => updateProductUnit()}
+
         DefaultUnit={optionDefaultUnit}
         ConversionUnit={optionConversionUnit}
+
         conversionUnit={conversionUnit}
         defaultUnit={defaultUnit}
         conversionUnitQty={conversionUnitQty}
@@ -354,9 +353,7 @@ const ProductList = () => {
       <ModalProductStock
         Title="Product Add Stock"
         Open={modalStock.isOpen}
-        Close={() => {
-          modalStock.onClose();
-        }}
+        Close={() => { modalStock.onClose() }}
         defaultUnitQty={defaultUnitQty}
         Submit={() => updateProductStock()}
         setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}

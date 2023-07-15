@@ -3,6 +3,7 @@ const r_auth = require('./authRouter');
 const r_product = require('./productRouter');
 const r_category = require('./categoryRouter')
 const r_cart = require('./cartRouter')
+const r_transaction = require('./transactionRouter')
 
 module.exports = {
   routes: [
@@ -10,6 +11,7 @@ module.exports = {
     r_auth,
     r_product,
     r_cart,
-    r_category
+    r_category,
+    r_transaction
   ]
 }

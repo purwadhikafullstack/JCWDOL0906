@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "lala1505",
-    "database": "gmedsnial",
-    "host": "127.0.0.1",
+    "username": "jcwdol0906",
+    "password": "jcwdol090615",
+    "database": "jcwdol0906",
+    "host": "purwadhikabootcamp.com",
     "dialect": "mysql"
   },
   "test": {
