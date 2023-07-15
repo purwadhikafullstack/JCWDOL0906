@@ -64,8 +64,8 @@ const List = () => {
       });
 
       // console.log(result.data.data)
+      console.log("GET");
       setCart(result.data.data);
-      // isi cart ini dikirim berbentuk []
       let data = result.data.data;
       let total_qty = 0;
       let total_price = 0;
@@ -141,18 +141,15 @@ const List = () => {
     getCart();
     getData();
   }, [cart]);
-
+  console.log("DATA USER", user.value.username);
   useEffect(() => {
     if (user.value.username === "") {
       setCart([]);
       getData();
+    } else {
+      getCart();
     }
-  }, [user.value.username]);
-
-  useEffect(() => {
-    setCart([]);
-    getData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     getRecomendItem();
@@ -166,7 +163,7 @@ const List = () => {
     <Box
       maxW={{ base: "3xl", lg: "7xl" }}
       mx="auto"
-      px={{ base: "4", md: "8", lg: "10" }}
+      px={{ base: "4", md: "8", lg: "12" }}
       py={{ base: "6", md: "8", lg: "12" }}
     >
       <Stack
@@ -185,7 +182,7 @@ const List = () => {
           >
             <Container maxW="container.xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
-                Shopping Cart
+                Keranjang
               </Heading>
               {carts.length > 0
                 ? carts.map((i) => (
@@ -204,7 +201,7 @@ const List = () => {
                           width="120px"
                           height="120px"
                           fit="cover"
-                          src={i.image}
+                          src={process.env.REACT_APP_IMAGE_API + i.image}
                           alt=""
                           draggable="false"
                           loading="lazy"
@@ -279,14 +276,14 @@ const List = () => {
             </Container>
             <Container maxW="container.xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
-                Our Recommendations
+                Rekomendasi untukmu
               </Heading>
               <Grid templateColumns="repeat(5, 1fr)" gap={6}>
                 {recomendItem.length === 0 && user.value.username === ""
                   ? product.map((i, index) => (
                       <ProductCard
                         key={index}
-                        image={i.image}
+                        image={process.env.REACT_APP_IMAGE_API + i.image}
                         product_name={i.product_name}
                         price={i.price}
                         id={i.id}
@@ -302,7 +299,7 @@ const List = () => {
                   : recomendItem.map((i, index) => (
                       <ProductCard
                         key={index}
-                        image={i.image}
+                        image={process.env.REACT_APP_IMAGE_API + i.image}
                         product_name={i.product_name}
                         price={i.price}
                         id={i.id}
@@ -334,7 +331,7 @@ const List = () => {
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">
-                  Sub-total {cart} items
+                  Total {cart} Barang
                 </Text>
                 <Text fontSize="xl" fontWeight="extrabold">
                   {rupiah(total_price)}

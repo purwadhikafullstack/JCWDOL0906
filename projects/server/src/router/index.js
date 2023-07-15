@@ -5,7 +5,7 @@ const r_category = require("./categoryRouter");
 const r_cart = require("./cartRouter");
 const r_address = require("./addressRouter");
 const r_ongkir = require("./rajaOngkirRouter");
-// const r_transaction = require("./transactionRouter");
+const r_transaction = require("./transactionRouter");
 
 module.exports = {
   routes: [
@@ -16,6 +16,6 @@ module.exports = {
     r_category,
     r_address,
     r_ongkir,
-    // r_transaction,
+    r_transaction,
   ],
 };

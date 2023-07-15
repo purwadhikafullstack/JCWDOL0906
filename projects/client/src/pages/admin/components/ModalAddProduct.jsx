@@ -28,6 +28,7 @@ const ModalAddProduct = ({
   Submit,
   categories,
   setNewProduct,
+  setCategory
 }) => {
   return (
     <>
@@ -50,7 +51,10 @@ const ModalAddProduct = ({
 
             <FormControl>
               <FormLabel> Category </FormLabel>
-              <Select id="category_id">
+              <Select
+                onChange={(e) => setCategory(e.target.value)}
+                id="category_id"
+              >
                 <option value="">Select categories </option>
                 {categories.map((category, index) => {
                   return (

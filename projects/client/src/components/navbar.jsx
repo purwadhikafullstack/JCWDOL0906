@@ -26,7 +26,7 @@ import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar";
 import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
-import MyAccount from "../pages/userProfile/account";
+import MyAccount from "../pages/user/profile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +54,7 @@ export const Navbar = () => {
     localStorage.removeItem("user");
     dispatch(logout());
     dispatch(clear());
-    navigate('/')
+    navigate("/");
   };
   const handleAccount = () => {
     navigate("/myaccount");
@@ -62,10 +62,9 @@ export const Navbar = () => {
   const username = useSelector((state) => state.userSlice.value.username);
   const { cart } = useSelector((state) => state.cartSlice);
 
-
   useEffect(() => {
     console.log("role", user.value.role);
-    if (user.value.role == 2) {
+    if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
     console.log("value", user.value.id);
@@ -122,15 +121,32 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={'60px'}
+              height={"60px"}
               alt={"Icon Logo"}
               fit={"logo"}
-              onClick={() => navigate('store/product')}
+              onClick={() => navigate("store/product")}
             />
             <Flex ml="auto" alignItems="center" spacing={5}>
-              {path === 'store' || path === 'cart' ? <Avatar size='sm' bg='blue.300' mr={3} icon={<BsCart fontSize='1.2rem' />} onClick={() => navigate('/cart')}>
-                <AvatarBadge placement="bottom-start" borderColor='papayawhip' bg='tomato' boxSize='1.8em'>{cart}</AvatarBadge>
-              </Avatar> : ''}
+              {path === "store" || path === "cart" ? (
+                <Avatar
+                  size="sm"
+                  bg="blue.300"
+                  mr={3}
+                  icon={<BsCart fontSize="1.2rem" />}
+                  onClick={() => navigate("/cart")}
+                >
+                  <AvatarBadge
+                    placement="bottom-start"
+                    borderColor="papayawhip"
+                    bg="tomato"
+                    boxSize="1.8em"
+                  >
+                    {cart}
+                  </AvatarBadge>
+                </Avatar>
+              ) : (
+                ""
+              )}
               <SearchBar />
               {isLogin ? (
                 <div>
@@ -150,7 +166,7 @@ export const Navbar = () => {
                       <MenuItem>
                         Cart
                       </MenuItem>
-                      <MenuItem>
+                      <MenuItem onClick={() => navigate("/mytransaction")}>
                         Transaction
                       </MenuItem>
                       <MenuItem onClick={() => handleLogOut()}>

@@ -36,7 +36,7 @@ module.exports = {
 
     try {
       const [a] = await sequelize.query(
-        `SELECT * FROM carts c JOIN products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
+        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
       );
 
       console.log(a);

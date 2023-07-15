@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
-import { swalFailed, swalSuccess } from "../../helper";
+import { swalFailed } from "../../../helper";
 
 const cities = require("./city.json").rajaongkir.results;
 const provinces = require("./province.json").rajaongkir.results;
@@ -48,7 +48,6 @@ const Address = () => {
   const [newCity, setNewCity] = useState([]);
   const [detail, setDetail] = useState([]);
 
-  
   const getAddress = async (e) => {
     try {
       let result = await axios.get("http://localhost:8000/api/address", {
