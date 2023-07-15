@@ -28,6 +28,7 @@ import {
   Stack,
   Text,
   Flex,
+  RadioGroup,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
@@ -40,8 +41,8 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
   const [weight, setWeight] = useState(1000);
   const [courier, setCourier] = useState("jne");
   const [shippingCosts, setShippingCosts] = useState([]);
-  const [showAddress, setShowAddress] = useState("");
-  const [selectedCityID, setSelectedCityId] = useState(0);
+  const [selectedAddress, setSelectedAddress] = useState(0);
+  const [detail, setDetail] = useState([]);
 
   // logic buat ambil city id yg is default terus disimpan di destination
   // berat total dari produk yang ada di cart simpan di weight
@@ -168,8 +169,11 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
           Authorization: "Bearer " + localStorage.getItem("userToken"),
         },
       });
-      setShowAddress(result.data.data);
-      console.log(result.data.data);
+      setDetail(result.data.data);
+      const defaultAddress = detail.filter((address) => {
+        return address.is_default == true;
+      });
+      setSelectedAddress(defaultAddress[0]);
     } catch (error) {
       swalFailed(error.response.data.message);
       console.log(error);
@@ -237,7 +241,6 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
   const getShippingCost = async () => {
     try {
       let body = { origin, destination, weight, courier };
-      console.log(body);
       let result = await axios.post(
         "http://localhost:8000/api/shipping",
         body,
@@ -248,7 +251,6 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
           },
         }
       );
-      console.log(result);
       setShippingCosts(result?.data?.data?.results[0]?.costs);
     } catch (error) {
       // swalFailed(error.response.data.message);
@@ -263,6 +265,10 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
   useEffect(() => {
     getShippingCost();
   }, [courier]);
+
+  // const handleAccount = () => {
+  //   navigate("/ordersuccess");
+  // };
 
   return (
     <Box
@@ -292,7 +298,12 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
               <Stack>
                 {detail.map((detail, index) =>
                   detail.is_default ? (
-                    <Radio size="lg" name="1" colorScheme="blue" defaultChecked>
+                    <Button
+                      size="lg"
+                      name="1"
+                      colorScheme="blue"
+                      onClick={() => setSelectedAddress(detail)}
+                    >
                       {detail.label +
                         " " +
                         detail.detail +
@@ -302,9 +313,14 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
                         detail.city_name +
                         " " +
                         detail.postal_code}
-                    </Radio>
+                    </Button>
                   ) : (
-                    <Radio size="lg" name="1" colorScheme="blue">
+                    <Button
+                      size="lg"
+                      name="1"
+                      colorScheme="blue"
+                      onClick={() => setSelectedAddress(detail)}
+                    >
                       {detail.label +
                         " " +
                         detail.detail +
@@ -314,7 +330,7 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
                         detail.city_name +
                         " " +
                         detail.postal_code}
-                    </Radio>
+                    </Button>
                   )
                 )}
               </Stack>
@@ -322,6 +338,7 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
+
       <form onSubmit={() => {}}>
         <VStack spacing={4}>
           <Text
@@ -386,14 +403,12 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
               </Select>
             </FormControl>
           </VStack>
-
-          <Button colorScheme="blue" type="submit">
-            Save
-          </Button>
         </VStack>
       </form>
     </Box>
   );
 };
+
+// check out di klik, tampilin modal yg nampilin detail transaksi dan gambar payment bank bca beswerta no rek nya
 
 export default Shipping;

@@ -65,6 +65,7 @@ const List = () => {
 
       // console.log(result.data.data)
       setCart(result.data.data);
+      // isi cart ini dikirim berbentuk []
       let data = result.data.data;
       let total_qty = 0;
       let total_price = 0;

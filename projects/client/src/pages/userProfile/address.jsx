@@ -48,6 +48,7 @@ const Address = () => {
   const [newCity, setNewCity] = useState([]);
   const [detail, setDetail] = useState([]);
 
+  
   const getAddress = async (e) => {
     try {
       let result = await axios.get("http://localhost:8000/api/address", {
