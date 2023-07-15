@@ -61,7 +61,8 @@ const ModalUploadPrescription = (props) => {
         )}
         {<AddressSelection/>}
         <Button
-          colorScheme="green"
+          color="white"
+          backgroundColor="blue.800"
           // onClick={uploadFile}
           isDisabled={!selectedFile}
         >
