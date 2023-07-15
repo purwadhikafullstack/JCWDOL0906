@@ -3,7 +3,7 @@ const { uploadFile } = require("../middleware/multer");
 
 const router = require("express").Router();
 
-router.post("/checkout", c_transaction.createOrder);
+router.post("/transaction/checkout", c_transaction.createOrder);
 router.get("/transaction", c_transaction.getUserTransactionStatus);
 router.get("/transaction/:code/code", c_transaction.getUserTransactionByCode);
 router.get(
