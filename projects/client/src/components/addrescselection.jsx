@@ -45,7 +45,7 @@ const AddressSelection = () => {
     ise='lg'
     onClick={() => setSelectedAddress(detail)}
     >
-    {detail.address_name +  " "  +  detail.province_name + " " + detail.city_name + " " + detail.postal_code}
+    {detail.address_name + " " +  detail.province_name + " " + detail.city_name + " " + detail.postal_code}
      </option>
       ) : (
     <option
