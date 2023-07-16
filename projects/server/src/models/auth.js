@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
           name: "user_id",
         },
       });
-      User.hasMany(models.Transaction, {
-        foreignKey: {
-          name: "user_id",
-        },
-      });
+      // User.hasMany(models.Transaction, {
+      //   foreignKey: {
+      //     name: "user_id",
+      //   }
+      // });
       User.hasMany(models.QnA, {
         foreignKey: {
           name: "user_id",

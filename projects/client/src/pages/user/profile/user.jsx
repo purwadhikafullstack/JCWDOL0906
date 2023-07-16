@@ -1,7 +1,7 @@
 import { Box, HStack, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import MyAccount from "./account";
-import { Navbar } from "../../components/navbar";
+import { Navbar } from "../../../components/navbar";
 
 const UserProfile = () => {
   return (

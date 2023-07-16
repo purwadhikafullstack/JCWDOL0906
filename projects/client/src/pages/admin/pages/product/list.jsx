@@ -285,7 +285,7 @@ const ProductList = () => {
                 },
                 (e) => {
                   // modalUpdate.onOpen();
-                  getProductById(e.target.id);
+                  getProductById(e);
                 },
                 (e) => {
                   deleteOperation(e);
@@ -331,7 +331,6 @@ const ProductList = () => {
         }}
         Submit={() => updateDetailProduct()}
       />
-
       <ModalProductUnit
         Title="Product Unit"
         Open={modalUnits.isOpen}
