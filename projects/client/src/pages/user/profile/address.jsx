@@ -36,7 +36,7 @@ const Address = () => {
   useEffect(() => {
     // axios.get("http://localhost:8000/api/auth/profile/", {
     //   headers: {
-    //     Authorization: "Bearer " + localStorage.getItem("userToken"),
+    //     Authorization: "Bearer " + localStorage.getItem("user"),
     //   },
     // });
   }, []);
@@ -52,7 +52,7 @@ const Address = () => {
     try {
       let result = await axios.get("http://localhost:8000/api/address", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("userToken"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
       setDetail(result.data.data);
@@ -89,7 +89,7 @@ const Address = () => {
 
       let result = await axios.post("http://localhost:8000/api/address", data, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("userToken"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
       getAddress();
@@ -106,7 +106,7 @@ const Address = () => {
       );
       setNewCity(arrayCity);
       console.log(arrayCity);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const codeFilter = (e) => {

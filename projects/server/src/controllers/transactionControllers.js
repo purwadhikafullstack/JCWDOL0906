@@ -12,6 +12,7 @@ module.exports = {
     createOrder: async (req, res) => {
         console.log("kesini");
         const { userId } = req;
+        console.log('user id =======>', userId)
         const { total_price, shipping, cart, address_id, sub_total, service_cost } =
             req.body;
         let code = "INV/" + uuidv4();

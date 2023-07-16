@@ -55,7 +55,7 @@
 //             // console.log(id)
 //             let response = await apiRequest.post("/transaction/checkout"), data, {
 //                 headers: {
-//                   Authorization: "Bearer " + localStorage.getItem("userToken")
+//                   Authorization: "Bearer " + localStorage.getItem("user")
 //                 }
 //             }
 //             let sum = 0
