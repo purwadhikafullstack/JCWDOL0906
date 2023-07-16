@@ -31,7 +31,7 @@ module.exports = {
         const status = req.params.status
         try {
             const data = await sequelize.query(`
-            SELECT ts.*,ad.address FROM Transactions ts JOIN Addresses ad ON ts.address_id=ad.id WHERE status="${status}" AND is_deleted=0
+            SELECT ts.*,ad.address_name FROM Transactions ts JOIN Addresses ad ON ts.address_id=ad.id WHERE status="${status}" AND is_deleted=0
             `, { type: QueryTypes.SELECT, })
 
             res.status(200).json(successResponse("", data, ""))
@@ -68,7 +68,7 @@ module.exports = {
         const code = req.params.code
         try {
             const data = await transaction.update({
-                is_deleted: 1
+                status: 'Dibatalkan'
             },
                 { where: { transaction_code: code } }
             )
@@ -101,6 +101,81 @@ module.exports = {
         } catch (error) {
             console.log(error)
             res.status(500).json(failedResponse(error))
+        }
+    },
+    getAdminTransaction: async (req, res) => {
+        console.log('KESINI')
+        try {
+            const page = parseInt(req.query.page) || 1;
+            const pageSize = parseInt(req.query.size) || 6;
+            const data = await sequelize.query(
+                `
+      SELECT ts.*,usr.username FROM 
+      Transactions ts 
+      JOIN Users usr ON usr.id=ts.user_id
+      ORDER BY ts.createdAt DESC
+      LIMIT ${pageSize}
+      OFFSET ${(page - 1) * pageSize}
+      `,
+                {
+                    replacements: { pageSize: "active", page: "active" },
+                    type: QueryTypes.SELECT,
+                }
+            );
+
+            const [count] = await sequelize.query(
+                `SELECT COUNT(ts.id) as count FROM 
+      Transactions ts 
+      JOIN Users usr ON usr.id=ts.user_id
+      ORDER BY ts.createdAt DESC
+      `,
+                {
+                    type: QueryTypes.SELECT,
+                }
+            );
+
+            res.status(200).send({
+                data: data,
+                count: count,
+                message: "Get All Transaction Succesfully",
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(failedResponse(error));
+        }
+    },
+    confirmTransaction: async (req, res) => {
+        const code = req.params.code
+        const action = req.params.action
+        try {
+
+            const status = await transaction.findOne({ attributes: ['status'] }, { where: { transaction_code: code } })
+            console.log(status)
+            const { dataValues } = status
+
+
+            if (action === 'confirm') {
+                if (dataValues.status !== 'Dibatalkan') return res.status(400).json(failedResponse("Transaksi tidak bisa dikonfirmasi"))
+                if (dataValues.status !== 'Menunggu Konfirmasi') return res.status(400).json(failedResponse("Status transaksi sudah terkonfirmasi"))
+                const data = await transaction.update({ status: 'Diproses' }, {
+                    where: {
+                        transaction_code: code
+                    }
+                })
+                res.status(200).json(successResponse("Success, transaction already confirmed", "", ""))
+            } else {
+                if (dataValues.status !== 'Menunggu Konfirmasi') return res.status(400).json(failedResponse("Transaksi tidak bisa dibatalkan"))
+                const data = await transaction.update({ status: 'Menunggu Pembayaran' }, {
+                    where: {
+                        transaction_code: code
+                    }
+                })
+                res.status(200).json(successResponse("Success, transaction rejected", "", ""))
+            }
+
+
+        } catch (error) {
+            return res.status(500).json(failedResponse(error))
         }
     }
 }
