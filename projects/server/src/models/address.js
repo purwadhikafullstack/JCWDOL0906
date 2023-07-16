@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      detail: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       province_name: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -26,13 +26,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
-<<<<<<< HEAD:projects/client/src/pages/userProfile/address.jsx
-import { swalFailed, swalSuccess } from "../../helper";
-import { apiRequest } from "../../helper/api";
-=======
-import { swalFailed } from "../../../helper";
->>>>>>> 517654eb08a0ca80bd7a95ec4973226cfbf02c14:projects/client/src/pages/user/profile/address.jsx
-
+import { swalFailed, swalSuccess } from "../../../helper/index";
+import { apiRequest } from "../../../helper/api";
 const cities = require("./city.json").rajaongkir.results;
 const provinces = require("./province.json").rajaongkir.results;
 const codes = require("./city.json").rajaongkir.results;

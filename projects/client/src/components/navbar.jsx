@@ -163,8 +163,8 @@ export const Navbar = () => {
                       <MenuItem onClick={() => handleAccount()}>
                         My Account
                       </MenuItem>
-                      <MenuItem>
-                        Cart
+                      <MenuItem onClick={() => navigate("/change-password")}>
+                        Change Password
                       </MenuItem>
                       <MenuItem onClick={() => navigate("/mytransaction")}>
                         Transaction

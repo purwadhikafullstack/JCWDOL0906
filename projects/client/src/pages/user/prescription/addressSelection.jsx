@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { VStack, HStack, Text, Stack, Button, Card, Select, Heading} from '@chakra-ui/react';
-import { apiRequest } from "../helper/api";
-import { swalFailed, swalSuccess } from "../helper/index";
-
+import { apiRequest } from "../../../helper/api";
+import { swalFailed, swalSuccess } from "../../../helper/index";
+import { Provider, useDispatch } from "react-redux";
+import { addAddress, addCourier } from "../../../redux/cartSlice";
 const AddressSelection = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [detail, setDetail] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
@@ -42,20 +44,24 @@ const AddressSelection = () => {
     {detail.map((detail, index) =>
     detail.is_default ? (
     <option
-    ise='lg'
-    onClick={() => setSelectedAddress(detail)}
-    >
-    {detail.address_name + " " +  detail.province_name + " " + detail.city_name + " " + detail.postal_code}
-     </option>
-      ) : (
-    <option
-    sise='lg'
-    onClick={() => setSelectedAddress(detail)}
-    >
-     {detail.address_name + " " + detail.province_name + " " + detail.city_name + " " + detail.postal_code}
-     </option>
-    )
-    )}
+          size="lg"
+          name="1"
+          onClick={() => {
+            setSelectedAddress(detail);
+            dispatch(addAddress({ address_id: detail.id }));
+            }}
+         >
+             {detail.label + " " + detail.address_name + " " + detail.province_name + " " + detail.city_name + " " + detail.postal_code}
+           </option>
+            ) : (
+           <option
+           sise='lg'
+           onClick={() => setSelectedAddress(detail)}
+         >
+             {detail.label + " " + detail.address_name + " " + detail.province_name + " " + detail.city_name + " " + detail.postal_code}
+            </option>
+           )
+         )}
     </Select>
     </Card>
   )

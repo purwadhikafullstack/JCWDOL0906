@@ -1,7 +1,7 @@
 import { Box, HStack, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
-import UploadPrescriptionPage from "./prescriptionpage"
-import { Navbar } from "../components/navbar";
+import UploadPrescriptionPage from "../../user/prescription/prescriptionpage"
+import { Navbar } from "../../../components/navbar";
 
 const Prescription = () => {
   return (

@@ -3,12 +3,11 @@ import { Formik, useFormik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { useSelector } from "react-redux";
-// import ModalChangeAddress from "../ModalChangeAddress";
-import { apiRequest } from "../helper/api";
-import { swalFailed, swalSuccess } from "../helper/index";
-import AddressSelection from "../components/addrescselection";
+import { apiRequest } from "../../../helper/api";
+import { swalFailed, swalSuccess } from "../../../helper/index";
+import AddressSelection from "../../user/prescription/addressSelection";
 
-const ModalUploadPrescription = (props) => {
+const Prescription = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [img, setImg] = useState();
   const inputFileRef = useRef();
@@ -73,4 +72,4 @@ const ModalUploadPrescription = (props) => {
   );
 };
 
-export default ModalUploadPrescription;
+export default Prescription;

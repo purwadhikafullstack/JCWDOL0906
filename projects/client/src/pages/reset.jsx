@@ -29,7 +29,7 @@ export const ResetPassword = () => {
 
   const resetPassword = async (values) => {
     try {
-      const url = '/auth/resetpassword';
+      const url = '/auth/reset-password/:token';
       if (token) {
         const response = await apiRequest.post(
           url,
@@ -61,14 +61,14 @@ export const ResetPassword = () => {
 
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed Attempt',
-        text: error.response.data.message,
-        customClass: {
-          container: 'my-swal',
-        },
-      });
+      // Swal.fire({
+      //   icon: 'error',
+      //   title: 'Failed Attempt',
+      //   text: error.response.data.message,
+      //   customClass: {
+      //     container: 'my-swal',
+      //   },
+      // });
     }
   };
 

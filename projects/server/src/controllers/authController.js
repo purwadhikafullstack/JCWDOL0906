@@ -212,6 +212,7 @@ module.exports = {
           message: "Please Input Your Email Address",
         });
       }
+      console.log(req.body);
 
       if (!email.includes("@") || !email.endsWith(".com")) {
         return res.status(400).send({
@@ -233,7 +234,7 @@ module.exports = {
           },
         }
       );
-      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const resetLink = `http://localhost:3000/reset-password/${token}`;
       const tempEmail = fs.readFileSync(
         require.resolve("../templates/reset.html"),
         { encoding: "utf8" }
@@ -281,7 +282,7 @@ module.exports = {
       let token = req.headers.authorization;
       token = token.split(" ")[1];
       const data = jwt.verify(token, "g-medsnial");
-
+      
       console.log(data);
 
       const salt = await bcrypt.genSalt(10);
@@ -294,7 +295,8 @@ module.exports = {
 
       res.send({
         message: "Reset Password Succes",
-        data: userPassword,
+        data
+        // data: userPassword,
       });
     } catch (error) {
       console.log(error);
@@ -305,12 +307,13 @@ module.exports = {
   },
   changePassword: async (req, res) => {
     try {
-      const { id, password, newPassword, confirmPassword } = req.body;
+      const { userId, password, newPassword, confirmPassword } = req.body;
+      console.log(req.body);
 
-      const userExist = await User.findOne({
-        where: { id },
+      const userExist = await db.User.findOne({
+        where: { id: userId },
       });
-
+      console.log(userExist);
       const isValid = await bcrypt.compare(
         password,
         userExist.dataValues.password
@@ -347,11 +350,10 @@ module.exports = {
       const salt = await bcrypt.genSalt(10);
       const hashPass = await bcrypt.hash(newPassword, salt);
 
-      const userPassword = await User.update(
+      const userPassword = await db.User.update(
         { password: hashPass },
-        { where: { id: userExist.dataValues.id } }
+        { where: { id: userId } }
       );
-      // await roll.commit();
       res.send({
         message: "Change Password Success",
         data: userPassword,

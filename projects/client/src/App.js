@@ -26,15 +26,16 @@ import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 import logo_gmedsnial from "./assets/svg/logogmedsnial1.png"
-import MyAccount from "./pages/userProfile/account";
-import Address from "./pages/userProfile/address";
-import UserProfile from "./pages/userProfile/user";
+import MyAccount from "./pages/user/profile/account";
+import Address from "./pages/user/profile/address";
+import UserProfile from "./pages/user/profile/user";
 import CheckOut from "./pages/user/checkOut";
 import UserTransaction from "./pages/user/transaction";
 // import ProtectedRoute from "./protected/protectedroute";
 import { Loading } from "./components/loading";
-import UploadPrescriptionPage from "./pages/prescriptionpage";
-import Prescription from "./pages/prescription";
+// import UploadPrescriptionPage from "./pages/user/prescription/prescriptionpage";
+import Prescription from "./pages/user/prescription/prescription";
+import { ChangePassword } from "./pages/user/profile/changepass";
 function App() {
   // const [message, setMessage] = useState("");
 
@@ -118,7 +119,6 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/verification/:token" element={<Verification />} />
-          {/* <Route path="/userhome" element={<UserHome /> }/> */}
           <Route
             path="*"
             element={
@@ -127,7 +127,7 @@ function App() {
               // </ProtectedRoute>
             }
           />
-
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
@@ -139,7 +139,7 @@ function App() {
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
-          <Route path="/myaccount" Component={MyAccount} />
+          {/* <Route path="/myaccount" Component={MyAccount} /> */}
           <Route path="/myaccount" Component={UserProfile} />
           <Route></Route>
           <Route path="/mytransaction" element={<UserTransaction />} />
