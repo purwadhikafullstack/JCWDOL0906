@@ -29,6 +29,8 @@ import logo_gmedsnial from "./assets/svg/logogmedsnial1.png"
 import MyAccount from "./pages/userProfile/account";
 import Address from "./pages/userProfile/address";
 import UserProfile from "./pages/userProfile/user";
+import CheckOut from "./pages/user/checkOut";
+import UserTransaction from "./pages/user/transaction";
 // import ProtectedRoute from "./protected/protectedroute";
 import { Loading } from "./components/loading";
 import UploadPrescriptionPage from "./pages/prescriptionpage";
@@ -131,11 +133,40 @@ function App() {
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/prescription" element={<Prescription />} />
+          <Route path="/checkout" element={<CheckOut />} />
+
           <Route
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
           <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/myaccount" Component={UserProfile} />
+          <Route></Route>
+          <Route path="/mytransaction" element={<UserTransaction />} />
+          <Route path="/mytransaction/checkout" element={<CheckOut />} />
+          <Route
+            path="/mytransaction/waiting-payment"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/waiting-confirmation"
+            element={<UserTransaction />}
+          />
+          <Route path="/mytransaction/received" element={<UserTransaction />} />
+          <Route path="/mytransaction/payment" element={<UserTransaction />} />
+          <Route
+            path="/mytransaction/on-the-way"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/on-process"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/cancelled"
+            element={<UserTransaction />}
+          />
+
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
           )}

@@ -20,41 +20,46 @@ const UserProductList = () => {
   const [records, setRecords] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
 
-    const getData = async () => {
-        let params = ""
-        if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
-        if (filterCategory !== 0) { params += "&category=" + filterCategory } else { params += "&category=" }
-        if (filterName !== "") { params += "&name=" + filterName } else { params += "&name=" }
-        try {
-            const result = await apiRequest.get("/store/product" + params + "&page=" + pageNumber)
+  const getData = async () => {
+    let params = ""
+    if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
+    if (filterCategory !== 0) { params += "&category=" + filterCategory } else { params += "&category=" }
+    if (filterName !== "") { params += "&name=" + filterName } else { params += "&name=" }
+    try {
+      const result = await apiRequest.get("/store/product" + params + "&page=" + pageNumber)
 
-            let page = Math.ceil(result.data.count / 10);
+      let page = Math.ceil(result.data.count / 10);
 
-            let paginate = [];
-            for (let i = 0; i < page; i++) {
-                paginate.push({ no: i + 1 });
-            }
-            console.log(result.data)
-            setPaging(paginate);
-            setRecords(result.data.count);
-            setProduct(result.data.data)
-        } catch (error) {
-            swalFailed(error.response.data.message)
-        }
+      let paginate = [];
+      for (let i = 0; i < page; i++) {
+        paginate.push({ no: i + 1 });
+      }
+      console.log(result.data)
+      setPaging(paginate);
+      setRecords(result.data.count);
+      setProduct(result.data.data)
+    } catch (error) {
+      swalFailed(error.response.data.message)
     }
-    const getCategory = async () => {
-        try {
-            const result = await apiRequest.get("/categories")
-            setCategory(result.data.data)
-        } catch (error) {
-            swalFailed(error.response.data.message)
-        }
+  }
+
+  const getCategory = async () => {
+    try {
+      const result = await apiRequest.get("/categories")
+      setCategory(result.data.data)
+    } catch (error) {
+      swalFailed(error.response.data.message)
     }
-  
+  }
+
   useEffect(() => {
-      getData()
-      console.log(product)
+    getData()
+    console.log(product)
   }, [sort, pageNumber, filterCategory, filterName])
+
+  useEffect(() => {
+    getCategory()
+  }, [])
 
   return (
     <>
@@ -95,14 +100,14 @@ const UserProductList = () => {
         <Grid templateColumns="repeat(5, 1fr)" gap={6}>
           {product.length > 0
             ? product.map((i) => (
-                <ProductCard
-                  image={i.image}
-                  product_name={i.product_name}
-                  price={i.price}
-                  id={i.id}
-                  category={i.Category}
-                />
-              ))
+              <ProductCard
+                image={process.env.REACT_APP_IMAGE_API + i.image}
+                product_name={i.product_name}
+                price={i.price}
+                id={i.id}
+                category={i.Category}
+              />
+            ))
             : "Product Not Found"}
         </Grid>
       </Container>
@@ -124,4 +129,5 @@ const UserProductList = () => {
     </>
   );
 };
+export default UserProductList
 // export default UserProductList

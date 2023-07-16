@@ -26,8 +26,12 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
+<<<<<<< HEAD:projects/client/src/pages/userProfile/address.jsx
 import { swalFailed, swalSuccess } from "../../helper";
 import { apiRequest } from "../../helper/api";
+=======
+import { swalFailed } from "../../../helper";
+>>>>>>> 517654eb08a0ca80bd7a95ec4973226cfbf02c14:projects/client/src/pages/user/profile/address.jsx
 
 const cities = require("./city.json").rajaongkir.results;
 const provinces = require("./province.json").rajaongkir.results;
@@ -37,7 +41,7 @@ const Address = () => {
   useEffect(() => {
     // axios.get("http://localhost:8000/api/auth/profile/", {
     //   headers: {
-    //     Authorization: "Bearer " + localStorage.getItem("userToken"),
+    //     Authorization: "Bearer " + localStorage.getItem("user"),
     //   },
     // });
   }, []);
@@ -53,7 +57,7 @@ const Address = () => {
     try {
       let result = await apiRequest.get("/address", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("userToken"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
       setDetail(result.data.data);
@@ -67,7 +71,7 @@ const Address = () => {
   const createAddressHandler = async (e) => {
     e.preventDefault();
     try {
-      let detail = document.getElementById("detail").value;
+      let address_name = document.getElementById("address_name").value;
       let province_name = province.split("/")[1];
       let province_id = province.split("/")[0];
       let city_name = city.split("/")[1];
@@ -77,7 +81,7 @@ const Address = () => {
       let is_default = document.getElementById("is_default").value;
 
       let data = {
-        detail,
+        address_name,
         province_name,
         province_id,
         city_name,
@@ -90,13 +94,12 @@ const Address = () => {
 
       let result = await axios.post("http://localhost:8000/api/address", data, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("userToken"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
       getAddress();
       // swalSuccess(result.data.message);
     } catch (error) {
-
       // swalFailed(error.response.data.message);
     }
   };
@@ -209,7 +212,7 @@ const Address = () => {
                   <Input
                     type="text"
                     placeholder="Enter your full address"
-                    id="detail"
+                    id="address_name"
                   />
                 </FormControl>
                 <FormControl>
@@ -246,7 +249,7 @@ const Address = () => {
                   <Radio size="lg" name="1" colorScheme="blue" defaultChecked>
                     {detail.label +
                       " " +
-                      detail.detail +
+                      detail.address_name +
                       " " +
                       detail.province_name +
                       " " +
@@ -258,7 +261,7 @@ const Address = () => {
                   <Radio size="lg" name="1" colorScheme="blue">
                     {detail.label +
                       " " +
-                      detail.detail +
+                      detail.address_name +
                       " " +
                       detail.province_name +
                       " " +
