@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      address_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: false,
+      },
       shipping: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -59,9 +64,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       status: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: "Menunggu Pembayaran",
       },
       payment_receipt: {
         type: DataTypes.STRING,

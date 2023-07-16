@@ -52,7 +52,9 @@ const List = ({ serviceCost }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [product, setProduct] = useState([]);
   const user = useSelector((state) => state.userSlice);
-  const { cart, total_price } = useSelector((state) => state.cartSlice);
+  const { cart, total_price, courier, address_id } = useSelector(
+    (state) => state.cartSlice
+  );
   console.log("carts1", carts);
 
   const getCart = async () => {
@@ -135,6 +137,31 @@ const List = ({ serviceCost }) => {
       swalFailed(error.response.data.message);
     }
   };
+
+  const checkOut = async () => {
+    let data = {
+      total_price: Number(serviceCost) + Number(total_price),
+      shipping: courier,
+      address_id: address_id,
+      sub_total: Number(total_price),
+      service_cost: Number(serviceCost),
+      cart: carts,
+    };
+    try {
+      let response = await apiRequest.post("/transaction/checkout", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+  // baca data yg di kirim terus dikirim via post
+  // masukin semua data di cart, passing semua data ke dalam handler ini,
+  // cart: cart,
+  //setelah sukses checkout redirect ke checkOutSuccess, baru nampilin data dengan cara get data
 
   useEffect(() => {
     getCart();
@@ -357,6 +384,7 @@ const List = ({ serviceCost }) => {
               size="lg"
               fontSize="md"
               rightIcon={<FaArrowRight />}
+              onClick={() => checkOut()}
             >
               Beli
             </Button>

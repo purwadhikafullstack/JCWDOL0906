@@ -42,10 +42,10 @@ module.exports = {
         label,
         postal_code,
       } = req.body;
-      console.log(req.body);
+      console.log("body", req.body);
       let { userId } = req;
       let data = await address.create({
-        detail,
+        address_name: detail,
         province_name,
         province_id,
         city_name,
@@ -71,7 +71,7 @@ module.exports = {
     try {
       const { userId } = req;
       const {
-        detail,
+        address_name,
         province_name,
         province_id,
         city_name,
@@ -83,7 +83,7 @@ module.exports = {
 
       await address.update(
         {
-          detail,
+          address_name,
           province_name,
           province_id,
           city_name,

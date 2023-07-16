@@ -7,13 +7,26 @@ import Shipping from "./shipping";
 
 const CheckOut = () => {
   const [serviceCost, setServiceCost] = useState(0);
+  const [courier, setCourier] = useState(" ");
+  const [selectedAddress, setSelectedAddress] = useState(0);
 
   return (
     <Box bg={useColorModeValue("blue.50", "blue.100")}>
       <Navbar />
       <div className="home-container">
-        <List serviceCost={serviceCost} />
-        <Shipping serviceCost={serviceCost} setServiceCost={setServiceCost} />
+        <List
+          serviceCost={serviceCost}
+          courier={courier}
+          selectedAddress={selectedAddress}
+        />
+        <Shipping
+          serviceCost={serviceCost}
+          setServiceCost={setServiceCost}
+          courier={courier}
+          setCourier={setCourier}
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+        />
       </div>
       <FooterUserPage />
     </Box>

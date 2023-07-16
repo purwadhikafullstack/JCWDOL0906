@@ -39,9 +39,6 @@ app.get("/api/greetings", (req, res, next) => {
   });
 });
 
-const addressRouter = require("./router/addressRouter");
-app.use("/api/address", addressRouter);
-
 const rajaOngkirRouter = require("./router/rajaOngkirRouter");
 app.use("/api/shipping", rajaOngkirRouter);
 

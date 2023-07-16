@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Address.init(
     {
-      detail: {
+      address_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },

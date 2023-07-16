@@ -27,10 +27,9 @@ import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 
-import MyAccount from "./pages/userProfile/account";
-import UserProfile from "./pages/userProfile/user";
 import CheckOut from "./pages/user/checkOut";
 import UserTransaction from "./pages/user/transaction";
+import UserProfile from "./pages/user/profile/user";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
@@ -97,7 +96,9 @@ function App() {
             element={<StoreProductDetail />}
           />
           <Route path="/myaccount" Component={UserProfile} />
+          <Route></Route>
           <Route path="/mytransaction" element={<UserTransaction />} />
+          <Route path="/mytransaction/checkout" element={<CheckOut />} />
           <Route
             path="/mytransaction/waiting-payment"
             element={<UserTransaction />}

@@ -31,11 +31,19 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { swalFailed, swalSuccess } from "../../../helper";
-import { Address } from "../../userProfile/address";
+import { Address } from "../profile/address";
+import { addAddress, addCourier } from "../../../redux/cartSlice";
 
-const Shipping = ({ serviceCost, setServiceCost }) => {
+const Shipping = ({
+  serviceCost,
+  setServiceCost,
+  couriers,
+  setCouriers,
+  address,
+  setAddress,
+}) => {
   const [origin, setOrigin] = useState("153");
   const [destination, setDestination] = useState("151");
   const [weight, setWeight] = useState(1000);
@@ -44,123 +52,7 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
   const [selectedAddress, setSelectedAddress] = useState(0);
   const [detail, setDetail] = useState([]);
 
-  // logic buat ambil city id yg is default terus disimpan di destination
-  // berat total dari produk yang ada di cart simpan di weight
-  //   const fetchUserAddress = async() => {
-  //     try {
-  //         await axiosInstance.get(`/user/address/${userSelector?.id}`).then((res) => {
-  //             const data = res.data.result
-  //             setUserAddress([...data])
-  //             data.map((val) => {
-  //                 val.isDefault ? setAddressDefault({...val}) : null
-  //             })
-
-  //         })
-  //     } catch (error) {
-  //         console.log(error)
-  //     }
-  // }
-
-  // const fetchDataCart = async() => {
-  //     try {
-  //         await axiosInstance.get(`/cart/${userSelector?.id}`).then((res) => {
-  //             const data = res.data.result
-  //             setCart([...data])
-  //         })
-  //     } catch (error) {
-  //         console.log(error)
-  //     }
-  // }
-
-  // const renderDataCart = () => {
-  //     return cart ? cart?.map((val) => {
-  //         totalPrice += (val.product_price * val.quantity)
-  //         return (
-  //             <>
-  //                 <CartCard
-  //                     product_name = {val.product.product_name}
-  //                     product_price = {val.product_price}
-  //                     quantity = {val.quantity}
-  //                     image_url = {val.product.product_imgs[0].img_url}
-  //                     product_stock = {val.product.product_stocks[0].main_stock}
-  //                     product_id = {val.product_id}
-  //                     user_id = {userSelector?.id}
-  //                     cart_id = {val.id}
-  //                 />
-  //             </>
-  //         )
-  //     }) : <div></div>
-  // }
-
-  // const selectedAddress = () => {
-  //     return (
-  //         <VStack w='full' p={2} fontSize={16} align='start'>
-  //             <HStack w='full' align='center' justify='space-between'>
-  //                 <Text fontWeight='bold'>{addressDefault.name}, +62{addressDefault.phone_number}</Text>
-  //                 <ModalChangeAddress
-  //                     userAddress = {userAddress}
-  //                 />
-  //             </HStack>
-
-  //             <Text w='60%'>{addressDefault.address_line}, {addressDefault.province}, {addressDefault.city}, {addressDefault.post_code} </Text>
-  //         </VStack>
-  //     )
-  // }
-
-  // const renderDataOrder = async() => {
-  //     const order = await axiosInstance.post("/order", {
-  //         user_id: userSelector?.id,
-  //         order_price: totalPrice,
-  //         user_address_id: addressDefault?.id,
-  //         shipping_price: shippingPrice
-  //     })
-
-  //     cart.map(async(val) => {
-  //         try {
-  //             await axiosInstance.post('/order/detail', {
-  //                     product_id: val.product_id,
-  //                     user_id: userSelector?.id,
-  //                     quantity: val.quantity,
-  //                     product_price: val.product_price,
-  //                     order_id : order?.data.result.id
-  //                 }
-  //             )
-  //         } catch (error) {
-  //             console.log(error)
-  //         }
-  //     })
-
-  //     router.push(`/payment/${order.data.result.id}`)
-
-  // }
-
-  // const deliveryCost = async (courier) => {
-  //     console.log(courier)
-  //     const body = {
-  //         origin: 457,
-  //         destination: addressDefault?.city_id,
-  //         weight: 10000,
-  //         courier: courier
-  //     }
-
-  //     try {
-  //         await axios.post("https://api.rajaongkir.com/starter/cost", {"origin": "455", "destination": `${addressDefault?.city_id}`, "weight": `1000`, "courier": courier }  , {headers: {"key" : "0e29b3cb4f74364cf38c45d5d71ad96e"}}, qs.stringify(body)).then((res) => {
-  //             console.log(res)
-  //             const data = res.data.rajaongkir.results[0]
-  //             setDeliveryOption(data.costs)
-  //         })
-  //     } catch (error) {
-  //         console.log(error)
-  //     }
-  // }
-
-  // useEffect(() => {
-  //     fetchUserAddress()
-  //     selectedAddress()
-  //     fetchDataCart()
-  //     renderDataCart()
-  //     deliveryCost()
-  // }, [autoRender, router?.isReady])
+  const dispatch = useDispatch();
 
   const getAddress = async (e) => {
     try {
@@ -176,67 +68,9 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
+      console.log("eror", error);
     }
   };
-
-  // const createAddressHandler = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     let detail = document.getElementById("detail").value;
-  //     let province_name = province.split("/")[1];
-  //     let province_id = province.split("/")[0];
-  //     let city_name = city.split("/")[1];
-  //     let city_id = city.split("/")[0];
-  //     let label = document.getElementById("label").value;
-  //     let postal_code = document.getElementById("postal_code").value;
-  //     let is_default = document.getElementById("is_default").value;
-
-  //     let data = {
-  //       detail,
-  //       province_name,
-  //       province_id,
-  //       city_name,
-  //       city_id,
-  //       label,
-  //       is_default,
-  //       postal_code,
-  //     };
-  //     console.log(data);
-
-  //     let result = await axios.post("http://localhost:8000/api/address", data, {
-  //       headers: {
-  //         Authorization: "Bearer " + localStorage.getItem("userToken"),
-  //       },
-  //     });
-  //     getAddress();
-  //     // swalSuccess(result.data.message);
-  //   } catch (error) {
-  //     // swalFailed(error.response.data.message);
-  //   }
-  // };
-
-  // const cityFilter = async (e) => {
-  //   try {
-  //     const arrayCity = cities.filter(
-  //       (e) => e.province_id === province.split("/")[0]
-  //     );
-  //     setNewCity(arrayCity);
-  //     console.log(arrayCity);
-  //   } catch (error) {}
-  // };
-
-  // const codeFilter = (e) => {
-  //   const arrayCode = codes.filter((e) => e.city_id === city.split("/")[0]);
-  //   setCode(arrayCode);
-  //   console.log(arrayCode);
-  // };
-
-  // useEffect(() => {
-  //   getAddress();
-  // }, []); lalu simpan di sebuah state address, setAddress
-  // get address ada state setAddress, bikin logic buat ambil yang is_default
-  //drop down spt di fe address
 
   const getShippingCost = async () => {
     try {
@@ -302,11 +136,14 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
                       size="lg"
                       name="1"
                       colorScheme="blue"
-                      onClick={() => setSelectedAddress(detail)}
+                      onClick={() => {
+                        setSelectedAddress(detail);
+                        dispatch(addAddress({ address_id: detail.id }));
+                      }}
                     >
                       {detail.label +
                         " " +
-                        detail.detail +
+                        detail.address_name +
                         " " +
                         detail.province_name +
                         " " +
@@ -323,7 +160,7 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
                     >
                       {detail.label +
                         " " +
-                        detail.detail +
+                        detail.address_name +
                         " " +
                         detail.province_name +
                         " " +
@@ -353,7 +190,11 @@ const Shipping = ({ serviceCost, setServiceCost }) => {
           <FormControl>
             <Select
               value={courier}
-              onChange={(e) => setCourier(e.target.value)}
+              onChange={(e) => {
+                setCourier(e.target.value);
+                dispatch(addCourier({ courier: e.target.value }));
+                // , setCouriers(e.target.value);
+              }}
               id="courier"
             >
               <option value="jne">JNE</option>
