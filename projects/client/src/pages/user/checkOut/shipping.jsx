@@ -58,7 +58,7 @@ const Shipping = ({
     try {
       let result = await axios.get("http://localhost:8000/api/address", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("userToken"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
       setDetail(result.data.data);
@@ -80,7 +80,7 @@ const Shipping = ({
         body,
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
             key: "3c6f80ae7c2a7015198565033977602b",
           },
         }
@@ -176,7 +176,7 @@ const Shipping = ({
         </AccordionItem>
       </Accordion>
 
-      <form onSubmit={() => {}}>
+      <form onSubmit={() => { }}>
         <VStack spacing={4}>
           <Text
             w="full"

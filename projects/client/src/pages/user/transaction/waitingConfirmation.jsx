@@ -54,12 +54,12 @@ const WaitingConfirmation = () => {
     };
 
     const jasaPengiriman = (shipping) => {
-        if (shipping === 'TIKI') {
+        if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
-        } else if (shipping === 'JNE') {
+        } else if (shipping === 'jne') {
             return <Image src='https://www.jne.co.id/frontend/images/material/logo.jpg' />
         } else {
-            return <Image src='https://5minvideo.id/images/Jnt-Express-Logo.png' />
+            return <Image src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
     console.log(userTransaction)
@@ -122,7 +122,7 @@ const WaitingConfirmation = () => {
 
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
-                                        <Text> Tujuan Pengiriman : {i.address}</Text>
+                                        <Text> Tujuan Pengiriman : {i.address_name}</Text>
                                     </CardBody>
                                 </Card>
                             )}
