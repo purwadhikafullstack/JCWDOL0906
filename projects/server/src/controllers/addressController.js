@@ -33,7 +33,7 @@ module.exports = {
   postAddress: async (req, res) => {
     try {
       let {
-        detail,
+        address_name,
         province_name,
         province_id,
         city_name,
@@ -45,7 +45,7 @@ module.exports = {
       console.log("body", req.body);
       let { userId } = req;
       let data = await address.create({
-        address_name: detail,
+        address_name,
         province_name,
         province_id,
         city_name,
