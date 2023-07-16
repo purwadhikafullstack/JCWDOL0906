@@ -1,8 +1,9 @@
-const { c_transaction } = require('../controllers');
-const { uploadFile } = require('../middleware/multer');
+const { c_transaction } = require("../controllers");
+const { uploadFile } = require("../middleware/multer");
 
-const router = require('express').Router();
+const router = require("express").Router();
 
+router.post("/transaction/checkout", c_transaction.createOrder);
 router.get('/transaction/admin', c_transaction.getAdminTransaction)
 router.get('/transaction', c_transaction.getUserTransactionStatus)
 router.get('/transaction/:code/code', c_transaction.getUserTransactionByCode)

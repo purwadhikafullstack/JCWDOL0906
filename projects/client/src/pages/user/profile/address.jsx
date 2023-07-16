@@ -66,7 +66,7 @@ const Address = () => {
   const createAddressHandler = async (e) => {
     e.preventDefault();
     try {
-      let detail = document.getElementById("detail").value;
+      let address_name = document.getElementById("address_name").value;
       let province_name = province.split("/")[1];
       let province_id = province.split("/")[0];
       let city_name = city.split("/")[1];
@@ -76,7 +76,7 @@ const Address = () => {
       let is_default = document.getElementById("is_default").value;
 
       let data = {
-        detail,
+        address_name,
         province_name,
         province_id,
         city_name,
@@ -95,7 +95,6 @@ const Address = () => {
       getAddress();
       // swalSuccess(result.data.message);
     } catch (error) {
-
       // swalFailed(error.response.data.message);
     }
   };
@@ -107,7 +106,7 @@ const Address = () => {
       );
       setNewCity(arrayCity);
       console.log(arrayCity);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const codeFilter = (e) => {
@@ -208,7 +207,7 @@ const Address = () => {
                   <Input
                     type="text"
                     placeholder="Enter your full address"
-                    id="detail"
+                    id="address_name"
                   />
                 </FormControl>
                 <FormControl>
@@ -245,7 +244,7 @@ const Address = () => {
                   <Radio size="lg" name="1" colorScheme="blue" defaultChecked>
                     {detail.label +
                       " " +
-                      detail.detail +
+                      detail.address_name +
                       " " +
                       detail.province_name +
                       " " +
@@ -257,7 +256,7 @@ const Address = () => {
                   <Radio size="lg" name="1" colorScheme="blue">
                     {detail.label +
                       " " +
-                      detail.detail +
+                      detail.address_name +
                       " " +
                       detail.province_name +
                       " " +

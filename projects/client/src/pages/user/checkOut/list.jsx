@@ -40,7 +40,7 @@ import { add } from "../../../redux/cartSlice";
 import ProductCard from "../../../components/store/product/productCard";
 import { apiRequest } from "../../../helper/api";
 
-const List = () => {
+const List = ({ serviceCost }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,7 +52,9 @@ const List = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [product, setProduct] = useState([]);
   const user = useSelector((state) => state.userSlice);
-  const { cart, total_price } = useSelector((state) => state.cartSlice);
+  const { cart, total_price, courier, address_id } = useSelector(
+    (state) => state.cartSlice
+  );
   console.log("carts1", carts);
 
   const getCart = async () => {
@@ -64,7 +66,6 @@ const List = () => {
       });
 
       // console.log(result.data.data)
-      console.log("GET");
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -137,33 +138,57 @@ const List = () => {
     }
   };
 
+  const checkOut = async () => {
+    let data = {
+      total_price: Number(serviceCost) + Number(total_price),
+      shipping: courier,
+      address_id: address_id,
+      sub_total: Number(total_price),
+      service_cost: Number(serviceCost),
+      cart: carts,
+    };
+    try {
+      let response = await apiRequest.post("/transaction/checkout", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+  // baca data yg di kirim terus dikirim via post
+  // masukin semua data di cart, passing semua data ke dalam handler ini,
+  // cart: cart,
+  //setelah sukses checkout redirect ke checkOutSuccess, baru nampilin data dengan cara get data
+
   useEffect(() => {
     getCart();
     getData();
   }, [cart]);
-  console.log("DATA USER", user.value.username);
+
   useEffect(() => {
     if (user.value.username === "") {
       setCart([]);
       getData();
-    } else {
-      getCart();
     }
-  }, [user]);
+  }, [user.value.username]);
+
+  useEffect(() => {
+    setCart([]);
+    getData();
+  }, []);
 
   useEffect(() => {
     getRecomendItem();
   }, [carts]);
 
-  const handleAccount = () => {
-    navigate("/checkout");
-  };
-
   return (
     <Box
       maxW={{ base: "3xl", lg: "7xl" }}
       mx="auto"
-      px={{ base: "4", md: "8", lg: "12" }}
+      px={{ base: "4", md: "8", lg: "10" }}
       py={{ base: "6", md: "8", lg: "12" }}
     >
       <Stack
@@ -182,7 +207,7 @@ const List = () => {
           >
             <Container maxW="container.xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
-                Keranjang
+                Shopping Cart
               </Heading>
               {carts.length > 0
                 ? carts.map((i) => (
@@ -201,7 +226,7 @@ const List = () => {
                           width="120px"
                           height="120px"
                           fit="cover"
-                          src={process.env.REACT_APP_IMAGE_API + i.image}
+                          src={i.image}
                           alt=""
                           draggable="false"
                           loading="lazy"
@@ -274,16 +299,16 @@ const List = () => {
                   ))
                 : "Cart is Empty"}
             </Container>
-            <Container maxW="container.xl" p={5} mt={5}>
+            {/* <Container maxW="container.xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
-                Rekomendasi untukmu
+                Our Recommendations
               </Heading>
               <Grid templateColumns="repeat(5, 1fr)" gap={6}>
                 {recomendItem.length === 0 && user.value.username === ""
                   ? product.map((i, index) => (
                       <ProductCard
                         key={index}
-                        image={process.env.REACT_APP_IMAGE_API + i.image}
+                        image={i.image}
                         product_name={i.product_name}
                         price={i.price}
                         id={i.id}
@@ -299,7 +324,7 @@ const List = () => {
                   : recomendItem.map((i, index) => (
                       <ProductCard
                         key={index}
-                        image={process.env.REACT_APP_IMAGE_API + i.image}
+                        image={i.image}
                         product_name={i.product_name}
                         price={i.price}
                         id={i.id}
@@ -313,7 +338,7 @@ const List = () => {
                       />
                     ))}
               </Grid>
-            </Container>
+            </Container> */}
           </Stack>
         </Stack>
 
@@ -331,10 +356,26 @@ const List = () => {
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">
-                  Total {cart} Barang
+                  Sub-total {cart} items
                 </Text>
                 <Text fontSize="xl" fontWeight="extrabold">
                   {rupiah(total_price)}
+                </Text>
+              </Flex>
+              <Flex justify="space-between">
+                <Text fontSize="lg" fontWeight="semibold">
+                  Shipping cost
+                </Text>
+                <Text fontSize="xl" fontWeight="extrabold">
+                  {rupiah(serviceCost)}
+                </Text>
+              </Flex>
+              <Flex justify="space-between">
+                <Text fontSize="lg" fontWeight="semibold">
+                  Total cost
+                </Text>
+                <Text fontSize="xl" fontWeight="extrabold">
+                  {rupiah(Number(serviceCost) + Number(total_price))}
                 </Text>
               </Flex>
             </Stack>
@@ -343,7 +384,7 @@ const List = () => {
               size="lg"
               fontSize="md"
               rightIcon={<FaArrowRight />}
-              onClick={() => handleAccount()}
+              onClick={() => checkOut()}
             >
               Beli
             </Button>
