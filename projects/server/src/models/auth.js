@@ -17,23 +17,22 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Address, {
         foreignKey: {
           name: "user_id",
-        }
+        },
       });
-      User.hasMany(models.Transaction, {
-        foreignKey: {
-          name: "user_id",
-        }
-      });
+      // User.hasMany(models.Transaction, {
+      //   foreignKey: {
+      //     name: "user_id",
+      //   }
+      // });
       User.hasMany(models.QnA, {
         foreignKey: {
           name: "user_id",
-        }
+        },
       });
 
       User.hasMany(models.Cart, {
-        foreignKey: 'user_id'
-      })
-
+        foreignKey: "user_id",
+      });
     }
   }
 
@@ -86,4 +85,4 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   return User;
-}
+};
