@@ -9,7 +9,7 @@ module.exports = {
     try {
       console.log(req.body);
       const data = JSON.parse(req.body.data);
-      const { user_id, status, address_name, shipping } = data;
+      const { user_id, status, address_id, shipping } = data;
       const newUUID = uuidv4().split("-")[0]
       const code = "INV-RSP-" + newUUID;
       if (!req.file) {
@@ -17,16 +17,16 @@ module.exports = {
           message: "No image file provided",
         });
       }
-
-      const image = req.file.path;
-
+      console.log(req.file);
+      const prescription = req.file.path;
+      console.log(prescription);
       const result = await transaction.create({
         user_id,
         transaction_code: code,
+        prescription,
         status,
-        address_name,
-        shipping,
-        image,
+        address_id,
+        shipping
       });
 
       return res.status(200).json({

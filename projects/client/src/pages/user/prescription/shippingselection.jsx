@@ -35,77 +35,42 @@ import { Provider, useDispatch } from "react-redux";
 import { swalFailed, swalSuccess } from "../../../helper";
 import { Address } from "../profile/address";
 import { addAddress, addCourier } from "../../../redux/cartSlice";
+import { apiRequest } from "../../../helper/api";
 
-const Shipping = ({
-  serviceCost,
-  setServiceCost,
-  couriers,
-  setCouriers,
-  address,
-  setAddress,
-}) => {
-  const [origin, setOrigin] = useState("153");
+const ShippingSelection = () => {
+  const [origin, SetOrigin] = useState("153");
   const [destination, setDestination] = useState("151");
   const [weight, setWeight] = useState(1000);
-  const [courier, setCourier] = useState("jne");
+  const [courier, setCourier] = useState("JNE");
   const [shippingCosts, setShippingCosts] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState(0);
-  const [detail, setDetail] = useState([]);
-
+  const [serviceCost, setServiceCost] = useState([]);
   const dispatch = useDispatch();
 
-  const getAddress = async (e) => {
+ useEffect(() => {
+  const fetchShippingCost = async () => {
     try {
-      let result = await axios.get("http://localhost:8000/api/address", {
-        headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
-        },
-      });
-      setDetail(result.data.data);
-      const defaultAddress = detail.filter((address) => {
-        return address.is_default == true;
-      });
-      setSelectedAddress(defaultAddress[0]);
-    } catch (error) {
-      swalFailed(error.response.data.message);
-      console.log("eror", error);
-    }
-  };
+      const tokenUser = JSON.parse(localStorage.getItem("user"));
+      console.log("", tokenUser);
 
-  const getShippingCost = async () => {
-    try {
-      let body = { origin, destination, weight, courier };
-      let result = await axios.post(
-        "http://localhost:8000/api/shipping",
-        body,
+      const body = { origin, destination, weight, courier };
+        const result = await apiRequest.post("/shipping", body, 
         {
           headers: {
-            Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
+            authorization: `Bearer ${tokenUser}`,
             key: "3c6f80ae7c2a7015198565033977602b",
           },
-        }
-      );
-      setShippingCosts(result?.data?.data?.results[0]?.costs);
+        });
+        setShippingCosts(result?.data?.data?.results[0]?.costs);
     } catch (error) {
-      // swalFailed(error.response.data.message);
+      swalFailed(error.response.data.message);
       console.log(error);
     }
   };
+  fetchShippingCost();
+ }, [courier]);
 
-  useEffect(() => {
-    getAddress();
-  }, []);
-
-  useEffect(() => {
-    getShippingCost();
-  }, [courier]);
-
-  // const handleAccount = () => {
-  //   navigate("/ordersuccess");
-  // };
-
-  return (
-    <Box
+ return (
+  <Box
       maxW={{ base: "3xl", lg: "7xl" }}
       mx="auto"
       px={{ base: "4", md: "8", lg: "12" }}
@@ -113,69 +78,9 @@ const Shipping = ({
     >
       <Card>
         <CardHeader>
-          <Heading size="ml">Shipping Address</Heading>
+          <Heading size="ml">Shipping</Heading>
         </CardHeader>
       </Card>
-
-      <Accordion>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                Your Addresses
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            <VStack spacing={4} align="flex-start">
-              <Stack>
-                {detail.map((detail, index) =>
-                  detail.is_default ? (
-                    <Button
-                      size="lg"
-                      name="1"
-                      colorScheme="blue"
-                      onClick={() => {
-                        setSelectedAddress(detail);
-                        dispatch(addAddress({ address_id: detail.id }));
-                      }}
-                    >
-                      {detail.label +
-                        " " +
-                        detail.address_name +
-                        " " +
-                        detail.province_name +
-                        " " +
-                        detail.city_name +
-                        " " +
-                        detail.postal_code}
-                    </Button>
-                  ) : (
-                    <Button
-                      size="lg"
-                      name="1"
-                      colorScheme="blue"
-                      onClick={() => setSelectedAddress(detail)}
-                    >
-                      {detail.label +
-                        " " +
-                        detail.address_name +
-                        " " +
-                        detail.province_name +
-                        " " +
-                        detail.city_name +
-                        " " +
-                        detail.postal_code}
-                    </Button>
-                  )
-                )}
-              </Stack>
-            </VStack>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-
       <form onSubmit={() => { }}>
         <VStack spacing={4}>
           <Text
@@ -247,9 +152,7 @@ const Shipping = ({
         </VStack>
       </form>
     </Box>
-  );
+ )
 };
 
-// check out di klik, tampilin modal yg nampilin detail transaksi dan gambar payment bank bca beswerta no rek nya
-
-export default Shipping;
+export default ShippingSelection;

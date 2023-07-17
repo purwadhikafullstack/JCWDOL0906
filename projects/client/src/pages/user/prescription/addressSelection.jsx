@@ -3,7 +3,7 @@ import { VStack, HStack, Text, Stack, Button, Card, Select, Heading} from '@chak
 import { apiRequest } from "../../../helper/api";
 import { swalFailed, swalSuccess } from "../../../helper/index";
 import { Provider, useDispatch } from "react-redux";
-import { addAddress, addCourier } from "../../../redux/cartSlice";
+import { addAddress } from "../../../redux/cartSlice";
 const AddressSelection = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [detail, setDetail] = useState([]);
