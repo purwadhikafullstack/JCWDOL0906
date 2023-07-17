@@ -62,6 +62,7 @@ const UserProductList = () => {
   }, [])
 
   return (
+    <>
     <Flex flexDirection="column" alignItems="start" p={10} w="100%">
       <Flex
         w="100%"
@@ -125,7 +126,8 @@ const UserProductList = () => {
         />
       </Flex>
     </Flex>
-  )
-
-}
+    </>
+  );
+};
 export default UserProductList
+// export default UserProductList

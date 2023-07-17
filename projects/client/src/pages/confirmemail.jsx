@@ -24,7 +24,8 @@ export const ConfirmEmail = () => {
 
   const confirmEmail = async (values) => {
     try {
-      const url = '/auth/confirmemail';
+      const url = '/auth/confirm-email';
+      console.log(values);
       const result = await apiRequest.post(url, values);
       console.log(result);
 

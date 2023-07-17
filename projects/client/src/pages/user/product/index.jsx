@@ -3,7 +3,7 @@ import React from 'react'
 import FilterProduct from '../../../components/filterProduct'
 import FooterUserPage from '../../../components/footer'
 import { Navbar } from '../../../components/navbar'
-import UserProductList from './list'
+// import UserProductList from './list'
 
 const UserProduct = () => {
     return (
@@ -11,7 +11,7 @@ const UserProduct = () => {
             <Navbar />
             <div className="home-container">
                 {/* <SimpleSlider/> */}
-                <UserProductList />
+                {/* <UserProductList /> */}
             </div>
             <FooterUserPage />
         </Box>

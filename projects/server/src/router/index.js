@@ -1,12 +1,13 @@
-const r_unit = require("./unitsRouter");
-const r_auth = require("./authRouter");
-const r_product = require("./productRouter");
-const r_category = require("./categoryRouter");
-const r_cart = require("./cartRouter");
+const r_unit = require('./unitsRouter');
+const r_auth = require('./authRouter');
+const r_product = require('./productRouter');
+const r_category = require('./categoryRouter')
+const r_cart = require('./cartRouter');
+const r_prescription = require('./prescriptionRouter');
 const r_address = require("./addressRouter");
 const r_ongkir = require("./rajaOngkirRouter");
 const r_transaction = require("./transactionRouter");
-
+const r_stockHistory = require("./stockHistoryRouter");
 module.exports = {
   routes: [
     r_unit,
@@ -14,8 +15,10 @@ module.exports = {
     r_product,
     r_cart,
     r_category,
+    r_prescription,
     r_address,
     r_ongkir,
     r_transaction,
-  ],
-};
+    r_stockHistory
+  ]
+}
