@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Product from "./pages/admin/pages/product";
 import Units from "./pages/admin/pages/units";
-import CategoryList from './pages/admin/pages/category/list';
+import CategoryList from "./pages/admin/pages/category/list";
 import {
   HomeIcon,
   StatsIcon,
@@ -11,6 +11,7 @@ import {
   DocumentIcon,
 } from "./components/adminComponents/Icons/Icons";
 import Transaction from "./pages/admin/pages/transaction";
+import Prescription from "./pages/admin/pages/prescription";
 
 var dashRoutes = [
   {
@@ -33,7 +34,7 @@ var dashRoutes = [
     path: "/category",
     name: "Category",
     rtlName: "لوحة القيادة",
-    icon: <CreditIcon color='inherit' />,
+    icon: <CreditIcon color="inherit" />,
     component: CategoryList,
     layout: "/admin",
   },
@@ -68,6 +69,14 @@ var dashRoutes = [
     rtlName: "آرتيإل",
     icon: <SupportIcon color="inherit" />,
     component: Transaction,
+    layout: "/admin",
+  },
+  {
+    path: "/inv-prescription",
+    name: "Prescription Transaction",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color="inherit" />,
+    component: Prescription,
     layout: "/admin",
   },
   // {
