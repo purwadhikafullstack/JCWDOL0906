@@ -3,6 +3,8 @@ import { Navbar } from "../components/navbar";
 import { Carousel } from "../components/carousel";
 import { Category } from "../components/category";
 import { Prescriptions } from "../components/prescription";
+import FooterUserPage from "../components/footer";
+
 export const HomePage = () => {
     return (
         <div>
@@ -12,6 +14,7 @@ export const HomePage = () => {
                 <Prescriptions/>
                 <Category/>
                 <Outlet />
+                <FooterUserPage/>
             </div>
         </div>
     );
