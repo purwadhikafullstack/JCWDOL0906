@@ -198,9 +198,23 @@ module.exports = {
         }
     },
     getAdminTransaction: async (req, res) => {
+        console.log(req.query.sort)
         let param = ''
+        let sort = `ts.createdAt DESC`
         if (req.query.status && req.query.status !== "") {
             param += `WHERE ts.status="${req.query.status}"`
+        }
+        if (req.query.sort && req.query.sort == '1') {
+            sort = `ts.createdAt DESC`
+        }
+        if (req.query.sort && req.query.sort == '2') {
+            sort = `ts.createdAt ASC`
+        }
+        if (req.query.sort && req.query.sort == '3') {
+            sort = `ts.transaction_code DESC`
+        }
+        if (req.query.sort && req.query.sort == '4') {
+            sort = `ts.transaction_code ASC`
         }
         try {
             const page = parseInt(req.query.page) || 1;
@@ -211,7 +225,7 @@ module.exports = {
       Transactions ts 
       JOIN Users usr ON usr.id=ts.user_id
             ${param}
-      ORDER BY ts.createdAt DESC
+      ORDER BY ${sort}
       LIMIT ${pageSize}
       OFFSET ${(page - 1) * pageSize}
       `,
@@ -226,7 +240,7 @@ module.exports = {
       Transactions ts 
       JOIN Users usr ON usr.id=ts.user_id
       ${param}
-      ORDER BY ts.createdAt DESC
+      ORDER BY ${sort}
       `,
                 {
                     type: QueryTypes.SELECT,
