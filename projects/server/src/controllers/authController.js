@@ -307,17 +307,22 @@ module.exports = {
   },
   changePassword: async (req, res) => {
     try {
-      const { userId, password, newPassword, confirmPassword } = req.body;
+      const { password, newPassword, confirmPassword } = req.body;
       console.log(req.body);
-
-      const userExist = await db.User.findOne({
-        where: { id: userId },
+      const userExist = await user.findOne({
+        where: { 
+          id: req.userId 
+        },
       });
       console.log(userExist);
-      const isValid = await bcrypt.compare(
-        password,
-        userExist.dataValues.password
-      );
+
+      if (!userExist) {
+        return res.status(404).send({
+          message: "User not found",
+        });
+      }
+
+      const isValid = await bcrypt.compare(password, userExist.password);
 
       if (!isValid) {
         return res.status(400).send({
@@ -350,9 +355,12 @@ module.exports = {
       const salt = await bcrypt.genSalt(10);
       const hashPass = await bcrypt.hash(newPassword, salt);
 
-      const userPassword = await db.User.update(
+      const userPassword = await user.update(
         { password: hashPass },
-        { where: { id: userId } }
+        { where: 
+          { 
+            id: req.userId 
+          }}
       );
       res.send({
         message: "Change Password Success",

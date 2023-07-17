@@ -6,11 +6,10 @@ const { v4: uuidv4 } = require('uuid');
 module.exports = {
   addPrescription: async (req, res) => {
     try {
-      console,log(req.body.data);
       const data = JSON.parse(req.body.data);
       const { user_id, status, address_name, shipping } = data;
-      const code = "INV/RSP/" + uuidv4();
-
+      const code = "INV/RSP#" + uuidv4();
+      console.log("ayoo",req.body.data);
       if (!req.file) {
         return res.status(400).json({
           message: "No image file provided",

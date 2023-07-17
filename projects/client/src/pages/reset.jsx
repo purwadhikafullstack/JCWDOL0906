@@ -61,14 +61,14 @@ export const ResetPassword = () => {
 
     } catch (error) {
       console.log(error);
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Failed Attempt',
-      //   text: error.response.data.message,
-      //   customClass: {
-      //     container: 'my-swal',
-      //   },
-      // });
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed Attempt',
+        text: error.response.data.message,
+        customClass: {
+          container: 'my-swal',
+        },
+      });
     }
   };
 

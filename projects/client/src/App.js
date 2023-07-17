@@ -36,6 +36,7 @@ import { Loading } from "./components/loading";
 // import UploadPrescriptionPage from "./pages/user/prescription/prescriptionpage";
 import Prescription from "./pages/user/prescription/prescription";
 import { ChangePassword } from "./pages/user/profile/changepass";
+import { Navbar } from "./components/navbar";
 function App() {
   // const [message, setMessage] = useState("");
 

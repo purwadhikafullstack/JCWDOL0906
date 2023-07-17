@@ -34,11 +34,11 @@ const codes = require("./city.json").rajaongkir.results;
 
 const Address = () => {
   useEffect(() => {
-    // axios.get("http://localhost:8000/api/auth/profile/", {
-    //   headers: {
-    //     Authorization: "Bearer " + localStorage.getItem("user"),
-    //   },
-    // });
+    apiRequest.get("/auth/profile", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("user"),
+      },
+    });
   }, []);
 
   const [province, setProvince] = useState(" ");
