@@ -1,7 +1,7 @@
 const db = require("../models");
 const transaction = db.Transaction;
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 uuidv4(); // ⇨ '1b9d-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
     } catch (err) {
       console.log(err);
       return res.status(500).json({
-        message: "Failed to add prescription",
+        message: "Failed to add your prescription",
       });
     }
   },
