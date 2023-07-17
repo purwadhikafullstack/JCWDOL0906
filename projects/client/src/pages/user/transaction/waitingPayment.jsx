@@ -1,4 +1,4 @@
-import { AvatarBadge, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Container, Divider, Flex, FormControl, FormLabel, Grid, Heading, HStack, Icon, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Stack, StackDivider, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { AvatarBadge, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Container, Divider, Flex, FormControl, FormLabel, Grid, Heading, HStack, Icon, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spacer, Stack, StackDivider, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
 import React, { useEffect, useRef, useState } from 'react'
 import { BsChevronRight, BsTrash } from 'react-icons/bs'
@@ -85,7 +85,21 @@ const WaitingPayment = () => {
         <Container maxW='container.xl' p={5} mt={5}>
             <Card variant='outline'>
                 <CardHeader>
-                    <Heading size='md'>Menunggu Pembayaran</Heading>
+                    <Flex justify='space-between' align='center'>
+                        <Heading size='md'>Menunggu Pembayaran</Heading>
+                        <Flex alignItems='center'>
+                            <Text mr={3} mb={0}> Status </Text>
+                            <Select w='150px' placeholder='Pilih Status' onChange={(e) => navigate('/mytransaction?status=' + e.target.value)}>
+                                <option value='Menunggu Konfirmasi'>Menunggu Konfirmasi</option>
+                                <option value='Menunggu Pembayaran'>Menunggu Pembayaran</option>
+                                <option value='Pembayaran'>Pembayaran</option>
+                                <option value='Diproses'>Diproses</option>
+                                <option value='Dikirim'>Dikirim</option>
+                                <option value='Pesanan Dikonfirmasi'>Diterima</option>
+                                <option value='Dibatalkan'>Dibatalkan</option>
+                            </Select>
+                        </Flex>
+                    </Flex>
                 </CardHeader>
 
                 <CardBody>
@@ -240,15 +254,26 @@ const WaitingPayment = () => {
                                 </Card>
                             )}
                             <Divider />
-                            {userTransaction.map(i =>
+                            {searchParams.get('status') === 'Menunggu Pembayaran' ?
 
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Bukti Pembayaran :</Text>
-                                        <Image height='120' src={process.env.REACT_APP_IMAGE_API + i.payment_receipt} />
+                                        <Text fontWeight='500'> Silahkan upload bukti pembayaran anda.</Text>
                                     </CardBody>
                                 </Card>
-                            )}
+                                :
+                                userTransaction.map(i =>
+
+                                    <Card variant='outline' bg='blue.50'>
+                                        <CardBody>
+                                            <Text fontWeight='600'> Bukti Pembayaran :</Text>
+                                            <Image height='120' src={process.env.REACT_APP_IMAGE_API + i.payment_receipt} />
+                                        </CardBody>
+                                    </Card>
+                                )
+                            }
+
                         </Stack>
                     </ModalBody>
 
@@ -256,7 +281,6 @@ const WaitingPayment = () => {
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

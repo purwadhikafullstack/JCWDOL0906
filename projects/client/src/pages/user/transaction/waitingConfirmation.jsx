@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, AvatarBadge, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Container, Divider, Flex, FormControl, FormLabel, Grid, Heading, HStack, Image, Input, Spacer, Stack, StackDivider, Text, VStack, useDisclosure } from '@chakra-ui/react'
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, AvatarBadge, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Container, Divider, Flex, FormControl, FormLabel, Grid, Heading, HStack, Image, Input, Spacer, Stack, StackDivider, Text, VStack, useDisclosure, Select } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
 import React, { useEffect, useState } from 'react'
 import { BsChevronRight } from 'react-icons/bs'
@@ -71,7 +71,21 @@ const WaitingConfirmation = () => {
         <Container maxW='container.xl' p={5} mt={5}>
             <Card variant='outline'>
                 <CardHeader>
-                    <Heading size='md'>Menunggu Konfirmasi</Heading>
+                    <Flex justify='space-between' align='center'>
+                        <Heading size='md'>Menunggu Konfirmasi</Heading>
+                        <Flex alignItems='center'>
+                            <Text mr={3} mb={0}> Status </Text>
+                            <Select w='150px' placeholder='Pilih Status' onChange={(e) => navigate('/mytransaction?status=' + e.target.value)}>
+                                <option value='Menunggu Konfirmasi'>Menunggu Konfirmasi</option>
+                                <option value='Menunggu Pembayaran'>Menunggu Pembayaran</option>
+                                <option value='Pembayaran'>Pembayaran</option>
+                                <option value='Diproses'>Diproses</option>
+                                <option value='Dikirim'>Dikirim</option>
+                                <option value='Pesanan Dikonfirmasi'>Diterima</option>
+                                <option value='Dibatalkan'>Dibatalkan</option>
+                            </Select>
+                        </Flex>
+                    </Flex>
                 </CardHeader>
 
                 <CardBody>
@@ -194,7 +208,6 @@ const WaitingConfirmation = () => {
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
