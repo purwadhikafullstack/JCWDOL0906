@@ -10,7 +10,7 @@ import {
   SupportIcon,
   DocumentIcon,
 } from "./components/adminComponents/Icons/Icons";
-import UserProduct from "./pages/user/product";
+import Transaction from "./pages/admin/pages/transaction";
 
 var dashRoutes = [
   {
@@ -60,6 +60,14 @@ var dashRoutes = [
     rtlName: "آرتيإل",
     icon: <SupportIcon color="inherit" />,
     component: Units,
+    layout: "/admin",
+  },
+  {
+    path: "/transanction",
+    name: "Transaction",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color="inherit" />,
+    component: Transaction,
     layout: "/admin",
   },
   // {

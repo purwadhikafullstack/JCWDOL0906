@@ -27,9 +27,9 @@ import StoreProductDetail from "./components/store/product/productDetail";
 import ShoppingCart from "./pages/user/shoppingCart";
 import UserProduct from "./pages/user/product";
 
-import MyAccount from "./pages/userProfile/account";
-import Address from "./pages/userProfile/address";
-import UserProfile from "./pages/userProfile/user";
+import CheckOut from "./pages/user/checkOut";
+import UserTransaction from "./pages/user/transaction";
+import UserProfile from "./pages/user/profile/user";
 // import ProtectedRoute from "./protected/protectedroute";
 
 function App() {
@@ -89,12 +89,38 @@ function App() {
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
+          <Route path="/checkout" element={<CheckOut />} />
 
           <Route
             path="/store/product/detail/:id"
             element={<StoreProductDetail />}
           />
-          <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/myaccount" Component={UserProfile} />
+          <Route></Route>
+          <Route path="/mytransaction" element={<UserTransaction />} />
+          <Route path="/mytransaction/checkout" element={<CheckOut />} />
+          <Route
+            path="/mytransaction/waiting-payment"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/waiting-confirmation"
+            element={<UserTransaction />}
+          />
+          <Route path="/mytransaction/received" element={<UserTransaction />} />
+          <Route path="/mytransaction/payment" element={<UserTransaction />} />
+          <Route
+            path="/mytransaction/on-the-way"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/on-process"
+            element={<UserTransaction />}
+          />
+          <Route
+            path="/mytransaction/cancelled"
+            element={<UserTransaction />}
+          />
 
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>

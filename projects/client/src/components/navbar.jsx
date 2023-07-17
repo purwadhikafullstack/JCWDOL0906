@@ -26,7 +26,7 @@ import { LoginForm } from "../components/loginForm";
 import { SearchBar } from "../components/searchbar";
 import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
 import { useEffect, useState } from "react";
-import MyAccount from "../pages/userProfile/account";
+import MyAccount from "../pages/user/profile/account";
 
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
@@ -64,7 +64,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     console.log("role", user.value.role);
-    if (user.value.role == 2) {
+    if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
     console.log("value", user.value.id);
@@ -163,8 +163,12 @@ export const Navbar = () => {
                       <MenuItem onClick={() => handleAccount()}>
                         My Account
                       </MenuItem>
-                      <MenuItem>Cart</MenuItem>
-                      <MenuItem>Transaction</MenuItem>
+                      <MenuItem>
+                        Cart
+                      </MenuItem>
+                      <MenuItem onClick={() => navigate("/mytransaction")}>
+                        Transaction
+                      </MenuItem>
                       <MenuItem onClick={() => handleLogOut()}>
                         Log Out
                       </MenuItem>

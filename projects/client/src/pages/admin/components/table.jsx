@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   Image,
   Box,
+  Badge,
 } from "@chakra-ui/react";
 
 import React from "react";
@@ -77,18 +78,20 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                       border={index === arr.length - 1 ? "none" : null}
                       borderColor={borderColor}
                     >
-                      {i === "price" ? (
+                      {i === "price" || i === "total_price" ? (
                         rupiah(el[i])
-                      ) : i === "image" ? (
+                      ) : i === "image" || (i === 'payment_receipt' && el[i] !== null) ? (
                         <Image
                           boxSize="100px"
                           objectFit="cover"
-                          src={process.env.REACT_APP_API_ADDRESS + el[i]}
+                          src={process.env.REACT_APP_IMAGE_API + el[i]}
                           alt=""
                         />
-                      ) : (
-                        el[i]
-                      )}
+                      ) : i === 'status' ?
+                        el[i] === 'Menunggu Pembayaran' ? (<Badge color='red'>{el[i]}</Badge>) : el[i] === 'Menunggu Konfirmasi' ? (<Badge color='blue'>{el[i]}</Badge>) : (<Badge color='green'>{el[i]}</Badge>)
+                        : (
+                          el[i]
+                        )}
                     </Td>
                   ))}
                   {menu === "product" ? (
@@ -129,6 +132,23 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                           Delete
                         </Button>
                       </HStack>
+                    </Td>
+                  ) : menu === "transaction" ? (
+                    <Td
+                      color={textTableColor}
+                      fontSize="sm"
+                      border={index === arr.length - 1 ? "none" : null}
+                      borderColor={borderColor}
+                      isNumeric
+                    >{el.status === 'Menunggu Konfirmasi' ? <HStack spacing="5px">
+                      <Button colorScheme="teal" onClick={action[0]} id={el.transaction_code}>
+                        Confirm
+                      </Button>
+                      <Button colorScheme="red" onClick={action[1]} id={el.transaction_code}>
+                        Reject
+                      </Button>
+                    </HStack> : ""}
+
                     </Td>
                   ) : (
                     <Td

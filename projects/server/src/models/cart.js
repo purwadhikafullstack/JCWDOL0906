@@ -12,11 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: "user_id",
 			});
 
-			Cart.belongsTo(models.Product, {
-				foreignKey: "product_id",
-				as: "Product",
-			});
-			// Cart.hasMany(models.Product, { foreignKey: 'product_id' })
+		
+			
 		}
 	}
 	Cart.init(
@@ -39,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			product_id: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true,
 			},
 		},
 		{
