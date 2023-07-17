@@ -36,7 +36,7 @@ const MyAccount = () => {
     axios
       .get("http://localhost:8000/api/auth/profile/", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("user"),
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
         },
       })
       .then((result) => {
@@ -74,7 +74,7 @@ const MyAccount = () => {
         formData,
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("user"),
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
           },
         }
       );
