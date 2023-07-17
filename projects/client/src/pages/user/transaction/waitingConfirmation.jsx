@@ -57,9 +57,9 @@ const WaitingConfirmation = () => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
         } else if (shipping === 'jne') {
-            return <Image src='https://www.jne.co.id/frontend/images/material/logo.jpg' />
+            return <Image w='80px' src='https://www.jne.co.id/frontend/images/material/logo.jpg' />
         } else {
-            return <Image src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
+            return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
     console.log(userTransaction)

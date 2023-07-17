@@ -1,4 +1,5 @@
 import { AvatarBadge, Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Container, Divider, Flex, FormControl, FormLabel, Grid, Heading, HStack, Icon, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer, Stack, StackDivider, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { mode } from '@chakra-ui/theme-tools'
 import React, { useEffect, useRef, useState } from 'react'
 import { BsChevronRight, BsTrash } from 'react-icons/bs'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -11,7 +12,10 @@ const WaitingPayment = () => {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
     const [transaction, setTransaction] = useState([])
+    const [userTransaction, setUserTransaction] = useState([])
+    const [detailTransaction, setDetailTransaction] = useState([])
     const [code, setCode] = useState("")
+    const [transactionId, setTransactionId] = useState(0)
     const [upload, setUpload] = useState(false)
 
     const getDataByStatus = async () => {
@@ -45,7 +49,8 @@ const WaitingPayment = () => {
             const result = await apiRequest.get("/transaction/" + code + "/code")
             console.log(result.data.data)
 
-            setTransaction(result.data.data)
+            setUserTransaction(result.data.data.transaction)
+            setDetailTransaction(result.data.data.details)
             onOpen()
         } catch (error) {
 
@@ -60,6 +65,16 @@ const WaitingPayment = () => {
             getDataByStatus()
         } catch (error) {
 
+        }
+    }
+
+    const jasaPengiriman = (shipping) => {
+        if (shipping === 'tiki') {
+            return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
+        } else if (shipping === 'jne') {
+            return <Image w='80px' src='https://www.jne.co.id/frontend/images/material/logo.jpg' />
+        } else {
+            return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
 
@@ -136,7 +151,7 @@ const WaitingPayment = () => {
 
                                                     <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     <Flex>
-                                                        <Input type='file' ref={ref} id={i.transaction_code} onChange={(e) => uploadBukti(e.target)} />
+                                                        <Input type='file' id={i.transaction_code} onChange={(e) => uploadBukti(e.target)} />
                                                         <Button ml={2} colorScheme='red' onClick={() => setCode("")}>X</Button>
                                                     </Flex>
                                                     <Button ml={2} colorScheme='red' onClick={() => cancelTransaction(i.transaction_code)}><Icon as={BsTrash} h={5} w={5} alignSelf={'center'} /></Button>
@@ -144,7 +159,7 @@ const WaitingPayment = () => {
                                                 </> : <>
 
                                                     <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
-                                                    <Button variant='outline' colorScheme='blue' onClick={() => setCode(i.transaction_code)}>Upload Receipt</Button>
+                                                    <Button variant='outline' colorScheme='blue' onClick={() => { setCode(i.transaction_code); setTransactionId(i.id) }}>Upload Receipt</Button>
                                                     <Button ml={2} colorScheme='red' onClick={() => cancelTransaction(i.transaction_code)}><Icon as={BsTrash} h={5} w={5} alignSelf={'center'} /></Button>
 
                                                 </>
@@ -158,6 +173,93 @@ const WaitingPayment = () => {
                     </Stack>
                 </CardBody>
             </Card>
+            <Modal isOpen={isOpen} onClose={onClose} size='3xl'>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Detail Transaksi</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Stack>
+                            {userTransaction.map(i =>
+
+                                <Card variant='outline' bg='blue.50'>
+                                    <CardBody>
+                                        <Text> Tujuan Pengiriman : {i.address_name}</Text>
+                                    </CardBody>
+                                </Card>
+                            )}
+                            <Divider />
+
+                            <Card variant='outline' bg='blue.50'>
+                                {detailTransaction.map((j, index) =>
+                                    <CardBody key={index}>
+
+                                        <Flex justify='space-between' align='center'>
+                                            <Box pt="4">
+                                                <Stack spacing="0.5">
+                                                    <Text fontWeight="medium">{j.product_name}</Text>
+                                                    <Text color={mode('gray.600', 'gray.400')} fontSize="sm">
+                                                        {j.qty} x {rupiah(j.price)}
+                                                    </Text>
+                                                </Stack>
+                                            </Box>
+                                            <Text color={mode('gray.600', 'gray.400')} fontSize="sm">
+                                                {rupiah(j.qty * j.price)}
+                                            </Text>
+                                        </Flex>
+                                    </CardBody>
+                                )}
+                            </Card>
+
+
+
+                            <Divider />
+                            {userTransaction.map(i =>
+
+                                <Card variant='outline' bg='blue.50'>
+                                    <CardBody>
+                                        <Text fontWeight='600'> Ongkos Pengiriman :</Text>
+                                        <Flex justify='space-between' align='center'>
+                                            {jasaPengiriman(i.shipping)}
+                                            <Text>{rupiah(i.shipping_cost)}</Text>
+                                        </Flex>
+                                    </CardBody>
+                                </Card>
+                            )}
+                            <Divider />
+                            {userTransaction.map(i =>
+
+                                <Card variant='outline' bg='blue.50'>
+                                    <CardBody>
+
+                                        <Flex justify='space-between' align='center'>
+                                            <Text fontWeight='600'> Total Pembayaran :</Text>
+                                            <Text>{rupiah(i.total_price)}</Text>
+                                        </Flex>
+                                    </CardBody>
+                                </Card>
+                            )}
+                            <Divider />
+                            {userTransaction.map(i =>
+
+                                <Card variant='outline' bg='blue.50'>
+                                    <CardBody>
+                                        <Text fontWeight='600'> Bukti Pembayaran :</Text>
+                                        <Image height='120' src={process.env.REACT_APP_IMAGE_API + i.payment_receipt} />
+                                    </CardBody>
+                                </Card>
+                            )}
+                        </Stack>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button variant='ghost'>Secondary Action</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Container>
 
     )

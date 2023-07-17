@@ -129,7 +129,7 @@ module.exports = {
             let data = {};
             const transactions = await sequelize.query(
                 `
-            SELECT ts.*,adr.address FROM Transactions ts 
+            SELECT ts.*,adr.address_name FROM Transactions ts 
             JOIN Addresses adr ON ts.address_id=adr.id
             WHERE ts.transaction_code="${code}"
             `,
