@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Flex,
+  Select,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -21,12 +22,17 @@ const TransactionList = () => {
 
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-
+  const [status, setStatus] = useState("")
   const [transaction, setTransaction] = useState([]);
 
   const getData = async () => {
+    let params = ""
+    if (status !== "") {
+      params += '&status=' + status
+    }
+
     try {
-      const result = await apiRequest.get('/transaction/admin?page=' + activePage)
+      const result = await apiRequest.get('/transaction/admin?page=' + activePage + params)
 
       console.log(result.data)
       setTransaction(result.data.data)
@@ -55,7 +61,7 @@ const TransactionList = () => {
     }
   }
 
-  useEffect(() => { getData() }, [activePage])
+  useEffect(() => { getData() }, [activePage, status])
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -64,6 +70,16 @@ const TransactionList = () => {
             <Text fontSize="lg" color={textColor} fontWeight="bold">
               Transaction
             </Text>
+
+            <Select w='200px' placeholder='Pilih Status' onChange={(e) => setStatus(e.target.value)}>
+              <option value='Menunggu Konfirmasi'>Menunggu Konfirmasi</option>
+              <option value='Menunggu Pembayaran'>Menunggu Pembayaran</option>
+              <option value='Pembayaran'>Pembayaran</option>
+              <option value='Diproses'>Diproses</option>
+              <option value='Dikirim'>Dikirim</option>
+              <option value='Pesanan Dikonfirmasi'>Diterima</option>
+              <option value='Dibatalkan'>Dibatalkan</option>
+            </Select>
 
           </Flex>
           <Box overflow={{ sm: "scroll", lg: "hidden" }}>

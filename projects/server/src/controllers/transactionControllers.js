@@ -15,7 +15,7 @@ module.exports = {
         console.log('user id =======>', userId)
         const { total_price, shipping, cart, address_id, sub_total, service_cost } =
             req.body;
-        let code = "INV/" + uuidv4();
+        let code = "INV-" + uuidv4().split("-")[0];
         console.log(req.body);
         console.log("address id:", address_id);
         const t = await sequelize.transaction();
@@ -29,7 +29,7 @@ module.exports = {
                     shipping,
                     address_id,
                     sub_total,
-                    service_cost,
+                    shipping_cost: service_cost,
                 },
                 { transaction: t }
             );
@@ -129,7 +129,7 @@ module.exports = {
             let data = {};
             const transactions = await sequelize.query(
                 `
-            SELECT ts.*,adr.address FROM Transactions ts 
+            SELECT ts.*,adr.address_name FROM Transactions ts 
             JOIN Addresses adr ON ts.address_id=adr.id
             WHERE ts.transaction_code="${code}"
             `,
@@ -198,7 +198,10 @@ module.exports = {
         }
     },
     getAdminTransaction: async (req, res) => {
-        console.log('KESINI')
+        let param = ''
+        if (req.query.status && req.query.status !== "") {
+            param += `WHERE ts.status="${req.query.status}"`
+        }
         try {
             const page = parseInt(req.query.page) || 1;
             const pageSize = parseInt(req.query.size) || 6;
@@ -207,6 +210,7 @@ module.exports = {
       SELECT ts.*,usr.username FROM 
       Transactions ts 
       JOIN Users usr ON usr.id=ts.user_id
+            ${param}
       ORDER BY ts.createdAt DESC
       LIMIT ${pageSize}
       OFFSET ${(page - 1) * pageSize}
@@ -221,6 +225,7 @@ module.exports = {
                 `SELECT COUNT(ts.id) as count FROM 
       Transactions ts 
       JOIN Users usr ON usr.id=ts.user_id
+      ${param}
       ORDER BY ts.createdAt DESC
       `,
                 {
@@ -241,16 +246,17 @@ module.exports = {
     confirmTransaction: async (req, res) => {
         const code = req.params.code
         const action = req.params.action
+        console.log(code)
         try {
 
-            const status = await transaction.findOne({ attributes: ['status'] }, { where: { transaction_code: code } })
-            console.log(status)
-            const { dataValues } = status
-
+            const status = await transaction.findAll({ where: { transaction_code: code } })
+            // console.log(status[0].status)
+            // const { dataValues } = status
+            // console.log(dataValues)
 
             if (action === 'confirm') {
-                if (dataValues.status !== 'Dibatalkan') return res.status(400).json(failedResponse("Transaksi tidak bisa dikonfirmasi"))
-                if (dataValues.status !== 'Menunggu Konfirmasi') return res.status(400).json(failedResponse("Status transaksi sudah terkonfirmasi"))
+                if (status[0].status === 'Dibatalkan') return res.status(400).json(failedResponse("Transaksi tidak bisa dikonfirmasi"))
+                if (status[0].status !== 'Menunggu Konfirmasi') return res.status(400).json(failedResponse("Status transaksi sudah terkonfirmasi"))
                 const data = await transaction.update({ status: 'Diproses' }, {
                     where: {
                         transaction_code: code

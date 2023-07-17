@@ -8,9 +8,10 @@ module.exports = {
   addPrescription: async (req, res) => {
     try {
       console.log(req.body);
-      const data = (req.body);
+      const data = JSON.parse(req.body.data);
       const { user_id, status, address_id, shipping } = data;
-      const code = "INV/RSP/" + uuidv4();
+      const newUUID = uuidv4().split("-")[0]
+      const code = "INV-RSP-" + newUUID;
       if (!req.file) {
         return res.status(400).json({
           message: "No image file provided",
