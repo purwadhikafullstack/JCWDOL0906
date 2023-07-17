@@ -40,9 +40,19 @@ export const RegistrationForm = () => {
     confirmation: Yup.string().required('Password Confirmation is Required'),
   })
 
+  const OverlayTwo = () => (
+    <ModalOverlay
+      bg='none'
+      backdropFilter='auto'
+      // backdropInvert='80%'
+      backdropBlur='2px'
+    />
+  );
+
   const {
     isOpen, onOpen, onClose } = useDisclosure();
   // const [showPassword, setShowPassword] = useState(false);
+  const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
   const onRegister = async () => {
     console.log("register");
@@ -101,19 +111,21 @@ export const RegistrationForm = () => {
         color={"blue.800"}
         bg="blue.100"
         href={"#"}
-        onClick={onOpen}
+        onClick={() => {
+          setOverlay(<OverlayTwo />)
+          onOpen()}}
         pt={{ base: "4", md: 0 }}
         borderRadius='10px'
       >
-        SignUp
+        Daftar
       </Button>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
       >
-        <ModalOverlay />
+        {overlay}
         <ModalContent>
-          <ModalHeader textAlign={"center"} color="blue.800">Sign Up Now!</ModalHeader>
+          <ModalHeader textAlign={"center"} color="blue.700">Daftar Sekarang!</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={5}>
             <Formik
@@ -135,7 +147,7 @@ export const RegistrationForm = () => {
                     id="username"
                     type="text"
                     name="username"
-                    borderColor="blue.300"
+                    borderColor="blue.700"
                     placeholder="Username"
                   />
                   <ErrorMessage name="username" component="div" style={{ color: "red" }} />
@@ -147,7 +159,7 @@ export const RegistrationForm = () => {
                     id="email"
                     type="email"
                     name="email"
-                    borderColor="blue.300"
+                    borderColor="blue.700"
                     placeholder="Email Address"
                   />
                   <ErrorMessage name="email" component="div" style={{ color: "red" }} />
@@ -159,7 +171,7 @@ export const RegistrationForm = () => {
                     id="phonenumber"
                     type="phonenumber"
                     name="phonenumber"
-                    borderColor="blue.300"
+                    borderColor="blue.700"
                     placeholder="Phone Number"
                   />
                   <ErrorMessage name="phonenumber" component="div" style={{ color: "red" }} />
@@ -171,7 +183,7 @@ export const RegistrationForm = () => {
                     id="password"
                     type="password"
                     name="password"
-                    borderColor="blue.300"
+                    borderColor="blue.700"
                     placeholder="Password"
                   />
                   <ErrorMessage name="password" component="div" style={{ color: "red" }} />
@@ -183,8 +195,8 @@ export const RegistrationForm = () => {
                     id="confirmation"
                     type="password"
                     name="confirmation"
-                    borderColor="blue.300"
-                    placeholder="Passworc Confirmation"
+                    borderColor="blue.700"
+                    placeholder="Password Confirmation"
                   />
                   <ErrorMessage name="confirmation" component="div" style={{ color: "red" }} />
                 </FormControl>
@@ -192,8 +204,8 @@ export const RegistrationForm = () => {
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
                     fontSize={"md"} fontWeight="bold"
-                    color={"blue.800"} bg="blue.100"
-                    onClick={() => onRegister()}>Register</Button>
+                    color={"white"} bg="blue.700"
+                    onClick={() => onRegister()}>Daftar</Button>
                 </ModalFooter>
               </Form>
             </Formik>

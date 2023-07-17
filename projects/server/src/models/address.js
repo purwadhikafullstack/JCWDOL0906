@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Address.init(
     {
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       address_name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -26,15 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      province_id: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       city_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      city_id: {
         type: DataTypes.STRING,
         allowNull: false,
       },

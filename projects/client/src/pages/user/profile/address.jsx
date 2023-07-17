@@ -26,19 +26,19 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
-import { swalFailed } from "../../../helper";
-
+import { swalFailed, swalSuccess } from "../../../helper/index";
+import { apiRequest } from "../../../helper/api";
 const cities = require("./city.json").rajaongkir.results;
 const provinces = require("./province.json").rajaongkir.results;
 const codes = require("./city.json").rajaongkir.results;
 
 const Address = () => {
   useEffect(() => {
-    // axios.get("http://localhost:8000/api/auth/profile/", {
-    //   headers: {
-    //     Authorization: "Bearer " + localStorage.getItem("user"),
-    //   },
-    // });
+    apiRequest.get("/auth/profile", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("user"),
+      },
+    });
   }, []);
 
   const [province, setProvince] = useState(" ");
@@ -50,7 +50,7 @@ const Address = () => {
 
   const getAddress = async (e) => {
     try {
-      let result = await axios.get("http://localhost:8000/api/address", {
+      let result = await apiRequest.get("/address", {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },

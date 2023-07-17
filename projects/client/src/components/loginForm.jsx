@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-
+// import { Loading } from "./loading";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
@@ -34,7 +34,17 @@ export const LoginForm = () => {
     password: Yup.string().required("Password is Required"),
   });
 
+  const OverlayTwo = () => (
+    <ModalOverlay
+      bg='none'
+      backdropFilter='auto'
+      // backdropInvert='80%'
+      backdropBlur='2px'
+    />
+  );
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayTwo/>)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,10 +74,11 @@ export const LoginForm = () => {
       onClose();
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
-      } else {
-        navigate("/");
+      } 
+      // else {
+      //   navigate("/");
 
-      }
+      // }
     } catch (error) {
       // console.log(error);
       Swal.fire({
@@ -90,20 +101,22 @@ export const LoginForm = () => {
         display={{ base: "solid", md: "inline-flex" }}
         fontSize={"md"}
         fontWeight="bold"
-        color={"blue.800"}
-        bg="blue.200"
+        color={"white"}
+        bg="blue.800"
         href={"#"}
-        onClick={onOpen}
+        onClick={() => {
+          setOverlay(<OverlayTwo />)
+          onOpen()}}
         pt={{ base: "3", md: 0 }}
         borderRadius="10px"
       >
-        Login
+        Masuk
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+      {overlay}
         <ModalContent>
           <ModalHeader textAlign={"center"} color="blue.800">
-            Login Now!
+            Masuk Sekarang!
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={5}>
@@ -123,7 +136,7 @@ export const LoginForm = () => {
                     id="email"
                     type="email"
                     name="email"
-                    borderColor="blue.300"
+                    borderColor="blue.800"
                     placeholder="Email Address"
                   />
                   <ErrorMessage
@@ -137,7 +150,7 @@ export const LoginForm = () => {
                     id="password"
                     type="password"
                     name="password"
-                    borderColor="blue.300"
+                    borderColor="blue.800"
                     placeholder="Password"
                   />
 
@@ -149,30 +162,27 @@ export const LoginForm = () => {
 
                 </FormControl>
                 <ModalFooter>
-                  <Button mr={5} type="submit" colorScheme="blue.800">
-                    Login
-                  </Button>
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
                     fontSize={"md"}
                     fontWeight="bold"
-                    color={"blue.800"}
-                    bg="blue.100"
+                    color={"white"}
+                    bg="blue.800"
                     onClick={() => onLogin()}
                   >
-                    Login
+                    Masuk
                   </Button>
                 </ModalFooter>
               </Form>
             </Formik>
             <Link
-              as={Button}
+              // as={Button}
               variant="link"
               onClick={() => {
                 onClose();
-                navigate("/confirmemail");
+                navigate("/confirm-email");
               }}
-              color="blue.400"
+              color="blue.800"
               mt={5}
             >
               Forgot password? Reset here
