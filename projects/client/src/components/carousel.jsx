@@ -32,7 +32,7 @@ export function Carousel() {
   const side = useBreakpointValue({ base: '30%', md: '10px' });
 
   const cards = [
-   banner3, banner6, banner7, banner8, banner9, banner10, banner11
+     banner6, banner7, banner8, banner9, banner10, banner11, banner3
   ];
  
   return (

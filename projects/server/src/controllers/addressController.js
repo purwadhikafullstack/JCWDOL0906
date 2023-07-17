@@ -8,7 +8,9 @@ const user = db.User;
 module.exports = {
   getAddress: async (req, res) => {
     try {
+
       const { userId } = req;
+      console.log(userId);
       // console.log(getData);
       let data = await address.findAll({
         where: {
@@ -24,7 +26,8 @@ module.exports = {
         data,
       });
     } catch (error) {
-      res.status(400).send({
+      console.log(error)
+      res.status(500).send({
         message: error.message,
         data: error,
       });

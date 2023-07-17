@@ -41,27 +41,25 @@ const ModalAddProduct = ({
             <FormControl isInvalid={isError}>
               <FormLabel>Product Name</FormLabel>
               <Input type="text" placeholder="Product Name" id="product_name" />
-
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
               ) : (
                 ""
               )}
             </FormControl>
-
             <FormControl>
               <FormLabel> Category </FormLabel>
               <Select id="category_id">
                 <option value="">Select categories </option>
                 {categories.map((category, index) => {
-                  return (
-                    <option value={category.id} key={index}>
-                      {category.category_name}
-                    </option>
-                  );
+                  return {
+                    /* <option value={category.id} key={index}>
+                      {category.name}
+                    </option> */
+                  };
                 })}
               </Select>
-            </FormControl>
+            </FormControl> 
 
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>
