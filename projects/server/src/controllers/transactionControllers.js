@@ -47,7 +47,6 @@ module.exports = {
                     { transaction: t }
                 );
             }
-
             await Cart.destroy(
                 {
                     where: {
