@@ -27,8 +27,8 @@ const ModalAddProduct = ({
   Cancel,
   Submit,
   categories,
-  setNewProduct,
-  setCategory
+  newCategory,
+  setCategory,
 }) => {
   return (
     <>

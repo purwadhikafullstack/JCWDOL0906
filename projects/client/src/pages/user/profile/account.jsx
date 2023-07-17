@@ -24,6 +24,7 @@ import {
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import Address from "./address";
+import { apiRequest } from "../../../helper/api";
 
 const MyAccount = () => {
   const [fullName, setFullName] = useState();
@@ -33,8 +34,8 @@ const MyAccount = () => {
   console.log(picture);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/auth/profile/", {
+    apiRequest
+      .get("/auth/profile", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("user"),
         },
@@ -69,15 +70,11 @@ const MyAccount = () => {
       formData.append("picture", picture);
       console.log(formData);
 
-      let result = await axios.patch(
-        "http://localhost:8000/api/auth/profile/edit",
-        formData,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("user"),
-          },
-        }
-      );
+      let result = await apiRequest.patch("/auth/myaccount", formData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("user"),
+        },
+      });
       // modalUpdate.onClose();
       // getData();
       // swalSuccess(result.data.message);
