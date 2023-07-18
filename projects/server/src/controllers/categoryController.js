@@ -92,7 +92,7 @@ module.exports = {
 			console.log(error);
 			res.status(400).send({
 				status: false,
-				message: error.message,
+				message: error,
 			});
 		}
 	},
