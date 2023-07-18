@@ -7,25 +7,26 @@ uuidv4(); // ⇨ '1b9d-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 module.exports = {
   addPrescription: async (req, res) => {
     try {
-      console.log(req.body.data);
+      console.log(req.body);
       const data = JSON.parse(req.body.data);
-      const { user_id, status, address_name, shipping } = data;
-      const code = "INV/RSP#" + uuidv4();
+      const { user_id, status, address_id, shipping } = data;
+      const newUUID = uuidv4().split("-")[0]
+      const code = "INV-RSP-" + newUUID;
       if (!req.file) {
         return res.status(400).json({
           message: "No image file provided",
         });
       }
-
-      const image = req.file.path;
-
+      console.log(req.file);
+      const prescription = req.file.path;
+      console.log(prescription);
       const result = await transaction.create({
         user_id,
         transaction_code: code,
+        prescription,
         status,
-        address_name,
-        shipping,
-        image,
+        address_id,
+        shipping
       });
 
       return res.status(200).json({

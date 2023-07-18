@@ -1,7 +1,9 @@
 import { Box, HStack, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
-import UploadPrescriptionPage from "../../user/prescription/prescriptionpage"
 import { Navbar } from "../../../components/navbar";
+import PrescriptionPage from "./prescriptionpage";
+
+
 
 const Prescription = () => {
   return (
@@ -9,7 +11,7 @@ const Prescription = () => {
       <Navbar />
       <div className="home-container">
         {/* <SimpleSlider/> */}
-        <UploadPrescriptionPage />
+        <PrescriptionPage />
       </div>
     </Box>
   );

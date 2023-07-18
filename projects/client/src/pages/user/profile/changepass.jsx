@@ -50,7 +50,7 @@ export const ChangePassword = () => {
 
       Swal.fire({
         icon: 'success',
-        title: 'Reset Password Success',
+        title: 'Change Password Success',
         customClass: {
           container: 'my-swal',
         },

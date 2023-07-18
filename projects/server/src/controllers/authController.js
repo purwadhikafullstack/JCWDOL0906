@@ -282,7 +282,7 @@ module.exports = {
       let token = req.headers.authorization;
       token = token.split(" ")[1];
       const data = jwt.verify(token, "g-medsnial");
-      
+
       console.log(data);
 
       const salt = await bcrypt.genSalt(10);
@@ -310,8 +310,8 @@ module.exports = {
       const { password, newPassword, confirmPassword } = req.body;
       console.log(req.body);
       const userExist = await user.findOne({
-        where: { 
-          id: req.userId 
+        where: {
+          id: req.userId
         },
       });
       console.log(userExist);
@@ -357,10 +357,12 @@ module.exports = {
 
       const userPassword = await user.update(
         { password: hashPass },
-        { where: 
-          { 
-            id: req.userId 
-          }}
+        {
+          where:
+          {
+            id: req.userId
+          }
+        }
       );
       res.send({
         message: "Change Password Success",
@@ -461,7 +463,7 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const { userId } = req;
-      console.log(userId);
+      console.log('ID', userId);
 
       const profileData = await profile.findOne({
         where: {

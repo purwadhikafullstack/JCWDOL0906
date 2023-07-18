@@ -63,26 +63,56 @@ const UserProductList = () => {
 
   return (
     <>
-    <Flex flexDirection="column" alignItems="start" p={10} w="100%">
-      <Flex
-        w="100%"
-        alignItems="center"
-        justifyContent="space-between"
-        bg="white"
-        p={3}
-        borderRadius="20px"
-      >
-        <StoreProductFilter
-          sort={sort}
-          setSort={(e) => setSort(e.target.value)}
-          filterCategory={filterCategory}
-          setFilterCategory={(e) => setFilterCategory(e.target.value)}
-          category={category}
-          setFilterName={(e) => setFilterName(e.target.value)}
-          clearFilter={() => clearFilter()}
-        />
+      <Flex flexDirection="column" alignItems="start" p={10} w="100%">
+        <Flex
+          w="100%"
+          alignItems="center"
+          justifyContent="space-between"
+          bg="white"
+          p={3}
+          borderRadius="20px"
+        >
+          <StoreProductFilter
+            sort={sort}
+            setSort={(e) => setSort(e.target.value)}
+            filterCategory={filterCategory}
+            setFilterCategory={(e) => setFilterCategory(e.target.value)}
+            category={category}
+            setFilterName={(e) => setFilterName(e.target.value)}
+            clearFilter={() => clearFilter()}
+          />
 
-        <Flex alignItems="center">
+          <Flex alignItems="center">
+            <Text p={5}>
+              {" "}
+              Page {pageNumber} of {records} data{" "}
+            </Text>
+            <Pagination
+              prev={() => setPageNumber(Number(pageNumber) - 1)}
+              next={() => setPageNumber(Number(pageNumber) + 1)}
+              goTo={(e) => setPageNumber(e.target.id)}
+              paging={paging}
+              pageNumber={Number(pageNumber)}
+            />
+          </Flex>
+        </Flex>
+        <Container maxW="container.xl" p={5} mt={5}>
+          <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+            {product.length > 0
+              ? product.map((i) => (
+                <ProductCard
+                  image={process.env.REACT_APP_IMAGE_API + i.image}
+                  product_name={i.product_name}
+                  price={i.price}
+                  id={i.id}
+                  category={i.category}
+                />
+              ))
+              : "Product Not Found"}
+          </Grid>
+        </Container>
+
+        <Flex w="100%" alignItems="center" justifyContent="end">
           <Text p={5}>
             {" "}
             Page {pageNumber} of {records} data{" "}
@@ -96,36 +126,6 @@ const UserProductList = () => {
           />
         </Flex>
       </Flex>
-      <Container maxW="container.xl" p={5} mt={5}>
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          {product.length > 0
-            ? product.map((i) => (
-              <ProductCard
-                image={process.env.REACT_APP_IMAGE_API + i.image}
-                product_name={i.product_name}
-                price={i.price}
-                id={i.id}
-                category={i.Category}
-              />
-            ))
-            : "Product Not Found"}
-        </Grid>
-      </Container>
-
-      <Flex w="100%" alignItems="center" justifyContent="end">
-        <Text p={5}>
-          {" "}
-          Page {pageNumber} of {records} data{" "}
-        </Text>
-        <Pagination
-          prev={() => setPageNumber(Number(pageNumber) - 1)}
-          next={() => setPageNumber(Number(pageNumber) + 1)}
-          goTo={(e) => setPageNumber(e.target.id)}
-          paging={paging}
-          pageNumber={Number(pageNumber)}
-        />
-      </Flex>
-    </Flex>
     </>
   );
 };
