@@ -4,17 +4,19 @@ import { Carousel } from "../components/carousel";
 import { Category } from "../components/category";
 import { Prescriptions } from "../components/prescription";
 import FooterUserPage from "../components/footer";
+import UserProductList from "./user/product/list";
 
 export const HomePage = () => {
     return (
         <div>
             <Navbar />
             <div className="home-container">
-                <Carousel/>
-                <Prescriptions/>
-                <Category/>
+                <Carousel />
+                <Prescriptions />
+                <Category />
                 <Outlet />
-                <FooterUserPage/>
+                <UserProductList />
+                <FooterUserPage />
             </div>
         </div>
     );
