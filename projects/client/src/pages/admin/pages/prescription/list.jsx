@@ -65,13 +65,22 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-function Prescription() {
+// 1. ambil data transaction dari database dengan where code: code
+// useState transaction buat simpan datanya, panggil useeffect apiRequest hit ke backend ambil data transaksi (routes transaction/:code)
+// 2. foto resep, transaction.prescription taro di dlm image src
+// 3. buat state products, useEffects getProducts, apireq get
+
+//4. buat handler untuk submit botton (isi: hit api request.patch), backend 1. update table transaction dengan data yg baru
+//2. create table transaction_details sesuai yg di prescription
+
+function Prescription({ code }) {
   const [chosenProducts, setChosenProducts] = useState([]);
   const products = [
     { id: 1, name: "Product 1" },
     { id: 2, name: "Product 2" },
     { id: 3, name: "Product 3" },
   ];
+  //state products ganti
 
   // Function to handle product selection and quantity input
   const handleProductSelect = (product) => {
@@ -94,7 +103,7 @@ function Prescription() {
       {/* Left Box */}
       <Box bg="white" p={4} borderRadius="md" boxShadow="md">
         <Text fontSize="xl" fontWeight="bold" color="black" mb={4}>
-          Prescription
+          Prescription {code}
         </Text>
         {/* Display uploaded picture from the user */}
         <Image src="path_to_uploaded_picture" alt="Uploaded Picture" />

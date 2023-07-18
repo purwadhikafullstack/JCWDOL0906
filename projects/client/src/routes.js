@@ -11,7 +11,6 @@ import {
   DocumentIcon,
 } from "./components/adminComponents/Icons/Icons";
 import Transaction from "./pages/admin/pages/transaction";
-import Prescription from "./pages/admin/pages/prescription";
 
 var dashRoutes = [
   {
@@ -71,14 +70,14 @@ var dashRoutes = [
     component: Transaction,
     layout: "/admin",
   },
-  {
-    path: "/inv-prescription",
-    name: "Prescription Transaction",
-    rtlName: "آرتيإل",
-    icon: <SupportIcon color="inherit" />,
-    component: Prescription,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/inv-prescription",
+  //   name: "Prescription Transaction",
+  //   rtlName: "آرتيإل",
+  //   icon: <SupportIcon color="inherit" />,
+  //   component: Prescription,
+  //   layout: "/admin",
+  // },
   // {
   //   name: "ACCOUNT PAGES",
   //   category: "account",
