@@ -38,11 +38,11 @@ const PrescriptionPage = (props) => {
 try {
   const prescription = document.getElementById("prescription").files[0];
   const shipping = document.getElementById("shipping").value;
-  const address_name = document.getElementById("address_id").value;
+  const address_id = document.getElementById("address_id").value;
   const formData = new FormData();
   const data = {
     shipping,
-    address_name
+    address_id
   }
   formData.append("prescription", selectedFile, prescription);
   formData.append("shipping", shipping);
