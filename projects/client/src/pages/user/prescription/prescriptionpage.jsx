@@ -60,6 +60,7 @@ try {
   Swal.fire({
         icon: 'success',
         title: 'Upload Prescription Succes',
+        text: error.result.data.message,
         customClass: {
           container: 'my-swal',
         },
