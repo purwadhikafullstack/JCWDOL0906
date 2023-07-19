@@ -7,7 +7,6 @@ const r_prescription = require('./prescriptionRouter');
 const r_address = require("./addressRouter");
 const r_ongkir = require("./rajaOngkirRouter");
 const r_transaction = require("./transactionRouter");
-const r_stockHistory = require("./stockHistoryRouter");
 module.exports = {
   routes: [
     r_unit,
@@ -19,6 +18,5 @@ module.exports = {
     r_address,
     r_ongkir,
     r_transaction,
-    r_stockHistory
   ]
 }

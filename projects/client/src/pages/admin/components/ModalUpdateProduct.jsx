@@ -11,24 +11,40 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
-const ModalProductUpdate = ({
+const ModalUpdateProduct = ({
   Open,
   Close,
   isError,
-  Data,
   Title,
-  SetUnit,
   Cancel,
   Submit,
+  categories,
+  setCategory,
+  productName,
+  categoryId,
+  price,
+  description,
+  indication,
+  dose,
+  rules,
+  setProductName,
+  setCategoryId,
+  setPrice,
+  setDescription,
+  setIndication,
+  setDose,
+  setRules,
 }) => {
+
   return (
     <>
-      <Modal isOpen={Open} onClose={Close} size="full">
+      <Modal isOpen={Open} onClose={Close} size="2xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{Title}</ModalHeader>
@@ -36,17 +52,34 @@ const ModalProductUpdate = ({
           <ModalBody pb={6}>
             <FormControl isInvalid={isError}>
               <FormLabel>Product Name</FormLabel>
-              <Input type="text" placeholder="Product Name" id="product_name" />
-
+              <Input type="text" placeholder="Product Name" id="product_name" defaultValue={productName} onChange={setProductName} />
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
               ) : (
                 ""
               )}
             </FormControl>
+            <FormControl>
+              <FormLabel> Category </FormLabel>
+              <Select
+                onChange={(e) => setCategory(e.target.value)}
+                id="category_id"
+                defaultValue={categoryId}
+              >
+                <option value="">Select categories </option>
+                {categories.map((category, index) =>
+
+                  <option value={category.id} key={index}>
+                    {category.category_name}
+                  </option>
+
+                )}
+              </Select>
+            </FormControl>
+
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>
-              <Input type="text" placeholder="Price" id="price" />
+              <Input type="text" placeholder="Price" id="price" defaultValue={price} onChange={setPrice} />
 
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
@@ -65,7 +98,7 @@ const ModalProductUpdate = ({
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Description</FormLabel>
-              <Input type="text" placeholder="Description" id="description" />
+              <Input type="text" placeholder="Description" id="description" defaultValue={description} onChange={setDescription} />
               {/* <Textarea
                 placeholder="Description"
                 defaultValue={Data.description}
@@ -80,7 +113,7 @@ const ModalProductUpdate = ({
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Indication</FormLabel>
-              <Input type="text" placeholder="Indication" id="indication" />
+              <Input type="text" placeholder="Indication" id="indication" defaultValue={indication} onChange={setIndication} />
 
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
@@ -90,7 +123,7 @@ const ModalProductUpdate = ({
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Dose</FormLabel>
-              <Input type="text" placeholder="Dose" id="dose" />
+              <Input type="text" placeholder="Dose" id="dose" defaultValue={dose} onChange={setDose} />
 
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
@@ -100,7 +133,7 @@ const ModalProductUpdate = ({
             </FormControl>
             <FormControl isInvalid={isError}>
               <FormLabel>Rules</FormLabel>
-              <Input type="text" placeholder="Rules" id="rules" />
+              <Input type="text" placeholder="Rules" id="rules" defaultValue={rules} onChange={setRules} />
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
               ) : (
@@ -121,4 +154,4 @@ const ModalProductUpdate = ({
   );
 };
 
-export default ModalProductUpdate;
+export default ModalUpdateProduct;

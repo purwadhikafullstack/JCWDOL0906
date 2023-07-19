@@ -147,6 +147,7 @@ const List = ({ serviceCost }) => {
       service_cost: Number(serviceCost),
       cart: carts,
     };
+    console.log('data', data)
     try {
       let response = await apiRequest.post("/transaction/checkout", data, {
         headers: {

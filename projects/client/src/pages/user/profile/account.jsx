@@ -34,9 +34,9 @@ const MyAccount = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/auth/profile/", {
+      .get("http://localhost:8000/api/auth/profile", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("user"),
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       })
       .then((result) => {
