@@ -2,12 +2,10 @@ import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, Card
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import prescription from "../../src/assets/prescription.jpg"
-import PrescriptionPage from "../pages/user/prescription/prescriptionpage";
+import ModalPrescription from "../pages/user/prescription/prescriptionpage";
+
 export const Prescriptions = (props) => {
-    // const navigate = useNavigate();
-    // const handlePrescription = () => {
-    //     navigate("/prescription");
-    // };
+
     return (
        
        <Card
@@ -33,7 +31,7 @@ export const Prescriptions = (props) => {
         Tebus Resep Dokter, Online dan Tanpa Antri!
         G-Medsnial memberikan kemudahan bagi Anda untuk tebus obat resep tanpa antri secara online. 
       </Text>
-      <PrescriptionPage/>
+      <ModalPrescription/>
     </CardBody>
     <CardFooter>
     </CardFooter>
@@ -45,22 +43,3 @@ export const Prescriptions = (props) => {
 
 
 export default Prescriptions;
-// <VStack
-            //     overflow='hidden'
-            //     w= "95%"
-            //     mx='auto'
-            // >
-            //         <Stack spacing={3} mb={5}>
-            //             <Heading as='h4' size='md' color='#213360' textAlign="center">Punya Resep Dari Dokter?</Heading>
-                            // <Button
-                            //  variant="outline"
-                            //  color="white"
-                            //  bg="blue.900"
-                            //  borderColor={props.border}
-                            //  onClick={() => handlePrescription()}
-                            //  fontSize={"md"}
-                            //  >
-                            //    Masukan Resep Anda
-                            // </Button>
-            //         </Stack>
-            // </VStack>
