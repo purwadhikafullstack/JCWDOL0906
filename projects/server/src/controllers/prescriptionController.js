@@ -5,22 +5,18 @@ const { v4: uuidv4 } = require('uuid');
 module.exports = {
   addPrescription: async (req, res) => {
     try {
-      console.log(req.body);
       const data = (req.body);
-      const userId = req.userId;
-      const { status, address_id, shipping, createdBy } = data;
+      const { userId } = req
+      const { address_id, shipping } = data;
       const code = "INV-RSP-" + uuidv4().split("-")[0];
-      console.log(userId);
-      console.log(req.file);
       const image = req.file.path;
-      console.log(image);
       const result = await transaction.create({
         transaction_code: code,
-        image,
-        status,
+        prescription: image,
+        status: 'Proses Resep',
         address_id,
         shipping,
-        createdBy,
+        createdBy: userId,
         user_id: userId
       },
       );
