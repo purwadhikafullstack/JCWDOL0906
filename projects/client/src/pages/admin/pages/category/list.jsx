@@ -62,6 +62,7 @@ const CategoryList = () => {
   };
   const updateCategory = async (e) => {
     try {
+     
       let image = document.getElementById("image").files[0];
       let category_name = document.getElementById("category_name").value;
       let formData = new FormData();
@@ -71,7 +72,7 @@ const CategoryList = () => {
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-
+      
       let result = await apiRequest.patch(
         "/categories/" + selectedCategoryId,
         formData,

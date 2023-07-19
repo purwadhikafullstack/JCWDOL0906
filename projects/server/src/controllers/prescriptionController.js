@@ -1,33 +1,29 @@
 const db = require("../models");
 const transaction = db.Transaction;
-
 const { v4: uuidv4 } = require('uuid');
-uuidv4(); // ⇨ '1b9d-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 module.exports = {
   addPrescription: async (req, res) => {
     try {
       console.log(req.body);
-      const data = JSON.parse(req.body.data);
-      const { user_id, status, address_id, shipping } = data;
-      const newUUID = uuidv4().split("-")[0]
-      const code = "INV-RSP-" + newUUID;
-      if (!req.file) {
-        return res.status(400).json({
-          message: "No image file provided",
-        });
-      }
+      const data = (req.body);
+      const userId = req.userId;
+      const { status, address_id, shipping, createdBy } = data;
+      const code = "INV-RSP-" + uuidv4().split("-")[0];
+      console.log(userId);
       console.log(req.file);
-      const prescription = req.file.path;
-      console.log(prescription);
+      const image = req.file.path;
+      console.log(image);
       const result = await transaction.create({
-        user_id,
         transaction_code: code,
-        prescription,
+        image,
         status,
         address_id,
-        shipping
-      });
+        shipping,
+        createdBy,
+        user_id: userId
+      },
+      );
 
       return res.status(200).json({
         message: "New prescription has been added",

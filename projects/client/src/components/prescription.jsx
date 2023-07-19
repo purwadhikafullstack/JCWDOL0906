@@ -1,14 +1,13 @@
-import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, CardFooter, Text } from "@chakra-ui/react"
+import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, CardFooter, Text, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import prescription from "../../src/assets/prescription.jpg"
-
+import PrescriptionPage from "../pages/user/prescription/prescriptionpage";
 export const Prescriptions = (props) => {
-    const navigate = useNavigate();
-    const handlePrescription = () => {
-        navigate("/prescription");
-    };
-
+    // const navigate = useNavigate();
+    // const handlePrescription = () => {
+    //     navigate("/prescription");
+    // };
     return (
        
        <Card
@@ -34,16 +33,7 @@ export const Prescriptions = (props) => {
         Tebus Resep Dokter, Online dan Tanpa Antri!
         G-Medsnial memberikan kemudahan bagi Anda untuk tebus obat resep tanpa antri secara online. 
       </Text>
-      <Button
-    variant="outline"
-    color="white"
-    bg="blue.900"
-    borderColor={props.border}
-    onClick={() => handlePrescription()}
-    fontSize='20px'
-    >
-        Masukan Resep Anda
-     </Button>
+      <PrescriptionPage/>
     </CardBody>
     <CardFooter>
     </CardFooter>
