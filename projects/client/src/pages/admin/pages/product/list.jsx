@@ -311,7 +311,7 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePage={activePage}
+          defauActivePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
