@@ -79,7 +79,6 @@ const CategoryList = () => {
         {}
       );
 
-      
       modalUpdate.onClose();
       getAllCategory();
       swalSuccess(result.data.message);
@@ -156,14 +155,14 @@ const CategoryList = () => {
         Title="New Category"
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
-        Cancel={() => {modalAdd.onClose();}}
+        Cancel={() => { modalAdd.onClose(); }}
         Submit={() => addCategory()}
       />
       <ModalUpdateCategory
         Title="Update Category"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
-        Cancel={() => {modalUpdate.onClose();}}
+        Cancel={() => { modalUpdate.onClose(); }}
         Submit={(e) => updateCategory(e)}
 
       />
