@@ -292,4 +292,7 @@ module.exports = {
         }
 
     },
+    rejectTransaction: async (req, res) => {
+        const code = req.params.code
+    }
 };
