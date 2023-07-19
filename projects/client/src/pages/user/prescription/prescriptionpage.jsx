@@ -22,7 +22,7 @@ import { addCourier, addAddress } from "../../../redux/cartSlice";
 import Swal from "sweetalert2";
 import React from "react";
 
-const PrescriptionPage = () => {
+const ModalPrescription = () => {
   const OverlayTwo = () => (
     <ModalOverlay
       bg="none"
@@ -39,7 +39,14 @@ const PrescriptionPage = () => {
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
-    setIsOpen(true);
+    if (userId) {setIsOpen(true);
+     } else {
+      Swal.fire(
+        'Bukan User?',
+        'Silahkan Daftar dan Masuk Kembali',
+        'question'
+      )
+     }
   };
 
   const handleCloseModal = () => {
@@ -199,4 +206,4 @@ const PrescriptionPage = () => {
   );
 };
 
-export default PrescriptionPage;
+export default ModalPrescription;
