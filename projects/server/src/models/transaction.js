@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false,
+         defaultValue: false,
       },
       address_id: {
         type: DataTypes.INTEGER,
