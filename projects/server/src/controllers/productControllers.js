@@ -144,22 +144,46 @@ module.exports = {
     }
   },
   updateProduct: async (req, res) => {
+    const data = JSON.parse(req.body.data);
+    console.log(data)
+    const {
+      product_name,
+      price,
+      description,
+      indication,
+      dose,
+      rules,
+      category_id,
+      updatedBy,
+    } = data;
+    const image = req.file.path;
     try {
       let isExists = await product.findOne({
         where: {
-          product_id: req.params.id,
+          id: req.params.id,
         },
       });
-
+      console.log(!isExists)
       if (!isExists) {
-        let [data] = await product.create(req.body);
-        if (data === 0) {
-          return res.status(400).json({ message: "Update product failed " });
-        } else {
-          return res
-            .status(200)
-            .json({ status: "Update product successfully " });
-        }
+
+        return res.status(400).json({ message: "Product not found " });
+
+
+      } else {
+        await product.update({
+          product_name,
+          price,
+          image,
+          description,
+          indication,
+          dose,
+          rules,
+          category_id,
+          updatedBy,
+        }, { where: { id: req.params.id } })
+        return res
+          .status(200)
+          .json({ message: "Update product successfully " });
       }
     } catch (error) {
       return res.status(500).json({ status: "failed", message: error });

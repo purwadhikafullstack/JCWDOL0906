@@ -69,6 +69,7 @@ module.exports = {
 	updateCategory: async (req, res) => {
 		const data = JSON.parse(req.body.data);
 		const { category_name, updatedBy } = data;
+		console.log("hayooo",req.params.id)
 
 		try {
 			await category.update(
@@ -92,20 +93,20 @@ module.exports = {
 			console.log(error);
 			res.status(400).send({
 				status: false,
-				message: error.message,
+				message: error,
 			});
 		}
 	},
 	deleteCategory: async (req, res) => {
 		try {
-			const { id } = req.params;
-			console.log(id);
+			const { id } = req.params
+			console.log("gilaaa", id);
 			const deleteCategory = await category.update(
 				{
 					is_deleted: true,
 				},
 				{
-					where: { id: id },
+					where: { id: id},
 				}
 			);
 			res

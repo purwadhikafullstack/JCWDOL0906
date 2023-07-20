@@ -12,7 +12,7 @@ import TableCRUD from "../../components/table";
 import axios from "axios";
 import { swalFailed, swalSuccess } from "../../../../helper";
 // import ModalEditForm from "../Modals/Modal";
-import ModalProductUpdate from "../../components/ModalProductUpdate";
+import ModalProductUpdate from "../../components/ModalUpdateProduct";
 import ModalAddProduct from "../../components/ModalAddProduct";
 import ModalProductUnit from "../../components/modalProductUnit";
 import { useSelector } from "react-redux";
@@ -23,12 +23,21 @@ import { apiRequest } from "../../../../helper/api";
 
 const ProductList = () => {
   const textColor = useColorModeValue("gray.700", "white");
-  const [dataDetail, setDataDetail] = useState([]);
+  const [dataProduct, setDataProduct] = useState([]);
   const [productId, setProductId] = useState(0);
   const [products, setProducts] = useState(0);
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [categories, setCategories] = useState([]);
+
+  //data update product
+  const [productName, setProductName] = useState('')
+  const [categoryId, setCategoryId] = useState(0)
+  const [price, setPrice] = useState(0)
+  const [description, setDescription] = useState('')
+  const [indication, setIndication] = useState('')
+  const [dose, setDose] = useState('')
+  const [rules, setRules] = useState('')
 
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
@@ -133,14 +142,21 @@ const ProductList = () => {
     }
   };
 
-  const getProductById = async (e) => {
+  const getProductById = async (e, type) => {
     try {
       setProductId(e.target.id);
       let result = await apiRequest.get("/product/" + e.target.id);
       setDefaultUnitQty(result.data.data.defaultQty);
-      modalStock.onOpen();
+      setProductName(result.data.data.product_name)
+      setCategoryId(result.data.data.category_id)
+      setPrice(result.data.data.price)
+      setDescription(result.data.data.description)
+      setIndication(result.data.data.indication)
+      setDose(result.data.data.dose)
+      setRules(result.data.data.rules)
+      type === 'stock' ? modalStock.onOpen() : modalUpdate.onOpen()
     } catch (error) {
-      swalFailed(error.response.data.message);
+      // swalFailed(error.response.data.message);
     }
   };
 
@@ -173,21 +189,22 @@ const ProductList = () => {
     }
   };
 
-  const updateDetailProduct = async (e) => {
+  const updateDetailProduct = async () => {
+
     try {
       let image = document.getElementById("image").files[0];
-      let product_name = document.getElementById("product_name").value;
-      let price = document.getElementById("price").value;
-      let description = document.getElementById("description").value;
-      let indication = document.getElementById("indication").value;
-      let dose = document.getElementById("dose").value;
-      let rules = document.getElementById("rules").value;
-      let category = document.getElementById("category_id").value;
+      // let product_name = document.getElementById("product_name").value;
+      // let price = document.getElementById("price").value;
+      // let description = document.getElementById("description").value;
+      // let indication = document.getElementById("indication").value;
+      // let dose = document.getElementById("dose").value;
+      // let rules = document.getElementById("rules").value;
+      // let category = document.getElementById("category_id").value;
 
       let formData = new FormData();
       let data = {
-        product_name: product_name,
-        category_id: category,
+        product_name: productName,
+        category_id: categoryId,
         price: price,
         description: description,
         indication: indication,
@@ -198,15 +215,8 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch("/product/" + e.target.id, formData, {
-        product_name: product_name,
-        category_id: category,
-        price: price,
-        description: description,
-        indication: indication,
-        dose: dose,
-        rules: rules,
-        updatedBy: adminId,
+      let result = await apiRequest.patch("/product/" + productId, formData, {
+
       });
       modalUpdate.onClose();
       getData();
@@ -280,12 +290,11 @@ const ProductList = () => {
               ]}
               action={[
                 (e) => {
-                  modalAdd.onOpen();
-                  getData(e);
+                  getProductById(e, 'product');
                 },
                 (e) => {
-                  // modalUpdate.onOpen();
-                  getProductById(e);
+
+                  getProductById(e, 'stock');
                 },
                 (e) => {
                   deleteOperation(e);
@@ -302,7 +311,7 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePage={activePage}
+          defauActivePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
@@ -314,18 +323,33 @@ const ProductList = () => {
         Tittle="New Product"
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
-        Data={dataDetail}
         categories={categories}
         SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
       <ModalProductUpdate
-        Title="Product Detail"
+        Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
-        Data={dataDetail}
-        SetUnit={() => { }}
+        categories={categories}
+
+        productName={productName}
+        categoryId={categoryId}
+        price={price}
+        description={description}
+        indication={indication}
+        dose={dose}
+        rules={rules}
+
+        setProductName={(e) => setProductName(e.target.value)}
+        setCategoryId={(e) => setCategoryId(e.target.value)}
+        setPrice={(e) => setPrice(e.target.value)}
+        setDescription={(e) => setDescription(e.target.value)}
+        setIndication={(e) => setIndication(e.target.value)}
+        setDose={(e) => setDose(e.target.value)}
+        setRules={(e) => setRules(e.target.value)}
+
         Cancel={() => {
           modalUpdate.onClose();
         }}

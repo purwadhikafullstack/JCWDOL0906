@@ -33,10 +33,10 @@ import CheckOut from "./pages/user/checkOut";
 import UserTransaction from "./pages/user/transaction";
 // import ProtectedRoute from "./protected/protectedroute";
 import { Loading } from "./components/loading";
-// import UploadPrescriptionPage from "./pages/user/prescription/prescriptionpage";
-import Prescription from "./pages/user/prescription/prescription";
 import { ChangePassword } from "./pages/user/profile/changepass";
-import { Navbar } from "./components/navbar";
+import Prescriptions from "./components/prescription";
+import ModalPrescription from "./pages/user/prescription/prescriptionpage";
+
 function App() {
   // const [message, setMessage] = useState("");
 
@@ -133,7 +133,7 @@ function App() {
           <Route path="/confirm-email" element={<ConfirmEmail />} />
           <Route path="/store/product" element={<UserProduct />} />
           <Route path="/cart" element={<ShoppingCart />} />
-          <Route path="/prescription" element={<Prescription />} />
+          <Route path="/prescription" element={<ModalPrescription />} />
           <Route path="/checkout" element={<CheckOut />} />
 
           <Route

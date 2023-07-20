@@ -6,7 +6,6 @@ const c_category = require("./categoryController.js");
 const c_prescription = require("./prescriptionController.js")
 const c_address = require("./addressController.js");
 const c_transaction = require("./transactionControllers.js");
-const c_stockHistory = require("./stockHistoryControllers.js")
 module.exports = {
   c_units,
   c_products,
@@ -16,5 +15,4 @@ module.exports = {
   c_prescription,
   c_address,
   c_transaction,
-  c_stockHistory
 };

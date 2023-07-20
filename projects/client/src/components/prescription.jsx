@@ -1,13 +1,10 @@
-import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, CardFooter, Text } from "@chakra-ui/react"
+import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, CardFooter, Text, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import prescription from "../../src/assets/prescription.jpg"
+import ModalPrescription from "../pages/user/prescription/prescriptionpage";
 
 export const Prescriptions = (props) => {
-    const navigate = useNavigate();
-    const handlePrescription = () => {
-        navigate("/prescription");
-    };
 
     return (
        
@@ -34,16 +31,7 @@ export const Prescriptions = (props) => {
         Tebus Resep Dokter, Online dan Tanpa Antri!
         G-Medsnial memberikan kemudahan bagi Anda untuk tebus obat resep tanpa antri secara online. 
       </Text>
-      <Button
-    variant="outline"
-    color="white"
-    bg="blue.900"
-    borderColor={props.border}
-    onClick={() => handlePrescription()}
-    fontSize='20px'
-    >
-        Masukan Resep Anda
-     </Button>
+      <ModalPrescription/>
     </CardBody>
     <CardFooter>
     </CardFooter>
@@ -55,22 +43,3 @@ export const Prescriptions = (props) => {
 
 
 export default Prescriptions;
-// <VStack
-            //     overflow='hidden'
-            //     w= "95%"
-            //     mx='auto'
-            // >
-            //         <Stack spacing={3} mb={5}>
-            //             <Heading as='h4' size='md' color='#213360' textAlign="center">Punya Resep Dari Dokter?</Heading>
-                            // <Button
-                            //  variant="outline"
-                            //  color="white"
-                            //  bg="blue.900"
-                            //  borderColor={props.border}
-                            //  onClick={() => handlePrescription()}
-                            //  fontSize={"md"}
-                            //  >
-                            //    Masukan Resep Anda
-                            // </Button>
-            //         </Stack>
-            // </VStack>
