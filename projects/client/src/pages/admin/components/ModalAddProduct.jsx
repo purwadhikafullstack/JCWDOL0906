@@ -30,6 +30,7 @@ const ModalAddProduct = ({
   setNewProduct,
   setCategory
 }) => {
+  console.log(categories)
   return (
     <>
       <Modal isOpen={Open} onClose={Close} size="2xl">
@@ -51,15 +52,15 @@ const ModalAddProduct = ({
               <FormLabel> Category </FormLabel>
               <Select id="category_id">
                 <option value="">Select categories </option>
-                {categories.map((category, index) => {
-                  return {
-                    /* <option value={category.id} key={index}>
-                      {category.name}
-                    </option> */
-                  };
-                })}
+                {categories.map((category, index) =>
+
+                  <option value={category.id} key={index}>
+                    {category.category_name}
+                  </option>
+
+                )}
               </Select>
-            </FormControl> 
+            </FormControl>
 
             <FormControl isInvalid={isError}>
               <FormLabel>Price</FormLabel>
