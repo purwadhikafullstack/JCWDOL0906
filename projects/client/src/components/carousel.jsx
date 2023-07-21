@@ -10,7 +10,7 @@ import banner2 from "../assets/banner/banner2.jpg";
 import banner3 from "../assets/banner/banner3.jpg";
 import banner4 from "../assets/banner/banner4.jpg";
 import banner5 from "../assets/banner/banner5.jpg";
-
+import banner6 from "../assets/banner/banner6.jpg";
 
 const settings = {
   dots: true,
@@ -33,7 +33,7 @@ export function Carousel() {
   });
 
   const cards = [
-    banner1, banner2, banner3, banner4, banner5
+    banner1, banner2, banner3, banner4, banner5, banner6
   ];
 
   useEffect(() => {

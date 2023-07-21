@@ -103,7 +103,7 @@ export const LoginForm = () => {
     <>
       <Button
         display={{ base: "solid", md: "inline-flex" }}
-        fontSize={"md"}
+        fontSize={"lg"}
         fontWeight="bold"
         color={"white"}
         bg="blue.800"
@@ -162,6 +162,8 @@ export const LoginForm = () => {
                 <Button
                   h="1.75rem"
                   size="sm"
+                  backgroundColor="blue.800"
+                  color="white"
                   onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
                 >
                   {showPassword ? "Hide" : "Show"}
