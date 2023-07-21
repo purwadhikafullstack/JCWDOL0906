@@ -127,7 +127,7 @@ export const Navbar = () => {
               onClick={() => navigate("store/product")}
             />
             <Flex ml="auto" alignItems="center" spacing={5}>
-              {path === "store" || path === "cart" ? (
+              {path === "store" || path === "cart" || user.value.role === 1 ? (
                 <Avatar
                   size="sm"
                   bg="blue.300"

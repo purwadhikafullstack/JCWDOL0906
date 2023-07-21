@@ -243,7 +243,7 @@ module.exports = {
     let sort = "p.product_name ASC";
     let limit = 10;
     let offset = 0;
-    let param = "p.is_deleted=0";
+    let param = "p.is_deleted=0 AND s.default_unit_qty > 0";
 
     if (req.query.sort && req.query.sort === "1") {
       sort = "p.product_name ASC";
@@ -278,7 +278,7 @@ module.exports = {
       const data = await sequelize.query(
         `
       SELECT 
-      p.*, 
+      p.*,
       s.default_unit_qty as defaultQty , 
       s.conversion_unit_qty as conversionQty, 
       du.unit_name as defaultUnit,
@@ -299,8 +299,25 @@ module.exports = {
           type: QueryTypes.SELECT,
         }
       );
-      const count = data.length;
-      res.status(200).json({ count, data });
+
+      const count = await sequelize.query(
+        `
+      SELECT 
+      COUNT(p.id) as count FROM 
+      Products p 
+      LEFT JOIN stocks s ON p.id=s.product_id 
+      LEFT JOIN Categories c ON p.category_id=c.id
+      LEFT JOIN default_unit du ON s.default_unit_id=du.id 
+      LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
+      WHERE ${param}
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      res.status(200).json({ count: count[0].count, data });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error });

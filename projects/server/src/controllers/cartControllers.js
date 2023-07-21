@@ -57,6 +57,7 @@ module.exports = {
           product_id: product_id,
         },
       });
+      console.log(productStock)
       const stocks = productStock.dataValues.default_unit_qty;
 
       const isExists = await cart.findOne({
@@ -179,9 +180,6 @@ module.exports = {
       const stocks = productStock.dataValues.default_unit_qty;
       if (stocks == 0) {
         return;
-        res.status(400).send({
-          message: "Gagal ditambahkan",
-        });
       }
       const result = await calculatePrescription(product_id, qty);
       const { total_price } = result;

@@ -324,7 +324,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         categories={categories}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
@@ -332,8 +332,7 @@ const ProductList = () => {
         Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
-        Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         categories={categories}
         productName={productName}
         categoryId={categoryId}
