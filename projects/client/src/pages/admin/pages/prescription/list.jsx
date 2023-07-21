@@ -53,7 +53,7 @@
 
 // export default Prescription;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   VStack,
@@ -64,6 +64,8 @@ import {
   Grid,
   Text,
 } from "@chakra-ui/react";
+import { apiRequest } from "../../../../helper/api";
+import { swalFailed, swalSuccess } from "../../../../helper";
 
 // 1. ambil data transaction dari database dengan where code: code
 // useState transaction buat simpan datanya, panggil useeffect apiRequest hit ke backend ambil data transaksi (routes transaction/:code)
@@ -73,16 +75,53 @@ import {
 //4. buat handler untuk submit botton (isi: hit api request.patch), backend 1. update table transaction dengan data yg baru
 //2. create table transaction_details sesuai yg di prescription
 
+// getCartByUserID di backend, kl dr fe function getcart panggil di useEffect, hit ke api ke halaman get/cart/:, hasilnya simpan
+// di state cart yang menyimpan cart dr userID tertentu, mapping, harga, qty, subtotal hasil dr cart
+
 function Prescription({ code }) {
   const [chosenProducts, setChosenProducts] = useState([]);
-  const products = [
-    { id: 1, name: "Product 1" },
-    { id: 2, name: "Product 2" },
-    { id: 3, name: "Product 3" },
-  ];
-  //state products ganti
+  const [transactions, setTransactions] = useState({});
+  const [image, setImage] = useState({});
+  const [transactionCode, setTransactionCode] = useState({});
+  const [products, setProducts] = useState([]);
 
   // Function to handle product selection and quantity input
+
+  // const getTransaction = async (e) => {
+  //   try {
+  //     let result = await apiRequest.get("/transaction", {
+  //       headers: {
+  //         Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
+  //       },
+  //     });
+  //     setTransactions(result.data.data);
+  //     console.log(result.data.data);
+  //   } catch (error) {
+  //     swalFailed(error.response.data.message);
+  //     console.log(error);
+  //   }
+  // };
+
+  const getTransactionByCode = async (code) => {
+    try {
+      let result = await apiRequest.get(`/transaction/${code}/code`);
+      console.log(result);
+      setTransactionCode(result.data.data.transaction[0]);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
+  const getProduct = async () => {
+    try {
+      let result = await apiRequest.get("/product");
+      setProducts(result.data.data);
+    } catch (error) {
+      swalFailed(error.response.data.message);
+      console.log(error);
+    }
+  };
+
   const handleProductSelect = (product) => {
     const existingProduct = chosenProducts.find((p) => p.id === product.id);
     if (existingProduct) return; // Avoid adding duplicate products
@@ -98,6 +137,28 @@ function Prescription({ code }) {
     );
   };
 
+  const addPrescriptionToCart = async (product_id, qty) => {
+    try {
+      let result = await apiRequest.post(
+        "/cart/resep",
+        { product_id, qty },
+        {
+          headers: {
+            Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
+          },
+        }
+      );
+    } catch (error) {
+      swalFailed(error.response.data.message);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTransactionByCode(code);
+    getProduct();
+  }, []);
+
   return (
     <Grid templateColumns="1fr 1fr" gap={8} justifyContent="center">
       {/* Left Box */}
@@ -106,7 +167,10 @@ function Prescription({ code }) {
           Prescription {code}
         </Text>
         {/* Display uploaded picture from the user */}
-        <Image src="path_to_uploaded_picture" alt="Uploaded Picture" />
+        <Image
+          src={process.env.REACT_APP_IMAGE_API + transactionCode.prescription}
+          alt="Uploaded Picture"
+        />
       </Box>
 
       {/* Right Box */}
@@ -122,7 +186,7 @@ function Prescription({ code }) {
               onClick={() => handleProductSelect(product)}
               variant="outline"
             >
-              {product.name}
+              {product.product_name}
             </Button>
           ))}
         </VStack>
@@ -145,7 +209,7 @@ function Prescription({ code }) {
         {chosenProducts.map((product) => (
           <Box key={product.id} borderWidth="1px" p={2} borderRadius="md">
             <HStack spacing={4}>
-              <Box>{product.name}</Box>
+              <Box>{product.product_name}</Box>
               <HStack>
                 <Button
                   onClick={() =>
@@ -154,7 +218,9 @@ function Prescription({ code }) {
                 >
                   -
                 </Button>
-                <Text>{product.quantity}</Text>
+                <Text>
+                  {product.quantity} {product.conversionUnit}
+                </Text>
                 <Button
                   onClick={() =>
                     handleQuantityChange(product.id, product.quantity + 1)
@@ -163,11 +229,27 @@ function Prescription({ code }) {
                   +
                 </Button>
               </HStack>
-              <Button>Add to Cart</Button>
+              <Button
+                onClick={() =>
+                  addPrescriptionToCart(product.id, product.quantity)
+                }
+              >
+                Add to Cart
+              </Button>
             </HStack>
           </Box>
         ))}
       </VStack>
+      <Box bg="white" p={4} borderRadius="md" boxShadow="md">
+        <Text fontSize="xl" fontWeight="bold" color="black" mb={4}>
+          TOTAL {code} PAYMENT
+        </Text>
+        {chosenProducts.map((product) => (
+          <Box key={product.id} borderWidth="1px" p={2} borderRadius="md">
+            <Box>{product.quantity}</Box>
+          </Box>
+        ))}
+      </Box>
     </Grid>
   );
 }

@@ -79,6 +79,16 @@ const TransactionList = () => {
     }
   };
 
+  const sendUserOrder = async (code) => {
+    try {
+      const result = await apiRequest.patch(
+        "/transaction/" + code + "/Diproses"
+      );
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+  };
+
   useEffect(() => {
     getData();
   }, [activePage, status, sort]);
@@ -143,6 +153,7 @@ const TransactionList = () => {
                   modalAdd.onOpen();
                   setCode(e.target.id);
                 },
+                (e) => sendUserOrder(e.target.id),
               ]}
             />
           </Box>
@@ -154,7 +165,6 @@ const TransactionList = () => {
         code={code}
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
-       
       />
 
       <Flex justifyContent={"center"} mt={"20px"}>

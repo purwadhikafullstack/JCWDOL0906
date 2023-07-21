@@ -168,7 +168,8 @@ module.exports = {
   },
   addPrescriptionToCart: async (req, res) => {
     try {
-      const { product_id, qty, user_id } = req.body;
+      const user_id = req.userId;
+      const { product_id, qty } = req.body;
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,

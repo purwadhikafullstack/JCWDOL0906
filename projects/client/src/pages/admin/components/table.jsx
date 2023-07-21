@@ -190,6 +190,19 @@ const TableCRUD = ({
                       ) : (
                         ""
                       )}
+                      {el.status === "Pesanan diproses" ? (
+                        <HStack spacing="5px">
+                          <Button
+                            colorScheme="teal"
+                            onClick={action[3]}
+                            id={el.transaction_code}
+                          >
+                            Confirm
+                          </Button>
+                        </HStack>
+                      ) : (
+                        ""
+                      )}
                     </Td>
                   ) : (
                     <Td
