@@ -409,6 +409,57 @@ module.exports = {
       });
     }
   },
+  confirm_email: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).send({
+          message: "Please Input Your Email Address",
+        });
+      }
+
+      if (!email.includes("@") || !email.endsWith(".com")) {
+        return res.status(400).send({
+          message: "Please enter a Valid Email Address",
+        });
+      }
+      let result = await user.findOne({ where: { email } });
+
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "1h",
+      });
+
+      await user.update(
+        { reset_token: token },
+        {
+          where: {
+            id: result.id,
+          },
+        }
+      );
+      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/reset.html"),
+        { encoding: "utf8" }
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ resetLink });
+
+      await transporter.sendMail({
+        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        to: email,
+        subject: "Reset Password",
+        html: tempResult,
+      });
+      res.status(200).send({
+        message: " Please Check Your Email",
+        result,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getProfile: async (req, res) => {
     try {
       const { userId } = req;
