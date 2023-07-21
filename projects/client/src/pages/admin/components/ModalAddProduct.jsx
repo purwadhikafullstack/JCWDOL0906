@@ -50,10 +50,7 @@ const ModalAddProduct = ({
             </FormControl>
             <FormControl>
               <FormLabel> Category </FormLabel>
-              <Select
-                onChange={(e) => setCategory(e.target.value)}
-                id="category_id"
-              >
+              <Select id="category_id">
                 <option value="">Select categories </option>
                 {categories.map((category, index) =>
 

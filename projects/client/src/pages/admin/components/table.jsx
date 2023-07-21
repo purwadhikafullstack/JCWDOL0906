@@ -17,7 +17,16 @@ import {
 
 import React from "react";
 
-const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, collapseId }) => {
+const TableCRUD = ({
+  menu,
+  data,
+  header,
+  dataFill,
+  action,
+  activePage,
+  show,
+  collapseId,
+}) => {
   const textColor = useColorModeValue("gray.700", "white");
   const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -37,11 +46,10 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
     return `Rp ${str}`;
   }
 
-
   return (
-    <Box overflowX='scroll'>
+    <Box overflowX="scroll">
       {data.length > 0 ? (
-        <Table >
+        <Table>
           <Thead>
             <Tr bg={tableRowColor}>
               <Th color="gray.400" borderColor={borderColor}>
@@ -72,7 +80,8 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                     {activePage ? (activePage - 1) * 6 + index + 1 : index + 1}
                   </Td>
                   {dataFill.map((i, idx) => (
-                    <Td key={idx}
+                    <Td
+                      key={idx}
                       color={textTableColor}
                       fontSize="sm"
                       border={index === arr.length - 1 ? "none" : null}
@@ -80,18 +89,25 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                     >
                       {i === "price" || i === "total_price" ? (
                         rupiah(el[i])
-                      ) : i === "image" || (i === 'payment_receipt' && el[i] !== null) ? (
+                      ) : i === "image" ||
+                        (i === "payment_receipt" && el[i] !== null) ? (
                         <Image
                           boxSize="100px"
                           objectFit="cover"
                           src={process.env.REACT_APP_IMAGE_API + el[i]}
                           alt=""
                         />
-                      ) : i === 'status' ?
-                        el[i] === 'Menunggu Pembayaran' ? (<Badge color='red'>{el[i]}</Badge>) : el[i] === 'Menunggu Konfirmasi' ? (<Badge color='blue'>{el[i]}</Badge>) : (<Badge color='green'>{el[i]}</Badge>)
-                        : (
-                          el[i]
-                        )}
+                      ) : i === "status" ? (
+                        el[i] === "Menunggu Pembayaran" ? (
+                          <Badge color="red">{el[i]}</Badge>
+                        ) : el[i] === "Menunggu Konfirmasi" ? (
+                          <Badge color="blue">{el[i]}</Badge>
+                        ) : (
+                          <Badge color="green">{el[i]}</Badge>
+                        )
+                      ) : (
+                        el[i]
+                      )}
                     </Td>
                   ))}
                   {menu === "product" ? (
@@ -140,15 +156,53 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                       border={index === arr.length - 1 ? "none" : null}
                       borderColor={borderColor}
                       isNumeric
-                    >{el.status === 'Menunggu Konfirmasi' ? <HStack spacing="5px">
-                      <Button colorScheme="teal" onClick={action[0]} id={el.transaction_code}>
-                        Confirm
-                      </Button>
-                      <Button colorScheme="red" onClick={action[1]} id={el.transaction_code}>
-                        Reject
-                      </Button>
-                    </HStack> : ""}
-
+                    >
+                      {el.status === "Menunggu Konfirmasi" ? (
+                        <HStack spacing="5px">
+                          <Button
+                            colorScheme="teal"
+                            onClick={action[0]}
+                            id={el.transaction_code}
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            colorScheme="red"
+                            onClick={action[1]}
+                            id={el.transaction_code}
+                          >
+                            Reject
+                          </Button>
+                        </HStack>
+                      ) : (
+                        ""
+                      )}
+                      {el.status === "Proses Resep" ? (
+                        <HStack spacing="5px">
+                          <Button
+                            colorScheme="teal"
+                            onClick={action[2]}
+                            id={el.transaction_code}
+                          >
+                            Proses
+                          </Button>
+                        </HStack>
+                      ) : (
+                        ""
+                      )}
+                      {el.status === "Pesanan diproses" ? (
+                        <HStack spacing="5px">
+                          <Button
+                            colorScheme="teal"
+                            onClick={action[3]}
+                            id={el.transaction_code}
+                          >
+                            Confirm
+                          </Button>
+                        </HStack>
+                      ) : (
+                        ""
+                      )}
                     </Td>
                   ) : (
                     <Td

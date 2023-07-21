@@ -31,13 +31,13 @@ const ProductList = () => {
   const [categories, setCategories] = useState([]);
 
   //data update product
-  const [productName, setProductName] = useState('')
-  const [categoryId, setCategoryId] = useState(0)
-  const [price, setPrice] = useState(0)
-  const [description, setDescription] = useState('')
-  const [indication, setIndication] = useState('')
-  const [dose, setDose] = useState('')
-  const [rules, setRules] = useState('')
+  const [productName, setProductName] = useState("");
+  const [categoryId, setCategoryId] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+  const [indication, setIndication] = useState("");
+  const [dose, setDose] = useState("");
+  const [rules, setRules] = useState("");
 
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
@@ -147,14 +147,14 @@ const ProductList = () => {
       setProductId(e.target.id);
       let result = await apiRequest.get("/product/" + e.target.id);
       setDefaultUnitQty(result.data.data.defaultQty);
-      setProductName(result.data.data.product_name)
-      setCategoryId(result.data.data.category_id)
-      setPrice(result.data.data.price)
-      setDescription(result.data.data.description)
-      setIndication(result.data.data.indication)
-      setDose(result.data.data.dose)
-      setRules(result.data.data.rules)
-      type === 'stock' ? modalStock.onOpen() : modalUpdate.onOpen()
+      setProductName(result.data.data.product_name);
+      setCategoryId(result.data.data.category_id);
+      setPrice(result.data.data.price);
+      setDescription(result.data.data.description);
+      setIndication(result.data.data.indication);
+      setDose(result.data.data.dose);
+      setRules(result.data.data.rules);
+      type === "stock" ? modalStock.onOpen() : modalUpdate.onOpen();
     } catch (error) {
       // swalFailed(error.response.data.message);
     }
@@ -190,7 +190,6 @@ const ProductList = () => {
   };
 
   const updateDetailProduct = async () => {
-
     try {
       let image = document.getElementById("image").files[0];
       // let product_name = document.getElementById("product_name").value;
@@ -215,9 +214,11 @@ const ProductList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
 
-      let result = await apiRequest.patch("/product/" + productId, formData, {
-
-      });
+      let result = await apiRequest.patch(
+        "/product/" + productId,
+        formData,
+        {}
+      );
       modalUpdate.onClose();
       getData();
       swalSuccess(result.data.message);
@@ -290,11 +291,10 @@ const ProductList = () => {
               ]}
               action={[
                 (e) => {
-                  getProductById(e, 'product');
+                  getProductById(e, "product");
                 },
                 (e) => {
-
-                  getProductById(e, 'stock');
+                  getProductById(e, "stock");
                 },
                 (e) => {
                   deleteOperation(e);
@@ -324,7 +324,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         categories={categories}
-        SetUnit={() => { }}
+        SetUnit={() => {}}
         Submit={() => addProduct()}
       />
 
@@ -332,8 +332,9 @@ const ProductList = () => {
         Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
+        Data={dataDetail}
+        SetUnit={() => {}}
         categories={categories}
-
         productName={productName}
         categoryId={categoryId}
         price={price}
@@ -341,7 +342,6 @@ const ProductList = () => {
         indication={indication}
         dose={dose}
         rules={rules}
-
         setProductName={(e) => setProductName(e.target.value)}
         setCategoryId={(e) => setCategoryId(e.target.value)}
         setPrice={(e) => setPrice(e.target.value)}
@@ -349,7 +349,6 @@ const ProductList = () => {
         setIndication={(e) => setIndication(e.target.value)}
         setDose={(e) => setDose(e.target.value)}
         setRules={(e) => setRules(e.target.value)}
-
         Cancel={() => {
           modalUpdate.onClose();
         }}
@@ -358,12 +357,12 @@ const ProductList = () => {
       <ModalProductUnit
         Title="Product Unit"
         Open={modalUnits.isOpen}
-        Close={() => { modalUnits.onClose() }}
+        Close={() => {
+          modalUnits.onClose();
+        }}
         Submit={() => updateProductUnit()}
-
         DefaultUnit={optionDefaultUnit}
         ConversionUnit={optionConversionUnit}
-
         conversionUnit={conversionUnit}
         defaultUnit={defaultUnit}
         conversionUnitQty={conversionUnitQty}
@@ -377,7 +376,9 @@ const ProductList = () => {
       <ModalProductStock
         Title="Product Add Stock"
         Open={modalStock.isOpen}
-        Close={() => { modalStock.onClose() }}
+        Close={() => {
+          modalStock.onClose();
+        }}
         defaultUnitQty={defaultUnitQty}
         Submit={() => updateProductStock()}
         setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}

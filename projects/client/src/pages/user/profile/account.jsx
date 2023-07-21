@@ -74,7 +74,7 @@ const MyAccount = () => {
         formData,
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("user"),
+            Authorization: "Bearer " + localStorage.getItem("userToken"),
           },
         }
       );
