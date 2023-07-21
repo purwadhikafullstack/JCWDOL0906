@@ -31,25 +31,24 @@ import MyAccount from "../pages/user/profile/account";
 //imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
-import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { BsCart, BsCartPlus } from "react-icons/bs";
-import {
-  DocumentIcon,
-  PersonIcon,
-  RocketIcon,
-} from "../components/adminComponents/Icons/Icons";
+// import {
+//   DocumentIcon,
+//   PersonIcon,
+//   RocketIcon,
+// } from "../components/adminComponents/Icons/Icons";
 
 import { clear } from "../redux/cartSlice";
-// import { logout } from "../redux/userSlice";
-// import { login } from "../redux/userSlice";
 
 export const Navbar = () => {
-  // let navbarIcon = "black";
+
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice);
+
   const handleLogOut = () => {
     localStorage.removeItem("user");
     dispatch(logout());
@@ -75,10 +74,11 @@ export const Navbar = () => {
     }
   }, [user]);
 
-  // const token = localStorage.getItem("token")
+
   useEffect(() => {
     // console.log(username)
   }, [username]);
+
   const location = useLocation();
   const path = location.pathname.split("/")[1];
 
@@ -86,10 +86,10 @@ export const Navbar = () => {
     <>
       <Box>
         <Flex
-          bg={useColorModeValue("blue.50", "blue.100")}
+            bg={useColorModeValue("blue.50", "blue.100")}
           color={useColorModeValue("gray.600", "white")}
-          minH={"60px"}
-          py={{ base: 2 }}
+          minH={"70px"} // Adjust the minimum height to make the navbar slightly bigger
+          py={{ base: 3 }} // Adjust the vertical padding to make the navbar slightly bigger
           px={{ base: 4 }}
           borderBottom={3}
           borderStyle={"solid"}
@@ -121,7 +121,7 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={"60px"}
+              height={"70px"}
               alt={"Icon Logo"}
               fit={"logo"}
               onClick={() => navigate("store/product")}

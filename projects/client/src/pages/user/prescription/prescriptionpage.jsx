@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import React from "react";
 
 const ModalPrescription = () => {
+ 
   const OverlayTwo = () => (
     <ModalOverlay
       bg="none"
@@ -30,6 +31,7 @@ const ModalPrescription = () => {
       backdropBlur="2px"
     />
   );
+
   const [overlay, setOverlay] = React.useState(<OverlayTwo />);
   const [isOpen, setIsOpen] = useState(false);
   const [courier, setCourier] = useState("JNE");
@@ -60,7 +62,7 @@ const ModalPrescription = () => {
       let formData = new FormData();
       let data = {
         createdBy: userId,
-        user_id: userId, // Include user_id in the request payload
+        user_id: userId, 
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
@@ -98,6 +100,7 @@ const ModalPrescription = () => {
 
   const getAddresses = async () => {
     try {
+      
       const tokenUser = JSON.parse(localStorage.getItem("user"));
 
       const result = await apiRequest.get("/address", {
@@ -132,18 +135,18 @@ const ModalPrescription = () => {
           handleOpenModal();
         }}
       >
-        Masukan Resep
+        Unggah Resep
       </Button>
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         {overlay}
         <ModalContent>
           <ModalHeader textAlign={"center"} color="blue.800">
-            Masukan Resep Anda!
+            Unggah Resep Anda!
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={4}>
             <FormControl>
-              <FormLabel>Resep</FormLabel>
+              <FormLabel>Unggah Resep</FormLabel>
               <Input type="file" placeholder="Image" id="image" />
             </FormControl>
             <FormControl>

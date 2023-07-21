@@ -77,7 +77,16 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed(error.response.data.message);
     }
-  };
+  }
+  const rejectUserOrder = async (code) => {
+    try {
+      const result = await apiRequest.patch('/transaction/' + code + '/rejectorder')
+    swalSuccess(result.data.message);
+    getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  }
 
   const sendUserOrder = async (code) => {
     try {
@@ -154,6 +163,7 @@ const TransactionList = () => {
                   setCode(e.target.id);
                 },
                 (e) => sendUserOrder(e.target.id),
+                (e) => rejectUserOrder(e.target.id)
               ]}
             />
           </Box>
