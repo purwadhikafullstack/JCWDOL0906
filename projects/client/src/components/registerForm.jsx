@@ -12,8 +12,8 @@ import {
   FormControl,
   FormLabel,
   Input,
-  FormErrorMessage,
   InputRightElement,
+  InputGroup
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -23,14 +23,11 @@ import Swal from "sweetalert2";
 import { Field, Formik, ErrorMessage, Form } from 'formik';
 import * as Yup from 'yup';
 import { apiRequest } from "../helper/api";
-// import { ViewIcon, ViewOffIcon } from'@chakra-ui/icons';
-// import { useState } from "react";
-
-//importan redux
-// import { useDispatch } from "react-redux";
-// import { login } from "../redux/userSlice";
+import { useState } from "react";
 
 export const RegistrationForm = () => {
+const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     username: Yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Username is Required'),
@@ -105,7 +102,7 @@ export const RegistrationForm = () => {
       <Button
         mx={2}
         display={{ base: "solid", md: "inline-flex" }}
-        fontSize={"md"}
+        fontSize={"lg"}
         fontWeight="bold"
         spacing={4}
         color={"blue.800"}
@@ -178,6 +175,7 @@ export const RegistrationForm = () => {
                 </FormControl>
                 <FormControl>
                   <FormLabel mt={4}>Password</FormLabel>
+                  <InputGroup>
                   <Field
                     as={Input}
                     id="password"
@@ -186,10 +184,23 @@ export const RegistrationForm = () => {
                     borderColor="blue.700"
                     placeholder="Password"
                   />
+                  <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  backgroundColor="blue.800"
+                  color="white"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+                </InputRightElement>
+                </InputGroup>
                   <ErrorMessage name="password" component="div" style={{ color: "red" }} />
                 </FormControl>
                 <FormControl>
                   <FormLabel mt={4}>Password Confirmation</FormLabel>
+                  <InputGroup>
                   <Field
                     as={Input}
                     id="confirmation"
@@ -198,13 +209,25 @@ export const RegistrationForm = () => {
                     borderColor="blue.700"
                     placeholder="Password Confirmation"
                   />
+                   <InputRightElement width="4.5rem">
+                  <Button
+                  h="1.75rem"
+                  size="sm"
+                  backgroundColor="blue.800"
+                  color="white"
+                  onClick={() => setShowConfirmation(!showConfirmation)} // Toggle show/hide password
+                >
+                  {showConfirmation ? "Hide" : "Show"}
+                </Button>
+               </InputRightElement>
+                </InputGroup>
                   <ErrorMessage name="confirmation" component="div" style={{ color: "red" }} />
                 </FormControl>
                 <ModalFooter>
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
                     fontSize={"md"} fontWeight="bold"
-                    color={"white"} bg="blue.700"
+                    color={"white"} bg="blue.800"
                     onClick={() => onRegister()}>Daftar</Button>
                 </ModalFooter>
               </Form>
