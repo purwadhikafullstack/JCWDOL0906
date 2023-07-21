@@ -1,7 +1,7 @@
 import { Button, Heading, Stack, VStack, Image, Card, CardHeader, CardBody, CardFooter, Text, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import prescription from "../../src/assets/prescription.jpg"
+import prescription2 from "../../src/assets/prescription2.jpg"
 import ModalPrescription from "../pages/user/prescription/prescriptionpage";
 
 export const Prescriptions = (props) => {
@@ -20,7 +20,7 @@ export const Prescriptions = (props) => {
     objectFit='cover'
     borderRadius={"sm"}
     maxW={{ base: '100%', sm: '520px' }}
-    src={prescription}
+    src={prescription2}
     alt=''
   />
 

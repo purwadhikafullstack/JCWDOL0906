@@ -47,7 +47,6 @@ module.exports = {
                     { transaction: t }
                 );
             }
-
             await Cart.destroy(
                 {
                     where: {
@@ -292,5 +291,61 @@ module.exports = {
             return res.status(500).json(failedResponse(error))
         }
 
+    },
+    // rejectTransaction: async (req, res) => {
+    //     const code = req.params.code;
+
+    //     try {
+    //         const transactionData = await transaction.findOne({
+    //             where: {
+    //                 transaction_code: code,
+    //             }
+    //         });
+    //         if(!transactionData) {
+    //             return res.status(404).json(failedResponse("Transaction not found"))
+    //         };
+    //         const disallowedStatus = ['Dikirim', 'Selesai', 'Dibatalkan'];
+    //         if(disallowedStatus.includes(transactionData.status)) {
+    //             return res.status(400).json(failedResponse("Can't reject the order, the status is not eligble for rejection"))
+    //         };
+
+    //         await transaction.update({status: 'Diproses' }, 
+    //         {
+    //             where: {
+    //                 transaction_code: code,
+    //             }
+    //         });
+
+    //         return res.status(200).json(successResponse("Order rejected succesfully", "", ""));
+    //     } catch (error) {
+    //         console.log(error);
+    //         return res.status(500).json(failedResponse(error));
+    //     }
+    // },
+    adminUserStatusTransaction: async (req, res) => {
+        const code = req.params.code;
+        const status = req.paramas.status;
+
+
+        try {
+            const status = await transaction.findOne({
+                where: {
+                    transaction_code: code,
+                }
+            });
+            if(!status) {
+                return res.status(404).json(failedResponse("Transaction not Found"))
+            };
+
+            await transaction.update({status},
+            {
+                where: {
+                    transaction_code: code,
+                }
+            });
+            return res.status(200).json(successResponse("Succesfully", "", ""));
+        } catch (error) {
+            return res.status(500).json(failedResponse(error))
+        }
     },
 };

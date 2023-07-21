@@ -12,8 +12,8 @@ export const HomePage = () => {
             <Navbar />
             <div className="home-container">
                 <Carousel />
-                <Prescriptions />
                 <Category />
+                <Prescriptions />
                 <Outlet />
                 <UserProductList />
                 <FooterUserPage />
