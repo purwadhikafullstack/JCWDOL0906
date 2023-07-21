@@ -65,6 +65,15 @@ const TransactionList = () => {
       swalFailed(error.response.data.message)
     }
   }
+  const adminUserTransaction = async (code) => {
+    try {
+      const result = await apiRequest.patch('/transaction/' + code + '/rejectorder')
+    swalSuccess(result.data.message);
+    getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  }
 
   useEffect(() => { getData() }, [activePage, status, sort])
   return (
@@ -117,7 +126,8 @@ const TransactionList = () => {
               ]}
               action={[
                 (e) => confirmTransaction(e.target.id),
-                (e) => rejectTransaction(e.target.id)
+                (e) => rejectTransaction(e.target.id),
+                (e) => adminUserTransaction(e.target.id)
               ]}
             />
           </Box>

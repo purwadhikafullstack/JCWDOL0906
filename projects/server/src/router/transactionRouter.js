@@ -12,5 +12,5 @@ router.get('/transaction/:status/status', c_transaction.getUserTransactionByStat
 router.post('/transaction/:code', uploadFile, c_transaction.uploadPayment);
 router.delete('/transaction/:code', c_transaction.deleteUserTransaction);
 router.patch('/transaction/:code/:action', c_transaction.confirmTransaction);
-
+router.patch('/transaction/:code/status', c_transaction.adminUserStatusTransaction);
 module.exports = router

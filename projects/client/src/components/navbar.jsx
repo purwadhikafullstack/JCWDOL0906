@@ -86,10 +86,10 @@ export const Navbar = () => {
     <>
       <Box>
         <Flex
-          bg={useColorModeValue("blue.50", "blue.100")}
+            bg={useColorModeValue("blue.50", "blue.100")}
           color={useColorModeValue("gray.600", "white")}
-          minH={"60px"}
-          py={{ base: 2 }}
+          minH={"70px"} // Adjust the minimum height to make the navbar slightly bigger
+          py={{ base: 3 }} // Adjust the vertical padding to make the navbar slightly bigger
           px={{ base: 4 }}
           borderBottom={3}
           borderStyle={"solid"}

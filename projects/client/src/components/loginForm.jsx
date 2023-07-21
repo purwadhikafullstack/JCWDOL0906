@@ -13,6 +13,8 @@ import {
   Input,
   Alert,
   Link,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
 // import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -22,18 +24,20 @@ import Swal from "sweetalert2";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-// import { Loading } from "./loading";
+import { useState } from "react";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
 import { apiRequest } from "../helper/api";
 
 export const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(false); // Add state for showing/hiding password
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid Email").required("Email is Required"),
     password: Yup.string().required("Password is Required"),
   });
-
+  
   const OverlayTwo = () => (
     <ModalOverlay
       bg='none'
@@ -145,15 +149,25 @@ export const LoginForm = () => {
                     style={{ color: "red" }}
                   />
                   <FormLabel mt={5}>Password</FormLabel>
+                  <InputGroup>
                   <Field
                     as={Input}
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"} // Show/hide password based on state
                     name="password"
                     borderColor="blue.800"
                     placeholder="Password"
                   />
-
+                    <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+                </InputRightElement>
+                </InputGroup>
                   <ErrorMessage
                     name="password"
                     component="div"

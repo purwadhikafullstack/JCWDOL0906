@@ -147,8 +147,12 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage, show, col
                       <Button colorScheme="red" onClick={action[1]} id={el.transaction_code}>
                         Reject
                       </Button>
+                    </HStack> : ""} 
+                    {el.status === 'Diproses' ? <HStack spacing="5px">
+                      <Button colorScheme="yellow" onClick={action[2]} id={el.transaction_code}>
+                        Reject Order
+                      </Button>
                     </HStack> : ""}
-
                     </Td>
                   ) : (
                     <Td
