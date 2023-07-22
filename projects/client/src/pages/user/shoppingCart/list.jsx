@@ -161,7 +161,7 @@ const List = () => {
 
   return (
     <Box
-      maxW={{ base: "3xl", lg: "7xl" }}
+      maxW={{ base: "3xl", lg: "8xl" }}
       mx="auto"
       px={{ base: "4", md: "8", lg: "12" }}
       py={{ base: "6", md: "8", lg: "12" }}
@@ -180,138 +180,138 @@ const List = () => {
               />
             }
           >
-            <Container maxW="container.xl" p={5} mt={5}>
+            <Container maxW="container.2xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
                 Keranjang
               </Heading>
               {carts.length > 0
                 ? carts.map((i) => (
-                    <Flex
-                      borderWidth="1px"
-                      rounded="lg"
-                      padding="2"
-                      width="full"
-                      mt={2}
-                      justifyContent="space-between"
-                      bgColor="white"
-                    >
-                      <HStack>
-                        <Image
-                          rounded="lg"
-                          width="120px"
-                          height="120px"
-                          fit="cover"
-                          src={process.env.REACT_APP_IMAGE_API + i.image}
-                          alt=""
-                          draggable="false"
-                          loading="lazy"
-                        />
-                        <Box pt="4">
-                          <Stack spacing="0.5">
-                            <Text fontWeight="medium">{i.product_name}</Text>
-                            <Text
-                              color={mode("gray.600", "gray.400")}
-                              fontSize="sm"
-                            >
-                              {rupiah(i.price)}
-                            </Text>
-                          </Stack>
-                        </Box>
-                      </HStack>
+                  <Flex
+                    borderWidth="1px"
+                    rounded="lg"
+                    padding="2"
+                    width="full"
+                    mt={2}
+                    justifyContent="space-between"
+                    bgColor="white"
+                  >
+                    <HStack>
+                      <Image
+                        rounded="lg"
+                        width="120px"
+                        height="120px"
+                        fit="cover"
+                        src={process.env.REACT_APP_IMAGE_API + i.image}
+                        alt=""
+                        draggable="false"
+                        loading="lazy"
+                      />
+                      <Box pt="4">
+                        <Stack spacing="0.5">
+                          <Text fontWeight="medium">{i.product_name}</Text>
+                          <Text
+                            color={mode("gray.600", "gray.400")}
+                            fontSize="sm"
+                          >
+                            {rupiah(i.price)}
+                          </Text>
+                        </Stack>
+                      </Box>
+                    </HStack>
 
-                      <Flex alignItems="end">
-                        <Button
-                          variant="ghost"
-                          w="fit-content"
-                          size="sm"
-                          ml={2}
-                          onClick={() => deleteItem(i.product_id, "minus")}
-                        >
-                          <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
-                        </Button>
+                    <Flex alignItems="end">
+                      <Button
+                        variant="ghost"
+                        w="fit-content"
+                        size="sm"
+                        ml={2}
+                        onClick={() => deleteItem(i.product_id, "minus")}
+                      >
+                        <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
+                      </Button>
 
-                        <Box>
-                          <Flex alignItems="center">
-                            <Button
-                              variant="ghost"
-                              w="fit-content"
-                              size="sm"
-                              ml={2}
-                              onClick={() =>
-                                updateItemQty(i.product_id, "minus")
-                              }
-                            >
-                              <Icon
-                                as={BsDashCircle}
-                                h={5}
-                                w={5}
-                                alignSelf={"center"}
-                              />
-                            </Button>
-                            <Text px={3} mb={0} fontWeight="medium">
-                              {i.qty}
-                            </Text>
-                            <Button
-                              variant="ghost"
-                              w="fit-content"
-                              size="sm"
-                              mr={2}
-                              onClick={() =>
-                                updateItemQty(i.product_id, "plus")
-                              }
-                            >
-                              <Icon
-                                as={BsPlusCircle}
-                                h={5}
-                                w={5}
-                                alignSelf={"center"}
-                              />
-                            </Button>
-                          </Flex>
-                        </Box>
-                      </Flex>
+                      <Box>
+                        <Flex alignItems="center">
+                          <Button
+                            variant="ghost"
+                            w="fit-content"
+                            size="sm"
+                            ml={2}
+                            onClick={() =>
+                              updateItemQty(i.product_id, "minus")
+                            }
+                          >
+                            <Icon
+                              as={BsDashCircle}
+                              h={5}
+                              w={5}
+                              alignSelf={"center"}
+                            />
+                          </Button>
+                          <Text px={3} mb={0} fontWeight="medium">
+                            {i.qty}
+                          </Text>
+                          <Button
+                            variant="ghost"
+                            w="fit-content"
+                            size="sm"
+                            mr={2}
+                            onClick={() =>
+                              updateItemQty(i.product_id, "plus")
+                            }
+                          >
+                            <Icon
+                              as={BsPlusCircle}
+                              h={5}
+                              w={5}
+                              alignSelf={"center"}
+                            />
+                          </Button>
+                        </Flex>
+                      </Box>
                     </Flex>
-                  ))
+                  </Flex>
+                ))
                 : "Cart is Empty"}
             </Container>
-            <Container maxW="container.xl" p={5} mt={5}>
+            <Container maxW="container.2xl" p={5} mt={5}>
               <Heading fontSize="2xl" fontWeight="extrabold">
                 Rekomendasi untukmu
               </Heading>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+              <Grid templateColumns="repeat(3, 1fr)" gap={4}>
                 {recomendItem.length === 0 && user.value.username === ""
                   ? product.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={process.env.REACT_APP_IMAGE_API + i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))
+                    <ProductCard
+                      key={index}
+                      image={process.env.REACT_APP_IMAGE_API + i.image}
+                      product_name={i.product_name}
+                      price={i.price}
+                      id={i.id}
+                      category={i.category}
+                      description={i.description}
+                      dose={i.dose}
+                      indication={i.indication}
+                      rules={i.rules}
+                      unit={i.defaultUnit}
+                      category_id={i.category_id}
+                    />
+                  ))
                   : recomendItem.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={process.env.REACT_APP_IMAGE_API + i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))}
+                    <ProductCard
+                      key={index}
+                      image={process.env.REACT_APP_IMAGE_API + i.image}
+                      product_name={i.product_name}
+                      price={i.price}
+                      id={i.id}
+                      category={i.category}
+                      description={i.description}
+                      dose={i.dose}
+                      indication={i.indication}
+                      rules={i.rules}
+                      unit={i.defaultUnit}
+                      category_id={i.category_id}
+                    />
+                  ))}
               </Grid>
             </Container>
           </Stack>

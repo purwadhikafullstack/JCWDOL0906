@@ -31,7 +31,7 @@ const ModalPrescription = ({
 }) => {
   return (
     <>
-      <Modal isOpen={Open} onClose={Close} size="5xl">
+      <Modal isOpen={Open} onClose={Close} size="6xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{Title}</ModalHeader>

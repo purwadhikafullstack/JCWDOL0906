@@ -146,7 +146,6 @@ function App() {
           path="/mytransaction/cancelled"
           element={<UserTransaction />}
         />
-
         {/* <Route path="/admin/unit" Component={Dashboard} /> */}
       </Routes>
     </BrowserRouter>
@@ -158,18 +157,3 @@ function App() {
 }
 
 export default App;
-
-/* <div
-           style={{
-             display: "flex",
-             height: "80vh",
-             width: "100%",
-             justifyContent: "center",
-             alignItems: "center",
-           }}
-           > 
-           <Img
-             src={logo_gmedsnial}
-             className="w-30 h-25 align-middle rounded-full animate-bounce"
-           />
-           </div> */
