@@ -112,8 +112,20 @@ function App() {
           <Route path="/myaccount" Component={MyAccount} />
           <Route path="/admin/unit" Component={Dashboard} />
         </Routes> */}
-
-        <Routes>
+        {isLoading ? <div
+          style={{
+            display: "flex",
+            height: "80vh",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Img
+            src={logo_gmedsnial}
+            className="w-30 h-25 align-middle rounded-full animate-bounce"
+          />
+        </div> : <Routes>
           <Route path="/" element={
             <HomePage />}
             errorElement={<ErrorPage />} />
@@ -169,7 +181,8 @@ function App() {
           />
 
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
-        </Routes>
+        </Routes>}
+
 
       </BrowserRouter>
     </ChakraProvider>
@@ -177,18 +190,3 @@ function App() {
 }
 
 export default App;
-
-/* <div
-           style={{
-             display: "flex",
-             height: "80vh",
-             width: "100%",
-             justifyContent: "center",
-             alignItems: "center",
-           }}
-           > 
-           <Img
-             src={logo_gmedsnial}
-             className="w-30 h-25 align-middle rounded-full animate-bounce"
-           />
-           </div> */
