@@ -193,21 +193,23 @@ const TableCRUD = ({
                       {el.status === "Diproses" ? (
                         <HStack spacing="5px">
                           <Button
-                            colorScheme="yellow" onClick={action[4]} id={el.transaction_code}>
-                          Reject Order
+                            colorScheme="yellow"
+                            onClick={action[4]}
+                            id={el.transaction_code}
+                          >
+                            Reject Order
                           </Button>
                           <Button
                             colorScheme="teal"
                             onClick={action[3]}
                             id={el.transaction_code}
                           >
-                          Confirm Order
+                            Confirm Order
                           </Button>
                         </HStack>
                       ) : (
                         ""
                       )}
-                      
                     </Td>
                   ) : (
                     <Td
