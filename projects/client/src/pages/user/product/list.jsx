@@ -2,15 +2,18 @@
 import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, Button, Container, Flex, Grid, IconButton, Image, Input, Menu, MenuButton, MenuItem, MenuList, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Text, Tooltip, useColorModeValue, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { swalFailed } from '../../../helper'
 import Pagination from '../../../components/pagination'
 import StoreProductFilter from '../../../components/store/product/storeProductFilter'
 import ProductCard from '../../../components/store/product/productCard'
 import { apiRequest } from '../../../helper/api'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const UserProductList = () => {
+  const ref = useRef(null);
+  const dispatch = useDispatch();
   const [product, setProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [sort, setSort] = useState("");
@@ -20,6 +23,7 @@ const UserProductList = () => {
   const [records, setRecords] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
 
+  const productCategory = useSelector(state => state.productSlice)
   const getData = async () => {
     let params = ""
     if (sort !== "") { params = "?sort=" + sort } else { params = "?sort=" }
@@ -45,11 +49,16 @@ const UserProductList = () => {
 
   const getCategory = async () => {
     try {
-      const result = await apiRequest.get("/categories")
+      const result = await apiRequest.get("/categories/dropdown")
       setCategory(result.data.data)
     } catch (error) {
       swalFailed(error.response.data.message)
     }
+  }
+
+  const clearFilter = () => {
+    setFilterCategory(0)
+    setSort("")
   }
 
   useEffect(() => {
@@ -58,12 +67,17 @@ const UserProductList = () => {
   }, [sort, pageNumber, filterCategory, filterName])
 
   useEffect(() => {
+    setFilterCategory(productCategory.category)
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [productCategory])
+
+  useEffect(() => {
     getCategory()
   }, [])
 
   return (
     <>
-      <Flex flexDirection="column" alignItems="start" p={10} w="100%">
+      <Flex flexDirection="column" alignItems="start" p={10} w="100%" >
         <Flex
           w="100%"
           alignItems="center"
@@ -83,7 +97,7 @@ const UserProductList = () => {
           />
 
           <Flex alignItems="center">
-            <Text p={5}>
+            <Text p={5} mb={0}>
               {" "}
               Page {pageNumber} of {records} data{" "}
             </Text>
@@ -96,7 +110,7 @@ const UserProductList = () => {
             />
           </Flex>
         </Flex>
-        <Container maxW="container.xl" p={5} mt={5}>
+        <Container maxW="container.xl" p={5} mt={5} ref={ref}>
           <Grid templateColumns="repeat(5, 1fr)" gap={6}>
             {product.length > 0
               ? product.map((i) => (
