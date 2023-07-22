@@ -51,7 +51,16 @@ const OnTheWay = () => {
             console.log(error);
             swalFailed(error.response.data.message);
         }
-    };
+    }
+
+    const userConfrimReceived = async (e) => {
+        try {
+            const result = await apiRequest.patch("/transaction/" + code + "/code" + searchParams.get('status') + "/status")
+            console.log(result.data.data)
+        } catch (error) {
+            
+        }
+    }
 
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
@@ -109,6 +118,9 @@ const OnTheWay = () => {
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
 
+                                                    <Center>
+                                                        <Button mr={2} colorScheme='yellow' onClick={() => getDetailTransaction(i.transaction_code)}>Diterima</Button>
+                                                    </Center>
 
                                                     <Divider orientation='vertical' />
                                                     <Center>
