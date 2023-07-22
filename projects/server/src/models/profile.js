@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static asscociate(models) {
-      Profile.belongsTo(models.User, {
-        foreignKey: {
-          name: "user_id",
-        },
-      });
-    }
+    // static asscociate(models) {
+    //   Profile.belongsTo(models.User, {
+    //     foreignKey: {
+    //       name: "user_id",
+    //     },
+    //   });
+    // }
   }
   Profile.init(
     {
@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      }
     },
     {
       sequelize,

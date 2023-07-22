@@ -14,7 +14,6 @@ import { BsCartPlus, BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { rupiah, swalFailed } from '../../../helper';
 import { add } from '../../../redux/cartSlice';
-import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { apiRequest } from '../../../helper/api';
 
@@ -24,7 +23,7 @@ function ProductCard({ image, product_name, price, id, category, description, do
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    let param = '?image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
+    let param = '?id=' + id + '&image=' + image + '&product_name=' + product_name + '&price=' + price + '&category=' + category + '&description=' + description + '&dose=' + dose + '&indication=' + indication + '&rules=' + rules + '&unit=' + unit + '&category_id=' + category_id
     const user = useSelector((state) => state.userSlice)
     const addToCart = async () => {
         // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))

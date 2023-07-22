@@ -7,6 +7,7 @@ const user = db.User;
 const stock = db.stock;
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../models");
+const { calculatePrescription } = require("../helpers/units");
 
 module.exports = {
   getAll: async (req, res) => {
@@ -36,7 +37,7 @@ module.exports = {
 
     try {
       const [a] = await sequelize.query(
-        `SELECT * FROM carts c JOIN products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
+        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
       );
 
       console.log(a);
@@ -50,12 +51,14 @@ module.exports = {
 
   addToCart: async (req, res) => {
     const { product_id, qty, price } = req.body;
+    console.log(product_id, qty, price)
     try {
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,
         },
       });
+      console.log(productStock)
       const stocks = productStock.dataValues.default_unit_qty;
 
       const isExists = await cart.findOne({
@@ -163,6 +166,41 @@ module.exports = {
     } catch (error) {
       console.log(error);
       res.status(500).json(failedResponse(error));
+    }
+  },
+  addPrescriptionToCart: async (req, res) => {
+    try {
+      const user_id = req.userId;
+      const { product_id, qty } = req.body;
+      const productStock = await stock.findOne({
+        where: {
+          product_id: product_id,
+        },
+      });
+
+      const stocks = productStock.dataValues.default_unit_qty;
+      if (stocks == 0) {
+        return;
+      }
+      const result = await calculatePrescription(product_id, qty);
+      const { total_price } = result;
+
+      await cart.create({
+        user_id,
+        product_id,
+        qty,
+        price: total_price,
+        total_price,
+      });
+      // console.log(data);
+      res.status(200).send({
+        message: "Get All Product Unit Success",
+      });
+    } catch (error) {
+      res.status(400).send({
+        message: error.message,
+        data: error,
+      });
     }
   },
 };

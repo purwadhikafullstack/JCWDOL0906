@@ -86,9 +86,9 @@ module.exports = {
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE p.is_deleted=0
@@ -101,9 +101,26 @@ module.exports = {
         }
       );
 
+      const count = await sequelize.query(
+        `
+      SELECT 
+      COUNT(p.id) as count FROM 
+      Products p 
+      LEFT JOIN stocks s ON p.id=s.product_id 
+      LEFT JOIN Categories c ON p.category_id=c.id
+      LEFT JOIN default_unit du ON s.default_unit_id=du.id 
+      LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
+      WHERE p.is_deleted=0
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
+
       res.status(200).send({
         data: data,
-        count: data.length,
+        count: count[0].count,
         message: "Get All Product Succesfully",
       });
     } catch (error) {
@@ -117,17 +134,16 @@ module.exports = {
     try {
       const id = req.params.id;
       const [data] = await sequelize.query(
-        `
-      SELECT 
+        `SELECT 
       p.*, 
       s.default_unit_qty as defaultQty , 
       s.conversion_unit_qty as conversionQty, 
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE p.is_deleted=0 AND p.id=${id}
@@ -145,22 +161,46 @@ module.exports = {
     }
   },
   updateProduct: async (req, res) => {
+    const data = JSON.parse(req.body.data);
+    console.log(data)
+    const {
+      product_name,
+      price,
+      description,
+      indication,
+      dose,
+      rules,
+      category_id,
+      updatedBy,
+    } = data;
+    const image = req.file.path;
     try {
       let isExists = await product.findOne({
         where: {
-          product_id: req.params.id,
+          id: req.params.id,
         },
       });
-
+      console.log(!isExists)
       if (!isExists) {
-        let [data] = await product.create(req.body);
-        if (data === 0) {
-          return res.status(400).json({ message: "Update product failed " });
-        } else {
-          return res
-            .status(200)
-            .json({ status: "Update product successfully " });
-        }
+
+        return res.status(400).json({ message: "Product not found " });
+
+
+      } else {
+        await product.update({
+          product_name,
+          price,
+          image,
+          description,
+          indication,
+          dose,
+          rules,
+          category_id,
+          updatedBy,
+        }, { where: { id: req.params.id } })
+        return res
+          .status(200)
+          .json({ message: "Update product successfully " });
       }
     } catch (error) {
       return res.status(500).json({ status: "failed", message: error });
@@ -216,11 +256,11 @@ module.exports = {
   },
 
   getStoreProduct: async (req, res) => {
-    console.log(req.query.page);
+    console.log('category', req.query.category);
     let sort = "p.product_name ASC";
     let limit = 10;
     let offset = 0;
-    let param = "p.is_deleted=0";
+    let param = "p.is_deleted=0 AND s.default_unit_qty > 0";
 
     if (req.query.sort && req.query.sort === "1") {
       sort = "p.product_name ASC";
@@ -255,15 +295,15 @@ module.exports = {
       const data = await sequelize.query(
         `
       SELECT 
-      p.*, 
+      p.*,
       s.default_unit_qty as defaultQty , 
       s.conversion_unit_qty as conversionQty, 
       du.unit_name as defaultUnit,
       c.category_name as category,
       cu.unit_name as conversionUnit FROM 
-      products p 
+      Products p 
       LEFT JOIN stocks s ON p.id=s.product_id 
-      LEFT JOIN categories c ON p.category_id=c.id
+      LEFT JOIN Categories c ON p.category_id=c.id
       LEFT JOIN default_unit du ON s.default_unit_id=du.id 
       LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
       WHERE ${param}
@@ -276,8 +316,25 @@ module.exports = {
           type: QueryTypes.SELECT,
         }
       );
-      const count = data.length;
-      res.status(200).json({ count, data });
+
+      const count = await sequelize.query(
+        `
+      SELECT 
+      COUNT(p.id) as count FROM 
+      Products p 
+      LEFT JOIN stocks s ON p.id=s.product_id 
+      LEFT JOIN Categories c ON p.category_id=c.id
+      LEFT JOIN default_unit du ON s.default_unit_id=du.id 
+      LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
+      WHERE ${param}
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      res.status(200).json({ count: count[0].count, data });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error });

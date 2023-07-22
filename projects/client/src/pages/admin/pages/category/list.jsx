@@ -27,7 +27,6 @@ const CategoryList = () => {
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [selectedCategoryId, setSelectedCategoryId] = useState(0);
-
   const adminId = useSelector((state) => state.userSlice.value.id);
 
   const addCategory = async () => {
@@ -41,7 +40,7 @@ const CategoryList = () => {
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      let result = await apiRequest.post("/categories/", formData);
+      let result = await apiRequest.post("/categories", formData);
       // console.log("adminId",adminId);
       console.log(result);
       modalAdd.onClose();
@@ -61,9 +60,9 @@ const CategoryList = () => {
       swalFailed(error.response.data.message);
     }
   };
-
   const updateCategory = async (e) => {
     try {
+     
       let image = document.getElementById("image").files[0];
       let category_name = document.getElementById("category_name").value;
       let formData = new FormData();
@@ -73,7 +72,7 @@ const CategoryList = () => {
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-
+      
       let result = await apiRequest.patch(
         "/categories/" + selectedCategoryId,
         formData,
@@ -156,13 +155,16 @@ const CategoryList = () => {
         Title="New Category"
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
+        Cancel={() => { modalAdd.onClose(); }}
         Submit={() => addCategory()}
       />
       <ModalUpdateCategory
         Title="Update Category"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
+        Cancel={() => { modalUpdate.onClose(); }}
         Submit={(e) => updateCategory(e)}
+
       />
     </>
   );

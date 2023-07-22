@@ -18,6 +18,10 @@ app.get("/api", (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
+const authRouter = require("./router/authRouter");
+app.use("/api/auth", authRouter);
+const productRouter = require("./router/productRouter");
+app.use("/api", productRouter);
 // const authRouter= require("./router/authRouter");
 // app.use("/api/auth", authRouter);
 // const categoryRouter = require("./router/categoryRouter");
@@ -25,12 +29,19 @@ app.get("/api", (req, res) => {
 // const productRouter = require("./router/productRouter");
 // app.use("/api", productRouter);
 
+const addressRouter = require("./router/addressRouter");
+app.use("/api/address", addressRouter);
+
 app.get("/api/greetings", (req, res, next) => {
   res.status(200).json({
     message: "Hello, Student !",
   });
 });
 
+const rajaOngkirRouter = require("./router/rajaOngkirRouter");
+app.use("/api/shipping", rajaOngkirRouter);
+// const transactionRouter = require("./router/transactionRouter");
+// app.use("api/transaction", transactionRouter);
 // NOTE : Add your routes here
 
 // for (let routes in router.routes) {

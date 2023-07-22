@@ -212,6 +212,7 @@ module.exports = {
           message: "Please Input Your Email Address",
         });
       }
+      console.log(req.body);
 
       if (!email.includes("@") || !email.endsWith(".com")) {
         return res.status(400).send({
@@ -233,7 +234,7 @@ module.exports = {
           },
         }
       );
-      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const resetLink = `http://localhost:3000/reset-password/${token}`;
       const tempEmail = fs.readFileSync(
         require.resolve("../templates/reset.html"),
         { encoding: "utf8" }
@@ -294,7 +295,8 @@ module.exports = {
 
       res.send({
         message: "Reset Password Succes",
-        data: userPassword,
+        data
+        // data: userPassword,
       });
     } catch (error) {
       console.log(error);
@@ -305,16 +307,22 @@ module.exports = {
   },
   changePassword: async (req, res) => {
     try {
-      const { id, password, newPassword, confirmPassword } = req.body;
-
-      const userExist = await User.findOne({
-        where: { id },
+      const { password, newPassword, confirmPassword } = req.body;
+      console.log(req.body);
+      const userExist = await user.findOne({
+        where: {
+          id: req.userId
+        },
       });
+      console.log(userExist);
 
-      const isValid = await bcrypt.compare(
-        password,
-        userExist.dataValues.password
-      );
+      if (!userExist) {
+        return res.status(404).send({
+          message: "User not found",
+        });
+      }
+
+      const isValid = await bcrypt.compare(password, userExist.password);
 
       if (!isValid) {
         return res.status(400).send({
@@ -347,11 +355,15 @@ module.exports = {
       const salt = await bcrypt.genSalt(10);
       const hashPass = await bcrypt.hash(newPassword, salt);
 
-      const userPassword = await User.update(
+      const userPassword = await user.update(
         { password: hashPass },
-        { where: { id: userExist.dataValues.id } }
+        {
+          where:
+          {
+            id: req.userId
+          }
+        }
       );
-      // await roll.commit();
       res.send({
         message: "Change Password Success",
         data: userPassword,
@@ -397,10 +409,61 @@ module.exports = {
       });
     }
   },
+  confirm_email: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).send({
+          message: "Please Input Your Email Address",
+        });
+      }
+
+      if (!email.includes("@") || !email.endsWith(".com")) {
+        return res.status(400).send({
+          message: "Please enter a Valid Email Address",
+        });
+      }
+      let result = await user.findOne({ where: { email } });
+
+      let payload = { id: result.id };
+      let token = jwt.sign(payload, "g-medsnial", {
+        expiresIn: "1h",
+      });
+
+      await user.update(
+        { reset_token: token },
+        {
+          where: {
+            id: result.id,
+          },
+        }
+      );
+      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const tempEmail = fs.readFileSync(
+        require.resolve("../templates/reset.html"),
+        { encoding: "utf8" }
+      );
+      const tempCompile = handlebars.compile(tempEmail);
+      const tempResult = tempCompile({ resetLink });
+
+      await transporter.sendMail({
+        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        to: email,
+        subject: "Reset Password",
+        html: tempResult,
+      });
+      res.status(200).send({
+        message: " Please Check Your Email",
+        result,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   getProfile: async (req, res) => {
     try {
       const { userId } = req;
-      console.log(userId);
+      console.log('ID', userId);
 
       const profileData = await profile.findOne({
         where: {

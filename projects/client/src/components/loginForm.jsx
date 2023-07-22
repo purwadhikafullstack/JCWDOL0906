@@ -13,28 +13,42 @@ import {
   Input,
   Alert,
   Link,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
-// import { useNavigate } from "react-router-dom";
+
 import React from "react";
-// import decode from "jwt-decode";
+
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 //importan redux
 import { useDispatch } from "react-redux";
 import { login } from "../redux/userSlice";
 import { apiRequest } from "../helper/api";
 
 export const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(false); // Add state for showing/hiding password
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid Email").required("Email is Required"),
     password: Yup.string().required("Password is Required"),
   });
+  
+  const OverlayTwo = () => (
+    <ModalOverlay
+      bg='none'
+      backdropFilter='auto'
+      // backdropInvert='80%'
+      backdropBlur='2px'
+    />
+  );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [overlay, setOverlay] = React.useState(<OverlayTwo/>)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,10 +78,11 @@ export const LoginForm = () => {
       onClose();
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
-      } else {
-        navigate("/");
+      } 
+      // else {
+      //   navigate("/");
 
-      }
+      // }
     } catch (error) {
       // console.log(error);
       Swal.fire({
@@ -88,22 +103,24 @@ export const LoginForm = () => {
     <>
       <Button
         display={{ base: "solid", md: "inline-flex" }}
-        fontSize={"md"}
+        fontSize={"lg"}
         fontWeight="bold"
-        color={"blue.800"}
-        bg="blue.200"
+        color={"white"}
+        bg="blue.800"
         href={"#"}
-        onClick={onOpen}
+        onClick={() => {
+          setOverlay(<OverlayTwo />)
+          onOpen()}}
         pt={{ base: "3", md: 0 }}
         borderRadius="10px"
       >
-        Login
+        Masuk
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+      {overlay}
         <ModalContent>
           <ModalHeader textAlign={"center"} color="blue.800">
-            Login Now!
+            Masuk Sekarang!
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={5}>
@@ -123,7 +140,7 @@ export const LoginForm = () => {
                     id="email"
                     type="email"
                     name="email"
-                    borderColor="blue.300"
+                    borderColor="blue.800"
                     placeholder="Email Address"
                   />
                   <ErrorMessage
@@ -132,15 +149,27 @@ export const LoginForm = () => {
                     style={{ color: "red" }}
                   />
                   <FormLabel mt={5}>Password</FormLabel>
+                  <InputGroup>
                   <Field
                     as={Input}
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"} // Show/hide password based on state
                     name="password"
-                    borderColor="blue.300"
+                    borderColor="blue.800"
                     placeholder="Password"
                   />
-
+                    <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  backgroundColor="blue.800"
+                  color="white"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </Button>
+                </InputRightElement>
+                </InputGroup>
                   <ErrorMessage
                     name="password"
                     component="div"
@@ -149,30 +178,27 @@ export const LoginForm = () => {
 
                 </FormControl>
                 <ModalFooter>
-                  <Button mr={5} type="submit" colorScheme="blue.800">
-                    Login
-                  </Button>
                   <Button
                     display={{ base: "solid", md: "inline-flex" }}
                     fontSize={"md"}
                     fontWeight="bold"
-                    color={"blue.800"}
-                    bg="blue.100"
+                    color={"white"}
+                    bg="blue.800"
                     onClick={() => onLogin()}
                   >
-                    Login
+                    Masuk
                   </Button>
                 </ModalFooter>
               </Form>
             </Formik>
             <Link
-              as={Button}
+              // as={Button}
               variant="link"
               onClick={() => {
                 onClose();
-                navigate("/confirmemail");
+                navigate("/confirm-email");
               }}
-              color="blue.400"
+              color="blue.800"
               mt={5}
             >
               Forgot password? Reset here

@@ -28,7 +28,9 @@ const ModalAddProduct = ({
   Submit,
   categories,
   setNewProduct,
+  setCategory
 }) => {
+
   return (
     <>
       <Modal isOpen={Open} onClose={Close} size="2xl">
@@ -40,25 +42,23 @@ const ModalAddProduct = ({
             <FormControl isInvalid={isError}>
               <FormLabel>Product Name</FormLabel>
               <Input type="text" placeholder="Product Name" id="product_name" />
-
               {isError ? (
                 <FormErrorMessage>Field is required.</FormErrorMessage>
               ) : (
                 ""
               )}
             </FormControl>
-
             <FormControl>
               <FormLabel> Category </FormLabel>
               <Select id="category_id">
                 <option value="">Select categories </option>
-                {categories.map((category, index) => {
-                  return (
-                    <option value={category.id} key={index}>
-                      {category.category_name}
-                    </option>
-                  );
-                })}
+                {categories.map((category, index) =>
+
+                  <option value={category.id} key={index}>
+                    {category.category_name}
+                  </option>
+
+                )}
               </Select>
             </FormControl>
 

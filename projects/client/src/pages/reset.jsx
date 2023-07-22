@@ -29,7 +29,7 @@ export const ResetPassword = () => {
 
   const resetPassword = async (values) => {
     try {
-      const url = '/auth/resetpassword';
+      const url = '/auth/reset-password/:token';
       if (token) {
         const response = await apiRequest.post(
           url,
