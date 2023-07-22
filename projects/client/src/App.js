@@ -8,6 +8,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CheckLogin } from "./utils/checklogin";
 // import logo from "./logo.svg";
 import "./App.css";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { ChakraProvider, Img } from "@chakra-ui/react";
 import { ErrorPage } from "./pages/error";
 import { HomePage } from "./pages/home";
@@ -54,7 +56,7 @@ function App() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const [isLoading, setisLoading] = useState(true);
-  
+
 
   let keepLogin = async () => {
     let response = await CheckLogin();
@@ -73,7 +75,7 @@ function App() {
     // }
     setTimeout(() => {
       setisLoading(false);
-    },3000);
+    }, 3000);
 
     keepLogin();
   }, []);
@@ -110,10 +112,8 @@ function App() {
           <Route path="/myaccount" Component={MyAccount} />
           <Route path="/admin/unit" Component={Dashboard} />
         </Routes> */}
-        {isLoading ? (
-          <Loading/>
-          ) : (
-            <Routes>
+
+        <Routes>
           <Route path="/" element={
             <HomePage />}
             errorElement={<ErrorPage />} />
@@ -170,7 +170,7 @@ function App() {
 
           {/* <Route path="/admin/unit" Component={Dashboard} /> */}
         </Routes>
-          )}
+
       </BrowserRouter>
     </ChakraProvider>
   );
@@ -178,17 +178,17 @@ function App() {
 
 export default App;
 
- /* <div
-            style={{
-              display: "flex",
-              height: "80vh",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            > 
-            <Img
-              src={logo_gmedsnial}
-              className="w-30 h-25 align-middle rounded-full animate-bounce"
-            />
-            </div> */
+/* <div
+           style={{
+             display: "flex",
+             height: "80vh",
+             width: "100%",
+             justifyContent: "center",
+             alignItems: "center",
+           }}
+           > 
+           <Img
+             src={logo_gmedsnial}
+             className="w-30 h-25 align-middle rounded-full animate-bounce"
+           />
+           </div> */

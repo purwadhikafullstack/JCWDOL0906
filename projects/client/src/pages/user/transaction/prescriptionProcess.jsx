@@ -5,7 +5,7 @@ import { BsChevronRight } from 'react-icons/bs'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { formatDate, rupiah, swalFailed, swalSuccess, time } from '../../../helper'
 import { apiRequest } from '../../../helper/api'
-const OnProcess = () => {
+const WaitingConfirmation = () => {
     const { onOpen, onClose, isOpen } = useDisclosure()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -72,7 +72,7 @@ const OnProcess = () => {
             <Card variant='outline'>
                 <CardHeader>
                     <Flex justify='space-between' align='center'>
-                        <Heading size='md'>Diproses</Heading>
+                        <Heading size='md'>Proses Resep</Heading>
                         <Flex alignItems='center'>
                             <Text mr={3} mb={0}> Status </Text>
                             <Select w='150px' placeholder='Pilih Status' onChange={(e) => navigate('/mytransaction?status=' + e.target.value)}>
@@ -96,7 +96,7 @@ const OnProcess = () => {
                             <CardBody>
                                 <Grid templateColumns='repeat(2, 1fr)' gap={6}>
                                     {transaction.map(i =>
-                                        <Card align='center' size={'2xl'} bg={i.status === 'Diproses' ? 'green.50' : ''}>
+                                        <Card align='center' size={'2xl'}>
                                             <CardHeader w='100%'>
                                                 <Flex >
                                                     <Heading size='md'> {i.transaction_code}</Heading>
@@ -110,7 +110,8 @@ const OnProcess = () => {
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
-                                                
+
+
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
@@ -216,4 +217,4 @@ const OnProcess = () => {
     )
 }
 
-export default OnProcess
+export default WaitingConfirmation

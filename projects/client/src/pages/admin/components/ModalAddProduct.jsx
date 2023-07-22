@@ -30,7 +30,7 @@ const ModalAddProduct = ({
   setNewProduct,
   setCategory
 }) => {
-  console.log(categories)
+
   return (
     <>
       <Modal isOpen={Open} onClose={Close} size="2xl">
