@@ -35,12 +35,12 @@ const TransactionList = () => {
     {
       startDate: new Date(),
       endDate: null,
-      key: 'selection'
-    }
+      key: "selection",
+    },
   ]);
 
-  console.log(state)
-  const [isDate, setIsDate] = useState(false)
+  console.log(state);
+  const [isDate, setIsDate] = useState(false);
 
   const modalAdd = useDisclosure();
 
@@ -66,6 +66,22 @@ const TransactionList = () => {
       console.log(error);
     }
   };
+
+
+  const checkOutPrescription = async () => {
+    try {
+      const result = await apiRequest.patch(
+        "/transaction/" + code + "/Menunggu Pembayaran"
+      );
+      modalAdd.onClose();
+      swalSuccess(result.data.message);
+      getData();
+    } catch (error) {
+      swalFailed(error);
+    }
+  };
+
+
   const confirmUserPayment = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
@@ -84,7 +100,8 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
+  };
+ 
 
   const rejectUserOrder = async (code) => {
     try {
@@ -94,7 +111,7 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
+  };
 
   const confirmUserOrder = async (code) => {
     try {
@@ -106,21 +123,13 @@ const TransactionList = () => {
     }
   }
 
-  // const sendUserOrder = async (code) => {
-  //   try {
-  //     const result = await apiRequest.patch(
-  //       "/transaction/" + code + "/Diproses"
-  //     );
-  //   } catch (error) {
-  //     swalFailed(error.response.data.message);
-  //   }
-  // };
+
 
   const closeDate = () => {
     setTimeout(() => {
-      setIsDate(false)
-    }, 3000)
-  }
+      setIsDate(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     getData();
@@ -134,12 +143,19 @@ const TransactionList = () => {
               Transaction
             </Text>
             <Flex gap="2">
-              {isDate ? <DateRange
-                editableDateInputs={true}
-                onChange={item => { setState([item.selection]); closeDate() }}
-                moveRangeOnFirstSelection={false}
-                ranges={state}
-              /> : <Button onClick={() => setIsDate(true)}>Select Date</Button>}
+              {isDate ? (
+                <DateRange
+                  editableDateInputs={true}
+                  onChange={(item) => {
+                    setState([item.selection]);
+                    closeDate();
+                  }}
+                  moveRangeOnFirstSelection={false}
+                  ranges={state}
+                />
+              ) : (
+                <Button onClick={() => setIsDate(true)}>Select Date</Button>
+              )}
               <Select
                 w="200px"
                 placeholder="Sort By"
@@ -192,7 +208,6 @@ const TransactionList = () => {
                   modalAdd.onOpen();
                   setCode(e.target.id);
                 },
-                // (e) => sendUserOrder(e.target.id),
                 (e) => confirmUserOrder(e.target.id),
                 (e) => rejectUserOrder(e.target.id)
               ]}
@@ -204,8 +219,13 @@ const TransactionList = () => {
       <ModalPrescription
         Tittle="Manage Your Prescription"
         code={code}
+        checkOutPrescription={checkOutPrescription}
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
+        Cancel={() => {
+          modalAdd.onClose();
+        }}
+        Submit={() => checkOutPrescription()}
       />
 
       <Flex justifyContent={"center"} mt={"20px"}>

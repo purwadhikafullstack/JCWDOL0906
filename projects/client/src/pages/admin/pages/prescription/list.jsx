@@ -1,61 +1,8 @@
-// import {
-//   Box,
-//   Button,
-//   Card,
-//   Editable,
-//   EditableInput,
-//   EditablePreview,
-//   Flex,
-//   FormControl,
-//   FormErrorMessage,
-//   FormLabel,
-//   Input,
-//   Modal,
-//   ModalBody,
-//   ModalCloseButton,
-//   ModalContent,
-//   ModalFooter,
-//   ModalHeader,
-//   ModalOverlay,
-//   StatHelpText,
-//   Table,
-//   Tbody,
-//   Td,
-//   Text,
-//   Th,
-//   Thead,
-//   Tr,
-//   useColorModeValue,
-//   useDisclosure,
-// } from "@chakra-ui/react";
-// import React, { useEffect, useState } from "react";
-
-// const Prescription = () => {
-//   const textColor = useColorModeValue("gray.700", "white");
-//   const { onOpen, onClose, isOpen } = useDisclosure();
-
-//   return (
-//     <Card p="5px" maxW={{ sm: "320px", md: "50%" }}>
-//       <Flex direction="column">
-//         <Flex align="center" justify="space-between" p="22px">
-//           <Text fontSize="lg" color={textColor} fontWeight="bold">
-//             Default Units
-//           </Text>
-//           <Button variant="primary" maxH="30px" onClick={onOpen}>
-//             Add New
-//           </Button>
-//         </Flex>
-//         <Box overflow={{ sm: "scroll", lg: "hidden" }}> Prescription</Box>
-//       </Flex>
-//     </Card>
-//   );
-// };
-
-// export default Prescription;
-
 import React, { useState, useEffect } from "react";
 import {
   Box,
+  Flex,
+  Stack,
   VStack,
   HStack,
   Image,
@@ -63,50 +10,30 @@ import {
   Input,
   Grid,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import { apiRequest } from "../../../../helper/api";
-import { swalFailed, swalSuccess } from "../../../../helper";
-
-// 1. ambil data transaction dari database dengan where code: code
-// useState transaction buat simpan datanya, panggil useeffect apiRequest hit ke backend ambil data transaksi (routes transaction/:code)
-// 2. foto resep, transaction.prescription taro di dlm image src
-// 3. buat state products, useEffects getProducts, apireq get
-
-//4. buat handler untuk submit botton (isi: hit api request.patch), backend 1. update table transaction dengan data yg baru
-//2. create table transaction_details sesuai yg di prescription
-
-// getCartByUserID di backend, kl dr fe function getcart panggil di useEffect, hit ke api ke halaman get/cart/:, hasilnya simpan
-// di state cart yang menyimpan cart dr userID tertentu, mapping, harga, qty, subtotal hasil dr cart
+import { useDispatch, useSelector } from "react-redux";
+import { add } from "../../../../redux/cartSlice";
+import { rupiah, swalFailed } from "../../../../helper";
 
 function Prescription({ code }) {
+  const dispatch = useDispatch();
   const [chosenProducts, setChosenProducts] = useState([]);
   const [transactions, setTransactions] = useState({});
   const [image, setImage] = useState({});
   const [transactionCode, setTransactionCode] = useState({});
   const [products, setProducts] = useState([]);
-
-  // Function to handle product selection and quantity input
-
-  // const getTransaction = async (e) => {
-  //   try {
-  //     let result = await apiRequest.get("/transaction", {
-  //       headers: {
-  //         Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
-  //       },
-  //     });
-  //     setTransactions(result.data.data);
-  //     console.log(result.data.data);
-  //   } catch (error) {
-  //     swalFailed(error.response.data.message);
-  //     console.log(error);
-  //   }
-  // };
+  const [userId, setUserId] = useState(0);
+  const [carts, setCart] = useState([]);
+  const { cart, total_price } = useSelector((state) => state.cartSlice);
 
   const getTransactionByCode = async (code) => {
     try {
       let result = await apiRequest.get(`/transaction/${code}/code`);
       console.log(result);
       setTransactionCode(result.data.data.transaction[0]);
+      setUserId(result.data.data.transaction[0].user_id);
     } catch (error) {
       swalFailed(error.response.data.message);
     }
@@ -123,10 +50,22 @@ function Prescription({ code }) {
   };
 
   const handleProductSelect = (product) => {
-    const existingProduct = chosenProducts.find((p) => p.id === product.id);
+    console.log(product);
+    const newProduct = product.split(">");
+    const existingProduct = chosenProducts.find(
+      (p) => p.product_name === newProduct[1]
+    );
     if (existingProduct) return; // Avoid adding duplicate products
 
-    setChosenProducts([...chosenProducts, { ...product, quantity: 1 }]);
+    setChosenProducts([
+      ...chosenProducts,
+      {
+        id: newProduct[0],
+        product_name: newProduct[1],
+        conversionUnit: newProduct[2],
+        quantity: 1,
+      },
+    ]);
   };
 
   const handleQuantityChange = (productId, quantity) => {
@@ -137,17 +76,40 @@ function Prescription({ code }) {
     );
   };
 
-  const addPrescriptionToCart = async (product_id, qty) => {
+  const totalPricePrescription = async () => {
+    try {
+      const result = await apiRequest.get("/cart/resep?user_id=" + userId);
+      setCart(result.data.data);
+      console.log(result.data.data);
+      let data = result.data.data;
+      let total_qty = 0;
+      let total_price = 0;
+      data.forEach((i) => {
+        if (i.conversion_unit !== null) {
+          total_qty += i.qty;
+          total_price += i.total_price;
+        }
+      });
+      dispatch(add({ cart: total_qty, total_price: total_price }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addPrescriptionToCart = async (product_id, qty, conversion_unit) => {
     try {
       let result = await apiRequest.post(
         "/cart/resep",
-        { product_id, qty },
+        { userId, product_id, qty, conversion_unit },
         {
           headers: {
             Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
           },
         }
       );
+      setTimeout(() => {
+        totalPricePrescription();
+      }, 2000);
     } catch (error) {
       swalFailed(error.response.data.message);
       console.log(error);
@@ -180,15 +142,28 @@ function Prescription({ code }) {
         </Text>
         {/* List of products */}
         <VStack spacing={2} alignItems="stretch">
-          {products.map((product) => (
-            <Button
-              key={product.id}
-              onClick={() => handleProductSelect(product)}
-              variant="outline"
-            >
-              {product.product_name}
-            </Button>
-          ))}
+          <Select
+            id="product"
+            onChange={(e) => handleProductSelect(e.target.value)}
+          >
+            <option value=""> Drug List </option>
+            {products.map((product, index) => {
+              return (
+                <option
+                  key={product.id}
+                  value={
+                    product.id +
+                    ">" +
+                    product.product_name +
+                    ">" +
+                    product.conversionUnit
+                  }
+                >
+                  {product.product_name}
+                </option>
+              );
+            })}
+          </Select>
         </VStack>
       </Box>
 
@@ -211,10 +186,17 @@ function Prescription({ code }) {
             <HStack spacing={4}>
               <Box>{product.product_name}</Box>
               <HStack>
-                <Button
-                  onClick={() =>
-                    handleQuantityChange(product.id, product.quantity - 1)
+                <Input
+                  onChange={(e) =>
+                    handleQuantityChange(product.id, e.target.value)
                   }
+                />
+                {/* <Button
+                  onClick={() => {
+                    product.quantity === 1
+                      ? handleQuantityChange(product.id, product.quantity)
+                      : handleQuantityChange(product.id, product.quantity - 1);
+                  }}
                 >
                   -
                 </Button>
@@ -227,11 +209,15 @@ function Prescription({ code }) {
                   }
                 >
                   +
-                </Button>
+                </Button> */}
               </HStack>
               <Button
                 onClick={() =>
-                  addPrescriptionToCart(product.id, product.quantity)
+                  addPrescriptionToCart(
+                    product.id,
+                    product.quantity,
+                    product.conversionUnit
+                  )
                 }
               >
                 Add to Cart
@@ -244,11 +230,13 @@ function Prescription({ code }) {
         <Text fontSize="xl" fontWeight="bold" color="black" mb={4}>
           TOTAL {code} PAYMENT
         </Text>
-        {chosenProducts.map((product) => (
-          <Box key={product.id} borderWidth="1px" p={2} borderRadius="md">
-            <Box>{product.quantity}</Box>
-          </Box>
-        ))}
+        <Stack spacing="6">
+          <Flex justify="space-between">
+            <Text fontSize="xl" fontWeight="extrabold">
+              {rupiah(total_price)}
+            </Text>
+          </Flex>
+        </Stack>
       </Box>
     </Grid>
   );
