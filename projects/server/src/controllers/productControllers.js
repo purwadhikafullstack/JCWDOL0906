@@ -101,9 +101,26 @@ module.exports = {
         }
       );
 
+      const count = await sequelize.query(
+        `
+      SELECT 
+      COUNT(p.id) as count FROM 
+      Products p 
+      LEFT JOIN stocks s ON p.id=s.product_id 
+      LEFT JOIN Categories c ON p.category_id=c.id
+      LEFT JOIN default_unit du ON s.default_unit_id=du.id 
+      LEFT JOIN conversion_unit cu ON s.conversion_unit_id=cu.id
+      WHERE p.is_deleted=0
+      `,
+        {
+          replacements: { pageSize: "active", page: "active" },
+          type: QueryTypes.SELECT,
+        }
+      );
+
       res.status(200).send({
         data: data,
-        count: data.length,
+        count: count[0].count,
         message: "Get All Product Succesfully",
       });
     } catch (error) {

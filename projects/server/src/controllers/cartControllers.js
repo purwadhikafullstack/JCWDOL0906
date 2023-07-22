@@ -51,6 +51,7 @@ module.exports = {
 
   addToCart: async (req, res) => {
     const { product_id, qty, price } = req.body;
+    console.log(product_id, qty, price)
     try {
       const productStock = await stock.findOne({
         where: {

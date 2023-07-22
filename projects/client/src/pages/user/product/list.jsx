@@ -106,6 +106,11 @@ const UserProductList = () => {
                   price={i.price}
                   id={i.id}
                   category={i.category}
+                  description={i.description}
+                  rules={i.rules}
+                  dose={i.dose}
+                  indication={i.indication}
+                  unit={i.defaultUnit}
                 />
               ))
               : "Product Not Found"}

@@ -72,7 +72,7 @@ const WaitingConfirmation = () => {
             <Card variant='outline'>
                 <CardHeader>
                     <Flex justify='space-between' align='center'>
-                        <Heading size='md'>Menunggu Konfirmasi</Heading>
+                        <Heading size='md'>Proses Resep</Heading>
                         <Flex alignItems='center'>
                             <Text mr={3} mb={0}> Status </Text>
                             <Select w='150px' placeholder='Pilih Status' onChange={(e) => navigate('/mytransaction?status=' + e.target.value)}>

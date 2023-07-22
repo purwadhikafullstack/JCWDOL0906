@@ -324,7 +324,7 @@ module.exports = {
     // },
     adminUserStatusTransaction: async (req, res) => {
         const code = req.params.code;
-        const status = req.paramas.status;
+        const status = req.params.status;
 
 
         try {
@@ -333,16 +333,16 @@ module.exports = {
                     transaction_code: code,
                 }
             });
-            if(!status) {
+            if (!status) {
                 return res.status(404).json(failedResponse("Transaction not Found"))
             };
 
-            await transaction.update({status},
-            {
-                where: {
-                    transaction_code: code,
-                }
-            });
+            await transaction.update({ status },
+                {
+                    where: {
+                        transaction_code: code,
+                    }
+                });
             return res.status(200).json(successResponse("Succesfully", "", ""));
         } catch (error) {
             return res.status(500).json(failedResponse(error))
