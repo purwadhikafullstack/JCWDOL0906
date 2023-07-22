@@ -207,7 +207,6 @@ const TableCRUD = ({
                       ) : (
                         ""
                       )}
-                      
                     </Td>
                   ) : (
                     <Td
