@@ -325,15 +325,14 @@ module.exports = {
     adminUserStatusTransaction: async (req, res) => {
         const code = req.params.code;
         const status = req.params.status;
-
-
+        
         try {
-            const status = await transaction.findOne({
+            const result = await transaction.findOne({
                 where: {
                     transaction_code: code,
                 }
             });
-            if (!status) {
+            if (!result) {
                 return res.status(404).json(failedResponse("Transaction not Found"))
             };
 

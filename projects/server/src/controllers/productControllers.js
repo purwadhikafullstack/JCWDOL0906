@@ -33,7 +33,7 @@ module.exports = {
       category_id,
       createdBy,
     } = data;
-
+    
     const image = req.file.path;
 
     try {

@@ -32,9 +32,7 @@ export function Carousel() {
     height: '30vh', // Adjust the height to your preference (e.g., 30vh, 25vh)
   });
 
-  const cards = [
-    banner1, banner2, banner3, banner4, banner5, banner6
-  ];
+  const cards = [banner1, banner2, banner3, banner4, banner5, banner6];
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,32 +55,36 @@ export function Carousel() {
 
   return (
     <Box position="relative" height={carouselDimensions.height} width={carouselDimensions.width}>
-      <IconButton
-        aria-label="left-arrow"
-        colorScheme="messenger"
-        borderRadius="full"
-        position="absolute"
-        left={side}
-        top={top}
-        transform={'translate(0%, -50%)'}
-        zIndex={2}
-        onClick={() => slider?.slickPrev()}
-      >
-        <BiLeftArrowAlt />
-      </IconButton>
-      <IconButton
-        aria-label="right-arrow"
-        colorScheme="messenger"
-        borderRadius="full"
-        position="absolute"
-        right={side}
-        top={top}
-        transform={'translate(0%, -50%)'}
-        zIndex={2}
-        onClick={() => slider?.slickNext()}
-      >
-        <BiRightArrowAlt />
-      </IconButton>
+      {slider && (
+        <>
+          <IconButton
+            aria-label="left-arrow"
+            colorScheme="messenger"
+            borderRadius="full"
+            position="absolute"
+            left={side}
+            top={top}
+            transform={'translate(0%, -50%)'}
+            zIndex={2}
+            onClick={() => slider?.slickPrev()}
+          >
+            <BiLeftArrowAlt />
+          </IconButton>
+          <IconButton
+            aria-label="right-arrow"
+            colorScheme="messenger"
+            borderRadius="full"
+            position="absolute"
+            right={side}
+            top={top}
+            transform={'translate(0%, -50%)'}
+            zIndex={2}
+            onClick={() => slider?.slickNext()}
+          >
+            <BiRightArrowAlt />
+          </IconButton>
+        </>
+      )}
       <Box height="100%" width="100%">
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {cards.map((url, index) => (
