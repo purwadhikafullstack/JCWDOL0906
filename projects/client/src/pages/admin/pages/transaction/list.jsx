@@ -80,7 +80,7 @@ const TransactionList = () => {
   }
   const rejectUserOrder = async (code) => {
     try {
-      const result = await apiRequest.patch('/transaction/' + code + '/rejectorder')
+      const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
     swalSuccess(result.data.message);
     getData()
     } catch (error) {
@@ -179,7 +179,7 @@ const TransactionList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePage={activePage}
+          activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             console.log(pageInfo);

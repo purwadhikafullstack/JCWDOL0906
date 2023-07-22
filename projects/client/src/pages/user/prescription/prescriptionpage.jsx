@@ -114,7 +114,7 @@ const ModalPrescription = () => {
       });
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
-      swalFailed(error.response.data.message);
+      // swalFailed(error.response.data.message);
       console.log(error);
     }
   };

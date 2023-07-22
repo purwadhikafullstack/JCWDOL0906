@@ -86,7 +86,7 @@ module.exports = {
 
       await transporter.sendMail(
         {
-          from: `G-Medsnial <gmedsnial@gmial.com}>`,
+          from: `G-Medsnials <gmedsnial@gmail.com}>`,
           to: email,
           subject: "Verification Account",
           html: tempResult,
@@ -243,7 +243,7 @@ module.exports = {
       const tempResult = tempCompile({ resetLink });
 
       await transporter.sendMail({
-        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        from: `G-Medsnials <gmedsnial@gmial.com}>`,
         to: email,
         subject: "Reset Password",
         html: tempResult,

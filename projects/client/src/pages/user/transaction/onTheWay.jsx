@@ -55,10 +55,11 @@ const OnTheWay = () => {
 
     const userConfrimReceived = async (e) => {
         try {
-            const result = await apiRequest.patch("/transaction/" + code + "/code" + searchParams.get('status') + "/status")
+            const result = await apiRequest.patch("/transaction/" + code + "/Diterima")
             console.log(result.data.data)
         } catch (error) {
-            
+            console.log(error);
+            swalFailed(error.response.data.message);
         }
     }
 
@@ -119,7 +120,7 @@ const OnTheWay = () => {
                                                     </Center>
 
                                                     <Center>
-                                                        <Button mr={2} colorScheme='yellow' onClick={() => getDetailTransaction(i.transaction_code)}>Diterima</Button>
+                                                        <Button mr={2} colorScheme='yellow' onClick={() => userConfrimReceived(i.transaction_code)}>Diterima</Button>
                                                     </Center>
 
                                                     <Divider orientation='vertical' />
