@@ -65,11 +65,34 @@ module.exports = {
 			res.status(400).send({ error: "Failed to get all category" });
 		}
 	},
+	getCategoryForDropdown: async (req, res) => {
+		try {
+			const result = await category.findAll({
+				where: {
+					is_deleted: false,
+				},
+
+			});
+			console.log(result);
+			// const data = await category.findAll({
+			//     where: {
+			//         is_deleted: false,
+			//     }
+			// });
+			res.status(200).send({
+				data: result,
+				message: " Get All category succesfully",
+			});
+		} catch (error) {
+			console.log(error);
+			res.status(400).send({ error: "Failed to get all category" });
+		}
+	},
 	// update a category
 	updateCategory: async (req, res) => {
 		const data = JSON.parse(req.body.data);
 		const { category_name, updatedBy } = data;
-		console.log("hayooo",req.params.id)
+		console.log("hayooo", req.params.id)
 
 		try {
 			await category.update(
@@ -106,7 +129,7 @@ module.exports = {
 					is_deleted: true,
 				},
 				{
-					where: { id: id},
+					where: { id: id },
 				}
 			);
 			res

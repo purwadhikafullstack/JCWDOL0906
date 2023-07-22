@@ -19,6 +19,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -30,8 +31,13 @@ import { rupiah, swalFailed } from '../../../helper';
 import { apiRequest } from '../../../helper/api';
 import { Navbar } from '../../navbar';
 import ProductCard from './productCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { add } from '../../../redux/cartSlice';
 
 export default function StoreProductDetail() {
+    const user = useSelector((state) => state.userSlice)
+    const dispatch = useDispatch()
+    const toast = useToast()
     const location = useLocation()
     const [searchParams] = useSearchParams();
     const [product, setProduct] = useState([])
@@ -48,6 +54,63 @@ export default function StoreProductDetail() {
             setProduct(result.data.data)
         } catch (error) {
             swalFailed(error.response.data.message)
+        }
+    }
+
+    const getCart = async () => {
+        try {
+            const result = await apiRequest.get('/cart?page=1', {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            let data = result.data.data
+            let total_qty = 0
+            let total_price = 0
+            data.forEach(i => { total_qty += i.qty; total_price += i.total_price })
+            dispatch(add({ cart: total_qty, total_price: total_price }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const addToCart = async () => {
+        // user.value.is_verified ? dispatch(add({ name: product_name, image: image, price: price, id: id, category: category.category_name, qty: 1, total_price: price }))
+        //     : alert("Login or verify you're account to continue.")
+
+        try {
+            const result = await apiRequest.post('/cart', {
+                product_id: searchParams.get('id'),
+                qty: 1,
+                price: searchParams.get('price')
+            }, {
+                headers: {
+                    authorization: `Bearer ${user.value.verification_token}`,
+                },
+            })
+            getCart()
+            toast({
+                title: '',
+                description: "Barang berhasil ditambahkan ke keranjang",
+                status: 'success',
+                duration: 2000,
+                position: 'top',
+                isClosable: true,
+            })
+
+        } catch (error) {
+            console.log(error)
+            if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
+            if (error.response.status === 400) {
+                toast({
+                    title: '',
+                    description: error.response.data.message,
+                    status: 'error',
+                    duration: 2000,
+                    position: 'top',
+                    isClosable: true,
+                })
+            }
         }
     }
 
@@ -85,13 +148,7 @@ export default function StoreProductDetail() {
                             w={'100%'}
                             h={{ base: '100%', sm: '200px', lg: '300px' }}
                         />
-                        <Box border='1px' w='sm'>
-                            <Flex alignItems='center'>
-                                <Button w='100%' size='sm' mr={2}><Icon as={BsPlusLg} h={5} w={5} alignSelf={'center'} /></Button>
-                                <Text w='100%'>0</Text>
-                                <Button w='100%' size='sm' ml={2}><Icon as={BsDashLg} h={5} w={5} alignSelf={'center'} /></Button>
-                            </Flex>
-                        </Box>
+
                         <Stack
                             spacing={{ base: 4, sm: 6 }}
                             direction={'column'}
@@ -138,7 +195,8 @@ export default function StoreProductDetail() {
                             _hover={{
                                 transform: 'translateY(2px)',
                                 boxShadow: 'lg',
-                            }}>
+                            }}
+                            onClick={() => addToCart()}>
                             Add to cart
                         </Button>
                         <Stack
@@ -217,7 +275,7 @@ export default function StoreProductDetail() {
                             {product.map(i =>
 
                                 i.id !== Number(location.pathname.split("/")[4]) ?
-                                    <ProductCard image={i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} /> : ""
+                                    <ProductCard image={process.env.REACT_APP_IMAGE_API + i.image} product_name={i.product_name} price={i.price} id={i.id} category={i.category} description={i.description} dose={i.dose} indication={i.indication} rules={i.rules} unit={i.defaultUnit} category_id={i.category_id} /> : ""
                             )}
 
 

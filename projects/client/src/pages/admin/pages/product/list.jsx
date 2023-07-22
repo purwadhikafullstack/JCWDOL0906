@@ -95,6 +95,7 @@ const ProductList = () => {
   const getData = async () => {
     try {
       let result = await apiRequest.get("/product?page=" + activePage);
+      console.log(result.data)
       setProducts(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
@@ -105,7 +106,7 @@ const ProductList = () => {
 
   const getAllCategory = async () => {
     try {
-      let result = await apiRequest.get("/categories");
+      let result = await apiRequest.get("categories/dropdown");
       setCategories(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
@@ -311,7 +312,7 @@ const ProductList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defauActivePage={activePage}
+          activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
@@ -324,7 +325,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         categories={categories}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         Submit={() => addProduct()}
       />
 
@@ -332,8 +333,7 @@ const ProductList = () => {
         Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
-        Data={dataDetail}
-        SetUnit={() => {}}
+        SetUnit={() => { }}
         categories={categories}
         productName={productName}
         categoryId={categoryId}
@@ -381,7 +381,7 @@ const ProductList = () => {
         }}
         defaultUnitQty={defaultUnitQty}
         Submit={() => updateProductStock()}
-        setDefaultUnitQty={(e) => setDefaultUnitQty(e.target.value)}
+        setDefaultUnitQty={setDefaultUnitQty}
       />
     </>
   );

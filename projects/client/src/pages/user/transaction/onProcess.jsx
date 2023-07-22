@@ -76,7 +76,9 @@ const OnProcess = () => {
                         <Flex alignItems='center'>
                             <Text mr={3} mb={0}> Status </Text>
                             <Select w='150px' placeholder='Pilih Status' onChange={(e) => navigate('/mytransaction?status=' + e.target.value)}>
+                                <option value=''>Semua</option>
                                 <option value='Menunggu Konfirmasi'>Menunggu Konfirmasi</option>
+                                <option value='Proses Resep'>Proses Resep</option>
                                 <option value='Menunggu Pembayaran'>Menunggu Pembayaran</option>
                                 <option value='Pembayaran'>Pembayaran</option>
                                 <option value='Diproses'>Diproses</option>

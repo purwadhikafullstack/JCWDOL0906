@@ -184,6 +184,17 @@ module.exports = {
 					conversion_unit_id,
 				});
 
+				await stock.create(
+					{
+						product_id,
+						default_unit_qty,
+						default_unit_id,
+						conversion_unit_qty,
+						conversion_unit_id,
+						qty: default_unit_qty,
+					},
+				);
+
 				return res
 					.status(200)
 					.json({
