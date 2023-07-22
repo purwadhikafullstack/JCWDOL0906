@@ -86,7 +86,7 @@ module.exports = {
 
       await transporter.sendMail(
         {
-          from: `G-Medsnial <gmedsnial@gmial.com}>`,
+          from: `G-Medsnials <gmedsnial@gmail.com}>`,
           to: email,
           subject: "Verification Account",
           html: tempResult,
@@ -243,7 +243,7 @@ module.exports = {
       const tempResult = tempCompile({ resetLink });
 
       await transporter.sendMail({
-        from: `G-Medsnial <gmedsnial@gmial.com}>`,
+        from: `G-Medsnials <gmedsnial@gmial.com}>`,
         to: email,
         subject: "Reset Password",
         html: tempResult,
@@ -407,6 +407,27 @@ module.exports = {
         message: error.message,
         data: null,
       });
+    }
+  },
+  getUserByToken: async (req, res) => {
+    try {
+      
+      let bearerToken = req.headers['authorization'];
+      bearerToken = bearerToken.split(' ')[1]
+      // console.log(bearerToken, "bearer123");
+      const user = jwt.verify(bearerToken, "g-medsnial");
+      // console.log(user, "user");
+      const getUser = await db.User.findOne({where: {id: user.id}})
+      // console.log("getget", getUser);
+      res.status(200).send({
+        isError: false,
+        message: "Token still valid",
+        data: getUser
+      });
+      // res.send({code: 200, message: "Get user by token success", user: getUser})
+    } catch(error){
+      console.log(error)
+      res.status(400).send({ error: "Invalid token" });
     }
   },
   confirm_email: async (req, res) => {

@@ -51,7 +51,18 @@ const OnTheWay = () => {
             console.log(error);
             swalFailed(error.response.data.message);
         }
-    };
+    }
+
+    const userConfrimReceived = async (code) => {
+        try {
+            const result = await apiRequest.patch("/transaction/" + code + "/Pesanan Dikonfirmasi")
+            console.log(result.data.data);
+            getDataByStatus()
+        } catch (error) {
+            console.log(error);
+            swalFailed(error.response.data.message);
+        }
+    }
 
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
@@ -111,6 +122,9 @@ const OnTheWay = () => {
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
 
+                                                    <Center>
+                                                        <Button mr={2} colorScheme='yellow' onClick={() => userConfrimReceived(i.transaction_code)}>Diterima</Button>
+                                                    </Center>
 
                                                     <Divider orientation='vertical' />
                                                     <Center>
