@@ -66,28 +66,26 @@ const TransactionList = () => {
       console.log(error);
     }
   };
-
-  const confirmTransaction = async (code) => {
+  const confirmUserPayment = async (code) => {
     try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/confirm"
-      );
-      swalSuccess(result.data.message);
-      getData();
+      const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
+    swalSuccess(result.data.message);
+    getData()
     } catch (error) {
-      swalFailed(error);
-    }
-  };
-
-  const rejectTransaction = async (code) => {
-    try {
-      const result = await apiRequest.patch("/transaction/" + code + "/reject");
-      swalSuccess(result.data.message);
-      getData();
-    } catch (error) {
-      swalFailed(error.response.data.message);
+      swalFailed("Failed to reject the transaction. Please try again later.");
     }
   }
+
+  const rejectUserPayment = async (code) => {
+    try {
+      const result = await apiRequest.patch("/transaction/" + code + "/Menunggu Pembayaran")
+    swalSuccess(result.data.message);
+    getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  }
+
   const rejectUserOrder = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
@@ -98,15 +96,25 @@ const TransactionList = () => {
     }
   }
 
-  const sendUserOrder = async (code) => {
+  const confirmUserOrder = async (code) => {
     try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/Diproses"
-      );
+      const result = await apiRequest.patch("/transaction/" + code + "/Dikirim")
+    swalSuccess(result.data.message);
+    getData()
     } catch (error) {
-      swalFailed(error.response.data.message);
+      swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  };
+  }
+
+  // const sendUserOrder = async (code) => {
+  //   try {
+  //     const result = await apiRequest.patch(
+  //       "/transaction/" + code + "/Diproses"
+  //     );
+  //   } catch (error) {
+  //     swalFailed(error.response.data.message);
+  //   }
+  // };
 
   const closeDate = () => {
     setTimeout(() => {
@@ -178,13 +186,14 @@ const TransactionList = () => {
                 "payment_receipt",
               ]}
               action={[
-                (e) => confirmTransaction(e.target.id),
-                (e) => rejectTransaction(e.target.id),
+                (e) => confirmUserPayment(e.target.id),
+                (e) => rejectUserPayment(e.target.id),
                 (e) => {
                   modalAdd.onOpen();
                   setCode(e.target.id);
                 },
-                (e) => sendUserOrder(e.target.id),
+                // (e) => sendUserOrder(e.target.id),
+                (e) => confirmUserOrder(e.target.id),
                 (e) => rejectUserOrder(e.target.id)
               ]}
             />

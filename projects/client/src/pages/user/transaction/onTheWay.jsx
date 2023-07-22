@@ -53,10 +53,11 @@ const OnTheWay = () => {
         }
     }
 
-    const userConfrimReceived = async (e) => {
+    const userConfrimReceived = async (code) => {
         try {
-            const result = await apiRequest.patch("/transaction/" + code + "/Diterima")
-            console.log(result.data.data)
+            const result = await apiRequest.patch("/transaction/" + code + "/Pesanan Dikonfirmasi")
+            console.log(result.data.data);
+            getDataByStatus()
         } catch (error) {
             console.log(error);
             swalFailed(error.response.data.message);
