@@ -347,20 +347,19 @@ module.exports = {
   //         return res.status(500).json(failedResponse(error));
   //     }
   // },
-  adminUserStatusTransaction: async (req, res) => {
-    const code = req.params.code;
-    const status = req.params.status;
-
-    try {
-      const result = await transaction.findOne({
-        where: {
-          transaction_code: code,
-        },
-      });
-      if (!result) {
-        return res.status(404).json(failedResponse("Transaction not Found"));
-      }
-
+    adminUserStatusTransaction: async (req, res) => {
+        const code = req.params.code;
+        const status = req.params.status;
+        
+        try {
+            const result = await transaction.findOne({
+                where: {
+                    transaction_code: code,
+                }
+            });
+            if (!result) {
+                return res.status(404).json(failedResponse("Transaction not Found"))
+            };
       await transaction.update(
         { status },
         {
