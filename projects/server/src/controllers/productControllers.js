@@ -256,7 +256,7 @@ module.exports = {
   },
 
   getStoreProduct: async (req, res) => {
-    console.log(req.query.page);
+    console.log('category', req.query.category);
     let sort = "p.product_name ASC";
     let limit = 10;
     let offset = 0;

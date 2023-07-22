@@ -19,11 +19,11 @@ import "semantic-ui-css/semantic.min.css";
 import { apiRequest } from "../../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import ModalPrescription from "../../components/prescription/ModalPrescription";
+import { DateRange, DateRangePicker } from "react-date-range";
 
 const TransactionList = () => {
   const navigate = useNavigate();
   const textColor = useColorModeValue("gray.700", "white");
-
   const [activePage, setActivePage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [status, setStatus] = useState("");
@@ -31,6 +31,16 @@ const TransactionList = () => {
   const [transaction, setTransaction] = useState([]);
   console.log("transaction", transaction);
   const [code, setCode] = useState("");
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
+
+  console.log(state)
+  const [isDate, setIsDate] = useState(false)
 
   const modalAdd = useDisclosure();
 
@@ -98,6 +108,12 @@ const TransactionList = () => {
     }
   };
 
+  const closeDate = () => {
+    setTimeout(() => {
+      setIsDate(false)
+    }, 3000)
+  }
+
   useEffect(() => {
     getData();
   }, [activePage, status, sort]);
@@ -110,6 +126,12 @@ const TransactionList = () => {
               Transaction
             </Text>
             <Flex gap="2">
+              {isDate ? <DateRange
+                editableDateInputs={true}
+                onChange={item => { setState([item.selection]); closeDate() }}
+                moveRangeOnFirstSelection={false}
+                ranges={state}
+              /> : <Button onClick={() => setIsDate(true)}>Select Date</Button>}
               <Select
                 w="200px"
                 placeholder="Sort By"

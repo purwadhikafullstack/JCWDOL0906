@@ -23,7 +23,7 @@ import Swal from "sweetalert2";
 import React from "react";
 
 const ModalPrescription = () => {
- 
+
   const OverlayTwo = () => (
     <ModalOverlay
       bg="none"
@@ -41,14 +41,15 @@ const ModalPrescription = () => {
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
-    if (userId) {setIsOpen(true);
-     } else {
+    if (userId) {
+      setIsOpen(true);
+    } else {
       Swal.fire(
         'Bukan User?',
         'Silahkan Daftar dan Masuk Kembali',
         'question'
       )
-     }
+    }
   };
 
   const handleCloseModal = () => {
@@ -62,7 +63,7 @@ const ModalPrescription = () => {
       let formData = new FormData();
       let data = {
         createdBy: userId,
-        user_id: userId, 
+        user_id: userId,
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
@@ -100,7 +101,7 @@ const ModalPrescription = () => {
 
   const getAddresses = async () => {
     try {
-      
+
       const tokenUser = JSON.parse(localStorage.getItem("user"));
 
       const result = await apiRequest.get("/address", {

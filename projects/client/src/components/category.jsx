@@ -2,10 +2,13 @@ import { Center, Flex, Card, Image } from "@chakra-ui/react";
 import axios from "axios";
 // import { LayoutGroupContext } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { apiRequest } from "../helper/api";
+import { setCategory } from "../redux/productSlice";
 
 
 export const Category = () => {
+    const dispatch = useDispatch()
     const [categories, setCategories] = useState([]);
     useEffect(() => {
         // console.log('categories',categories);
@@ -28,6 +31,7 @@ export const Category = () => {
                         src={process.env.REACT_APP_IMAGE_API + category.image}
                         mb={-2}
                         p={7}
+                        onClick={() => { dispatch(setCategory({ category_id: category.id })); document.getElementById('product-list').scrollTo(0, 500) }}
                     />
                     <Center fontSize='sm' fontWeight='bold' textAlign='center'>
                         {category.category_name}

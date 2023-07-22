@@ -5,8 +5,8 @@ import { Category } from "../components/category";
 import { Prescriptions } from "../components/prescription";
 import FooterUserPage from "../components/footer";
 import UserProductList from "./user/product/list";
-
 export const HomePage = () => {
+
     return (
         <div>
             <Navbar />
