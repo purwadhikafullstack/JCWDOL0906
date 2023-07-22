@@ -51,14 +51,14 @@ module.exports = {
 
   addToCart: async (req, res) => {
     const { product_id, qty, price } = req.body;
-    console.log(product_id, qty, price)
+    console.log(product_id, qty, price);
     try {
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,
         },
       });
-      console.log(productStock)
+      console.log(productStock);
       const stocks = productStock.dataValues.default_unit_qty;
 
       const isExists = await cart.findOne({
@@ -170,8 +170,7 @@ module.exports = {
   },
   addPrescriptionToCart: async (req, res) => {
     try {
-      const user_id = req.userId;
-      const { product_id, qty } = req.body;
+      const { userId, product_id, qty, conversion_unit } = req.body;
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,
@@ -186,9 +185,10 @@ module.exports = {
       const { total_price } = result;
 
       await cart.create({
-        user_id,
+        user_id: userId,
         product_id,
         qty,
+        conversion_unit,
         price: total_price,
         total_price,
       });
@@ -201,6 +201,20 @@ module.exports = {
         message: error.message,
         data: error,
       });
+    }
+  },
+  totalPricePrescription: async (req, res) => {
+    try {
+      const [a] = await sequelize.query(
+        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id where c.user_id = ${req.query.user_id}`
+      );
+
+      console.log(a);
+
+      res.status(200).json(successResponse("", a, a.length));
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(failedResponse(error));
     }
   },
 };

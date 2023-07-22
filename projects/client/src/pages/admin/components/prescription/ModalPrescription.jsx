@@ -27,6 +27,7 @@ const ModalPrescription = ({
   SetUnit,
   Cancel,
   Submit,
+  checkOutPrescription,
   code,
 }) => {
   return (
@@ -41,7 +42,7 @@ const ModalPrescription = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={Submit}>
+            <Button colorScheme="blue" mr={3} onClick={checkOutPrescription}>
               Check Out
             </Button>
             <Button onClick={Cancel}>Cancel</Button>
