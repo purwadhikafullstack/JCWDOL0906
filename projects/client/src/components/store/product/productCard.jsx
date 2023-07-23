@@ -50,7 +50,6 @@ function ProductCard({ image, product_name, price, id, category, description, do
             })
             setLoading(false)
         } catch (error) {
-            console.log(error)
             if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
             if (error.response.status === 400) {
                 toast({
@@ -79,7 +78,6 @@ function ProductCard({ image, product_name, price, id, category, description, do
             data.forEach(i => { total_qty += i.qty; total_price += i.total_price })
             dispatch(add({ cart: total_qty, total_price: total_price }))
         } catch (error) {
-            console.log(error)
         }
     }
 

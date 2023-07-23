@@ -12,7 +12,6 @@ const List = () => {
     const getData = async () => {
         try {
             const result = await apiRequest.get("/transaction")
-            console.log(result.data.data)
 
             setTransaction(result.data.data)
         } catch (error) {
@@ -23,7 +22,6 @@ const List = () => {
     const getDataByCode = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + code)
-            console.log(result.data.data)
 
         } catch (error) {
 

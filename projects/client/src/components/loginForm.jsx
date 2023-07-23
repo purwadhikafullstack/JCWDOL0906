@@ -37,7 +37,7 @@ export const LoginForm = () => {
     email: Yup.string().email("Invalid Email").required("Email is Required"),
     password: Yup.string().required("Password is Required"),
   });
-  
+
   const OverlayTwo = () => (
     <ModalOverlay
       bg='none'
@@ -48,7 +48,7 @@ export const LoginForm = () => {
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = React.useState(<OverlayTwo/>)
+  const [overlay, setOverlay] = React.useState(<OverlayTwo />)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -60,7 +60,6 @@ export const LoginForm = () => {
     try {
       const url = "/auth/login";
       const result = await apiRequest.post(url, data);
-      console.log(result.data);
       localStorage.setItem("user", JSON.stringify(result.data.token));
 
       dispatch(login(result.data.data));
@@ -77,7 +76,7 @@ export const LoginForm = () => {
       onClose();
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
-      } 
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -104,14 +103,15 @@ export const LoginForm = () => {
         href={"#"}
         onClick={() => {
           setOverlay(<OverlayTwo />)
-          onOpen()}}
+          onOpen()
+        }}
         pt={{ base: "3", md: 0 }}
         borderRadius="10px"
       >
         Masuk
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
-      {overlay}
+        {overlay}
         <ModalContent>
           <ModalHeader textAlign={"center"} color="blue.800">
             Masuk Sekarang!
@@ -144,26 +144,26 @@ export const LoginForm = () => {
                   />
                   <FormLabel mt={5}>Password</FormLabel>
                   <InputGroup>
-                  <Field
-                    as={Input}
-                    id="password"
-                    type={showPassword ? "text" : "password"} 
-                    name="password"
-                    borderColor="blue.800"
-                    placeholder="Password"
-                  />
+                    <Field
+                      as={Input}
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      borderColor="blue.800"
+                      placeholder="Password"
+                    />
                     <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  backgroundColor="blue.800"
-                  color="white"
-                  onClick={() => setShowPassword(!showPassword)} 
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </Button>
-                </InputRightElement>
-                </InputGroup>
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        backgroundColor="blue.800"
+                        color="white"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                   <ErrorMessage
                     name="password"
                     component="div"

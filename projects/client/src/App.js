@@ -39,7 +39,6 @@ function App() {
 
   let keepLogin = async () => {
     let response = await CheckLogin();
-    console.log("responsee", response);
     if (response.dataUser !== null) {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
@@ -47,86 +46,78 @@ function App() {
     //   // setisLoading(false);
   };
   useEffect(() => {
-    // setisLoading(true);
-    // const userLogin = JSON.parse(localStorage.getItem("user"));
-    // if (userLogin) {
-    //   dispatch(login(userLogin));
-    // }
     const token = JSON.parse(localStorage.getItem("user"));
-    setTimeout(() => {setIsLoading(false)}, 5000);
+    setTimeout(() => { setIsLoading(false) }, 5000);
     const fetchUser = async (token) => {
       try {
-        const result = await apiRequest.get(`/auth/auth`, {headers: {Authorization : `Bearer ${token}`}});
-        dispatch(login({...result.data.data}));} catch (error) {localStorage.removeItem("user");}};
-    if (token) {fetchUser(token);}
-    // setTimeout(() => {
-    //   setisLoading(false);
-    // }, 3000);
-    // fetchUser(token);
-    // keepLogin();
+        const result = await apiRequest.get(`/auth/auth`, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch(login({ ...result.data.data }));
+      } catch (error) { localStorage.removeItem("user"); }
+    };
+    if (token) { fetchUser(token); }
   }, []);
 
   return (
     <>
-    {isLoading ? (<Loading/>) :
-    (
-    <ChakraProvider theme={theme} resetCss={false} position="relative">
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-          <HomePage />}
-          errorElement={<ErrorPage />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/verification/:token" element={<Verification />} />
-        <Route
-          path="*"
-          element={
-            // <ProtectedRoute>
-            <Dashboard />
-            // </ProtectedRoute>
-          }
-        />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/store/product" element={<UserProduct />} />
-        <Route path="/cart" element={<ShoppingCart />} />
-        <Route path="/prescription" element={<ModalPrescription />} />
-        <Route path="/checkout" element={<CheckOut />} />
-        <Route path="/store/product/detail/:id" element={<StoreProductDetail />}/>
-        <Route path="/myaccount" Component={UserProfile} />
-        <Route></Route>
-        <Route path="/mytransaction" element={<UserTransaction />} />
-        <Route path="/mytransaction/checkout" element={<CheckOut />} />
-        <Route
-          path="/mytransaction/waiting-payment"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/waiting-confirmation"
-          element={<UserTransaction />}
-        />
-        <Route path="/mytransaction/received" element={<UserTransaction />} />
-        <Route path="/mytransaction/payment" element={<UserTransaction />} />
-        <Route
-          path="/mytransaction/on-the-way"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/on-process"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/cancelled"
-          element={<UserTransaction />}
-        />
-      </Routes>
-    </BrowserRouter>
-  </ChakraProvider>
-    )
-  }
-  </>
+      {isLoading ? (<Loading />) :
+        (
+          <ChakraProvider theme={theme} resetCss={false} position="relative">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={
+                  <HomePage />}
+                  errorElement={<ErrorPage />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/verification/:token" element={<Verification />} />
+                <Route
+                  path="*"
+                  element={
+
+                    <Dashboard />
+
+                  }
+                />
+                <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/confirm-email" element={<ConfirmEmail />} />
+                <Route path="/store/product" element={<UserProduct />} />
+                <Route path="/cart" element={<ShoppingCart />} />
+                <Route path="/prescription" element={<ModalPrescription />} />
+                <Route path="/checkout" element={<CheckOut />} />
+                <Route path="/store/product/detail/:id" element={<StoreProductDetail />} />
+                <Route path="/myaccount" Component={UserProfile} />
+                <Route></Route>
+                <Route path="/mytransaction" element={<UserTransaction />} />
+                <Route path="/mytransaction/checkout" element={<CheckOut />} />
+                <Route
+                  path="/mytransaction/waiting-payment"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/waiting-confirmation"
+                  element={<UserTransaction />}
+                />
+                <Route path="/mytransaction/received" element={<UserTransaction />} />
+                <Route path="/mytransaction/payment" element={<UserTransaction />} />
+                <Route
+                  path="/mytransaction/on-the-way"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/on-process"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/cancelled"
+                  element={<UserTransaction />}
+                />
+              </Routes>
+            </BrowserRouter>
+          </ChakraProvider>
+        )
+      }
+    </>
   );
 }
 

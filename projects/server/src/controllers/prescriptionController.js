@@ -27,7 +27,7 @@ module.exports = {
         result: result,
       });
     } catch (err) {
-      console.log(err);
+
       return res.status(500).json({
         message: "Failed to add your prescription",
       });

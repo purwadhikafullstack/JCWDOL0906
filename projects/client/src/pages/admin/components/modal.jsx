@@ -25,7 +25,7 @@ const ModalEditForm = ({
   Cancel,
   Submit,
 }) => {
-  console.log(Data);
+
   return (
     <>
       <Modal isOpen={Open} onClose={Close}>

@@ -17,9 +17,7 @@ const ListConversionUnits = () => {
     const textColor = useColorModeValue("gray.700", "white");
     const { onOpen, onClose, isOpen } = useDisclosure()
     const modalEdit = useDisclosure()
-    console.log(idUnit)
-    console.log(unitName)
-    console.log(dataEdit)
+
     const getData = async () => {
         try {
             let result = await apiRequest.get("/unit/conversion")
@@ -47,7 +45,7 @@ const ListConversionUnits = () => {
     const getDataEdit = async (e) => {
         try {
             let result = await apiRequest.get('/unit/conversion/' + e.target.id)
-            console.log(result)
+
             setDataEdit(result.data.dataValues)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -55,7 +53,7 @@ const ListConversionUnits = () => {
     }
 
     const handleUpdate = async () => {
-        console.log(idUnit)
+
         try {
             if (unitName === '') { setError(true); return; }
             let result = await apiRequest.post("/unit/conversion/" + dataEdit.id, {

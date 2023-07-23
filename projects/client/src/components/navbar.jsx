@@ -64,11 +64,9 @@ export const Navbar = () => {
   const { cart } = useSelector((state) => state.cartSlice);
 
   useEffect(() => {
-    console.log("role", user.value.role);
     if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
-    console.log("value", user.value.id);
     if (user.value.id) {
       setIsLogin(true);
     } else {
@@ -78,7 +76,6 @@ export const Navbar = () => {
 
 
   useEffect(() => {
-    // console.log(username)
   }, [username]);
 
   const location = useLocation();
@@ -88,7 +85,7 @@ export const Navbar = () => {
     <>
       <Box>
         <Flex
-            bg={useColorModeValue("blue.50", "blue.100")}
+          bg={useColorModeValue("blue.50", "blue.100")}
           color={useColorModeValue("gray.600", "white")}
           minH={"70px"} // Adjust the minimum height to make the navbar slightly bigger
           py={{ base: 3 }} // Adjust the vertical padding to make the navbar slightly bigger
@@ -181,7 +178,7 @@ export const Navbar = () => {
                   <RegistrationForm />
                   <LoginForm />
                 </div>
-              )}         
+              )}
             </Flex>
           </Flex>
         </Flex>

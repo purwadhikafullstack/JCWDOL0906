@@ -36,7 +36,7 @@ module.exports = {
 					},
 				}
 			);
-			console.log(data);
+
 			if (data === 1) {
 				return res
 					.status(200)
@@ -73,8 +73,8 @@ module.exports = {
 	},
 	updateConversionUnit: async (req, res) => {
 		try {
-			console.log(req.body);
-			console.log(req.params.id);
+
+
 			const { unit } = req.body;
 			let [data] = await conversion_unit.update(
 				{ unit_name: unit },
@@ -84,7 +84,7 @@ module.exports = {
 					},
 				}
 			);
-			console.log(data);
+
 			if (data === 1) {
 				return res
 					.status(200)

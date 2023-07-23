@@ -21,7 +21,7 @@ const WaitingPayment = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-            console.log(result.data.data)
+
             setTransaction(result.data.data)
         } catch (error) {
 
@@ -29,17 +29,17 @@ const WaitingPayment = () => {
     }
 
     const uploadBukti = async (e) => {
-        console.log(e)
+
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-            console.log(result.data.data)
+
             swalSuccess(result.data.message);
         } catch (error) {
-            console.log(error);
+
             swalFailed(error.response.data.message);
         }
     };
@@ -47,7 +47,7 @@ const WaitingPayment = () => {
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
-            console.log(result.data.data)
+
 
             setUserTransaction(result.data.data.transaction)
             setDetailTransaction(result.data.data.details)
@@ -60,7 +60,7 @@ const WaitingPayment = () => {
     const cancelTransaction = async (code) => {
         try {
             const result = await apiRequest.delete("/transaction/" + code)
-            console.log(result.data.data)
+
 
             getDataByStatus()
         } catch (error) {

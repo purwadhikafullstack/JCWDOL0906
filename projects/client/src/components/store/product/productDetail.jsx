@@ -42,14 +42,11 @@ export default function StoreProductDetail() {
     const [searchParams] = useSearchParams();
     const [product, setProduct] = useState([])
     const navigate = useNavigate();
-    console.log(location.pathname.split('/'))
     const getData = async () => {
         let params = ""
 
         try {
             const result = await apiRequest.get("/store/product?category=" + searchParams.get('category_id'))
-
-            console.log(result.data)
 
             setProduct(result.data.data)
         } catch (error) {
@@ -70,7 +67,6 @@ export default function StoreProductDetail() {
             data.forEach(i => { total_qty += i.qty; total_price += i.total_price })
             dispatch(add({ cart: total_qty, total_price: total_price }))
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -99,7 +95,6 @@ export default function StoreProductDetail() {
             })
 
         } catch (error) {
-            console.log(error)
             if (error.response.data.message === 'Unauthorized') swalFailed('Login to your account, please!')
             if (error.response.status === 400) {
                 toast({
