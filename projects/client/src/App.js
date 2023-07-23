@@ -1,5 +1,4 @@
 // import dependencies
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import { useEffect, useState } from "react";
@@ -36,6 +35,7 @@ function App() {
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  // const isLoading = localStorage.getItem("user");
 
   let keepLogin = async () => {
     let response = await CheckLogin();
@@ -43,18 +43,12 @@ function App() {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
     }
-    //   // setisLoading(false);
+
   };
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user"));
-    setTimeout(() => { setIsLoading(false) }, 5000);
-    const fetchUser = async (token) => {
-      try {
-        const result = await apiRequest.get(`/auth/auth`, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch(login({ ...result.data.data }));
-      } catch (error) { localStorage.removeItem("user"); }
-    };
-    if (token) { fetchUser(token); }
+    setTimeout(() => { setIsLoading(false) }, 4000);
+        
+    keepLogin();
   }, []);
 
   return (
@@ -73,9 +67,7 @@ function App() {
                 <Route
                   path="*"
                   element={
-
                     <Dashboard />
-
                   }
                 />
                 <Route path="/change-password" element={<ChangePassword />} />
@@ -120,5 +112,4 @@ function App() {
     </>
   );
 }
-
 export default App;

@@ -46,9 +46,6 @@ const List = () => {
   const navigate = useNavigate();
   const [carts, setCart] = useState([]);
   const [recomendItem, setRecomendItem] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [paging, setPaging] = useState([]);
-  const [records, setRecords] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [product, setProduct] = useState([]);
   const user = useSelector((state) => state.userSlice);
@@ -62,7 +59,6 @@ const List = () => {
           authorization: `Bearer ${user.value.verification_token}`,
         },
       });
-
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -76,7 +72,6 @@ const List = () => {
 
     }
   };
-
   const updateItemQty = async (id, method) => {
     try {
       const result = await apiRequest.patch(
@@ -104,7 +99,6 @@ const List = () => {
       }
     }
   };
-
   const deleteItem = async (id, method) => {
     try {
       const result = await apiRequest.delete("/cart/" + id, {
@@ -117,14 +111,12 @@ const List = () => {
 
     }
   };
-
   const getRecomendItem = () => {
     let item = product.filter(
       (pr) => !carts.find((cr) => cr.product_id === pr.id)
     );
     setRecomendItem(item);
   };
-
   const getData = async () => {
     try {
       const result = await apiRequest.get("/store/product?page=" + pageNumber);
@@ -221,7 +213,6 @@ const List = () => {
                         </Stack>
                       </Box>
                     </HStack>
-
                     <Flex alignItems="end">
                       <Button
                         variant="ghost"
@@ -232,7 +223,6 @@ const List = () => {
                       >
                         <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
                       </Button>
-
                       <Box>
                         <Flex alignItems="center">
                           <Button
@@ -319,7 +309,6 @@ const List = () => {
             </Container>
           </Stack>
         </Stack>
-
         <Flex direction="column" align="center" flex="1">
           <Stack
             spacing="8"
@@ -330,7 +319,6 @@ const List = () => {
             bg="white"
           >
             <Heading size="md">Ringkasan Belanja</Heading>
-
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">

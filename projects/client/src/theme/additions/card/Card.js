@@ -19,7 +19,6 @@ const Card = {
     variant: "panel",
   },
 };
-
 export const CardComponent = {
   components: {
     Card,

@@ -20,7 +20,6 @@ export const ErrorPage = () => {
       <Text color={"gray.500"} mb={6}>
         The page you're looking for does not seem to exist
       </Text>
-
       <Button
         onClick={() => navigate("/")}
         colorScheme="blue"

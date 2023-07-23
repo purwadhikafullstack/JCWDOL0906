@@ -1,6 +1,5 @@
 import { Center, Flex, Card, Image } from "@chakra-ui/react";
 import axios from "axios";
-// import { LayoutGroupContext } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiRequest } from "../helper/api";

@@ -25,8 +25,7 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
@@ -40,8 +39,7 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const getDataEdit = async (e) => {
         try {
             let result = await apiRequest.get('/unit/conversion/' + e.target.id)
@@ -50,8 +48,7 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const handleUpdate = async () => {
 
         try {
@@ -66,12 +63,11 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
+    };
 
     useEffect(() => {
         getData()
     }, [])
-
 
     return (
         <>
@@ -90,7 +86,6 @@ const ListConversionUnits = () => {
                     </Box>
                 </Flex>
             </Card>
-
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}
@@ -109,9 +104,7 @@ const ListConversionUnits = () => {
                                 ""
                             )}
                         </FormControl>
-
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={() => handleSubmit()}>
                             Save
@@ -120,8 +113,6 @@ const ListConversionUnits = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
-            {/* MODAL EDIT */}
             <ModalEditForm
                 Title="Edit Conversion Unit"
                 Open={modalEdit.isOpen}
@@ -131,11 +122,7 @@ const ListConversionUnits = () => {
                 SetUnit={(e) => setUnitName(e.target.value)}
                 Cancel={() => { modalEdit.onClose(); setError(false); }}
                 Submit={() => handleUpdate()} />
-            {/* MODAL EDIT */}
-
         </>
-
     )
 }
-
 export default ListConversionUnits

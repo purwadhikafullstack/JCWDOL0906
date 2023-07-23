@@ -22,16 +22,12 @@ export const Verification = () => {
             },
           }
         );
-
         alert(response.data.message);
         setTimeout(() => {
           navigate("/");
         }, 4000);
       }
-    } catch (err) {
-      alert(err.response.data);
-    }
-  };
+    } catch (err) { alert(err.response.data)}};
 
   useEffect(() => {
     tokenVerification();
@@ -65,5 +61,4 @@ export const Verification = () => {
     </Stack>
   );
 };
-
 export default Verification;
