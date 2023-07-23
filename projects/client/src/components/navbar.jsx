@@ -16,7 +16,7 @@ import {
 import { HamburgerIcon, CloseIcon} from "@chakra-ui/icons";
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
-import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
+import logo_gmedsnial from "../assets/svg/logogmedsnial3.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
@@ -102,7 +102,7 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={"70px"}
+              height={"90px"}
               alt={"Icon Logo"}
               fit={"logo"}
               onClick={() => navigate("store/product")}
