@@ -110,8 +110,7 @@ const OnProcess = () => {
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
-
-
+                                                
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>

@@ -45,9 +45,7 @@ const ModalPrescription = () => {
       setIsOpen(true);
     } else {
       Swal.fire(
-        'Bukan User?',
         'Silahkan Daftar dan Masuk Kembali',
-        'question'
       )
     }
   };

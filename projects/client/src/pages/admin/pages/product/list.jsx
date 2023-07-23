@@ -333,7 +333,6 @@ const ProductList = () => {
         Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
-        SetUnit={() => { }}
         categories={categories}
         productName={productName}
         categoryId={categoryId}

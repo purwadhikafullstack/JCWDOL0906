@@ -38,12 +38,12 @@ const TransactionList = () => {
     {
       startDate: new Date(),
       endDate: null,
-      key: 'selection'
-    }
+      key: "selection",
+    },
   ]);
 
-  console.log(state)
-  const [isDate, setIsDate] = useState(false)
+  console.log(state);
+  const [isDate, setIsDate] = useState(false);
 
   const modalAdd = useDisclosure();
 
@@ -70,11 +70,13 @@ const TransactionList = () => {
     }
   };
 
-  const confirmTransaction = async (code) => {
+
+  const checkOutPrescription = async () => {
     try {
       const result = await apiRequest.patch(
-        "/transaction/" + code + "/confirm"
+        "/transaction/" + code + "/Menunggu Pembayaran"
       );
+      modalAdd.onClose();
       swalSuccess(result.data.message);
       getData();
     } catch (error) {
@@ -82,18 +84,10 @@ const TransactionList = () => {
     }
   };
 
-  const rejectTransaction = async (code) => {
+
+  const confirmUserPayment = async (code) => {
     try {
-      const result = await apiRequest.patch("/transaction/" + code + "/reject");
-      swalSuccess(result.data.message);
-      getData();
-    } catch (error) {
-      swalFailed(error.response.data.message);
-    }
-  }
-  const rejectUserOrder = async (code) => {
-    try {
-      const result = await apiRequest.patch('/transaction/' + code + '/rejectorder')
+      const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
       swalSuccess(result.data.message);
       getData()
     } catch (error) {
@@ -101,21 +95,44 @@ const TransactionList = () => {
     }
   }
 
-  const sendUserOrder = async (code) => {
+  const rejectUserPayment = async (code) => {
     try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/Diproses"
-      );
+      const result = await apiRequest.patch("/transaction/" + code + "/Menunggu Pembayaran")
+      swalSuccess(result.data.message);
+      getData()
     } catch (error) {
-      swalFailed(error.response.data.message);
+      swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
 
+
+  const rejectUserOrder = async (code) => {
+    try {
+      const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
+      swalSuccess(result.data.message);
+      getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  };
+
+  const confirmUserOrder = async (code) => {
+    try {
+      const result = await apiRequest.patch("/transaction/" + code + "/Dikirim")
+      swalSuccess(result.data.message);
+      getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  }
+
+
+
   const closeDate = () => {
     setTimeout(() => {
-      setIsDate(false)
-    }, 3000)
-  }
+      setIsDate(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     getData();
@@ -194,12 +211,6 @@ const TransactionList = () => {
                 </Box>
 
               </Box>
-              {/* {isDate ? <DateRange
-                editableDateInputs={true}
-                onChange={item => { setState([item.selection]); closeDate() }}
-                moveRangeOnFirstSelection={false}
-                ranges={state}
-              /> : <Button onClick={() => setIsDate(true)}>Select Date</Button>} */}
               <Select
                 w="200px"
                 placeholder="Sort By"
@@ -246,13 +257,13 @@ const TransactionList = () => {
                 "payment_receipt",
               ]}
               action={[
-                (e) => confirmTransaction(e.target.id),
-                (e) => rejectTransaction(e.target.id),
+                (e) => confirmUserPayment(e.target.id),
+                (e) => rejectUserPayment(e.target.id),
                 (e) => {
                   modalAdd.onOpen();
                   setCode(e.target.id);
                 },
-                (e) => sendUserOrder(e.target.id),
+                (e) => confirmUserOrder(e.target.id),
                 (e) => rejectUserOrder(e.target.id)
               ]}
             />
@@ -263,13 +274,18 @@ const TransactionList = () => {
       <ModalPrescription
         Tittle="Manage Your Prescription"
         code={code}
+        checkOutPrescription={checkOutPrescription}
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
+        Cancel={() => {
+          modalAdd.onClose();
+        }}
+        Submit={() => checkOutPrescription()}
       />
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePage={activePage}
+          activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             console.log(pageInfo);
