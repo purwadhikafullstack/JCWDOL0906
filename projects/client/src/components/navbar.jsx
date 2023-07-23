@@ -102,7 +102,7 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={"70px"}
+              height={"90px"}
               alt={"Icon Logo"}
               fit={"logo"}
               onClick={() => navigate("store/product")}
