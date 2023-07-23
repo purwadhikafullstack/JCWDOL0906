@@ -32,5 +32,4 @@ const CheckOut = () => {
     </Box>
   );
 };
-
 export default CheckOut;

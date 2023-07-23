@@ -7,8 +7,6 @@ const productSlice = createSlice({
     },
     reducers: {
         setCategory: (state, action) => {
-
-
             state.category = action.payload.category_id;
         }
     },

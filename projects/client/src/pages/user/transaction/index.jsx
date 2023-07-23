@@ -45,14 +45,4 @@ const UserTransaction = () => {
         </Box>
     )
 }
-
 export default UserTransaction
-
-
-// "development": {
-//     "username": "jcwdol0906",
-//         "password": "jcwdol090615",
-//             "database": "jcwdol0906",
-//                 "host": "purwadhikabootcamp.com",
-//                     "dialect": "mysql"
-// },

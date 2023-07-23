@@ -24,7 +24,6 @@ const Received = () => {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
@@ -36,7 +35,6 @@ const Received = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
 
         try {
@@ -63,7 +61,6 @@ const Received = () => {
         }
     }
 
-
     useEffect(() => {
         getDataByStatus()
     }, [])
@@ -89,7 +86,6 @@ const Received = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -106,17 +102,13 @@ const Received = () => {
                                             </CardHeader>
                                             <CardBody>
                                                 <Stack direction='row' h='100px'>
-
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
-
-
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                         </Card>
@@ -143,11 +135,9 @@ const Received = () => {
                                 </Card>
                             )}
                             <Divider />
-
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
-
                                         <Flex justify='space-between' align='center'>
                                             <Box pt="4">
                                                 <Stack spacing="0.5">
@@ -164,12 +154,8 @@ const Received = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Ongkos Pengiriman :</Text>
@@ -182,10 +168,8 @@ const Received = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
-
                                         <Flex justify='space-between' align='center'>
                                             <Text fontWeight='600'> Total Pembayaran :</Text>
                                             <Text>{rupiah(i.total_price)}</Text>
@@ -195,7 +179,6 @@ const Received = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Bukti Pembayaran :</Text>
@@ -205,7 +188,6 @@ const Received = () => {
                             )}
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
@@ -216,5 +198,4 @@ const Received = () => {
         </Container>
     )
 }
-
 export default Received

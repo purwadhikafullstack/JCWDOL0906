@@ -12,7 +12,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 // Assets
-import logo_gmedsnial from "../../../assets/svg/logogmedsnial1.png";
+import logo_gmedsnial from "../../../assets/svg/logogmedsnial3.png";
 // Custom Icons
 import { ArgonLogoDark, ArgonLogoLight, ChakraLogoDark, ChakraLogoLight, SettingsIcon } from "../Icons/Icons";
 // Custom adminComponents
@@ -56,13 +56,13 @@ export default function HeaderLinks(props) {
             {colorMode === "dark" ? (
               <Image
                 src={logo_gmedsnial}
-                height={'60px'}
+                height={'90px'}
                 alt={"Icon Logo"}
                 fit={"logo"} />
             ) : (
               <Image
                 src={logo_gmedsnial}
-                height={'60px'}
+                height={'90px'}
                 alt={"Icon Logo"}
                 fit={"logo"} />
             )}

@@ -22,7 +22,6 @@ const ModalUpdateCategory = ({
 	Cancel,
 	Submit,
 }) => {
-
 	return (
 		<>
 			<Modal
@@ -75,5 +74,4 @@ const ModalUpdateCategory = ({
 		</>
 	);
 };
-
 export default ModalUpdateCategory;

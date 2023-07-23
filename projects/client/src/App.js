@@ -1,5 +1,4 @@
 // import dependencies
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../src/redux/userSlice";
 import { useEffect, useState } from "react";
@@ -30,7 +29,6 @@ import UserTransaction from "./pages/user/transaction";
 import { Loading } from "./components/loading";
 import { ChangePassword } from "./pages/user/profile/changepass";
 import ModalPrescription from "./pages/user/prescription/prescriptionpage";
-import { apiRequest } from "./helper/api";
 
 function App() {
 
@@ -43,18 +41,12 @@ function App() {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
     }
-    //   // setisLoading(false);
+
   };
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user"));
-    setTimeout(() => { setIsLoading(false) }, 5000);
-    const fetchUser = async (token) => {
-      try {
-        const result = await apiRequest.get(`/auth/auth`, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch(login({ ...result.data.data }));
-      } catch (error) { localStorage.removeItem("user"); }
-    };
-    if (token) { fetchUser(token); }
+    setTimeout(() => { setIsLoading(false) }, 4000);
+
+    keepLogin();
   }, []);
 
   return (
@@ -73,9 +65,7 @@ function App() {
                 <Route
                   path="*"
                   element={
-
                     <Dashboard />
-
                   }
                 />
                 <Route path="/change-password" element={<ChangePassword />} />
@@ -120,5 +110,4 @@ function App() {
     </>
   );
 }
-
 export default App;

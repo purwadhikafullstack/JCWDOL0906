@@ -3,12 +3,10 @@ import { Button, Collapse, Flex, HStack, Table, Tbody, Td, Th, Thead, Tr, useCol
 import React from 'react'
 
 const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
-
     const textColor = useColorModeValue("gray.700", "white");
     const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const textTableColor = useColorModeValue("gray.500", "white");
-    // const [selectedCategory, setSelectedCategory] = useState(null);
     return (
         <>
             {
@@ -79,7 +77,6 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
                                             </Button>
                                         </Td>
                                     }
-
                                 </Tr>
                             );
                         })}
@@ -94,5 +91,4 @@ const TableCRUD = ({ menu, data, header, dataFill, action, activePage }) => {
         </>
     )
 }
-
 export default TableCRUD

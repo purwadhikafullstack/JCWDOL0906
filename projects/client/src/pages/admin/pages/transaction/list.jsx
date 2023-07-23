@@ -32,19 +32,15 @@ const TransactionList = () => {
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState("");
   const [transaction, setTransaction] = useState([]);
-
   const [code, setCode] = useState("");
-  const [state, setState] = useState([
+  const modalAdd = useDisclosure();
+  const [range, setRange] = useState([
     {
       startDate: new Date(),
-      endDate: null,
-      key: "selection",
-    },
-  ]);
-
-  const [isDate, setIsDate] = useState(false);
-
-  const modalAdd = useDisclosure();
+      endDate: addDays(new Date(), 0),
+      key: 'selection'
+    }
+  ])
 
   const getData = async () => {
     let params = "";
@@ -54,6 +50,31 @@ const TransactionList = () => {
     }
     if (sort !== "") {
       sorts += "&sort=" + sort;
+    }
+    try {
+      const result = await apiRequest.get(
+        "/transaction/admin?page=" + activePage + params + sorts
+      );
+
+      setTransaction(result.data.data);
+      setTotalPage(Math.ceil(result.data.count.count / 6));
+    } catch (error) {
+    }
+  };
+
+  const search = async () => {
+    let params = "";
+    let sorts = "";
+    let startDate = format(range[0].startDate, "yyyy-MM-dd")
+    let endDate = format(range[0].endDate, "yyyy-MM-dd")
+    if (status !== "") {
+      params += "&status=" + status;
+    }
+    if (sort !== "") {
+      sorts += "&sort=" + sort;
+    }
+    if (startDate !== endDate) {
+      params += "&startDate=" + startDate + "&endDate=" + endDate
     }
 
     try {
@@ -66,7 +87,19 @@ const TransactionList = () => {
     } catch (error) {
 
     }
-  };
+  }
+
+  const clear = () => {
+    setSort("")
+    setStatus("")
+    setRange([
+      {
+        startDate: new Date(),
+        endDate: addDays(new Date(), 0),
+        key: 'selection'
+      }
+    ])
+  }
 
 
   const checkOutPrescription = async () => {
@@ -81,8 +114,6 @@ const TransactionList = () => {
       swalFailed(error);
     }
   };
-
-
   const confirmUserPayment = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
@@ -91,8 +122,7 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
-
+  };
   const rejectUserPayment = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Menunggu Pembayaran")
@@ -102,8 +132,6 @@ const TransactionList = () => {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
-
-
   const rejectUserOrder = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
@@ -113,7 +141,6 @@ const TransactionList = () => {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
-
   const confirmUserOrder = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Dikirim")
@@ -122,59 +149,36 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
-
-
-
-  const closeDate = () => {
-    setTimeout(() => {
-      setIsDate(false);
-    }, 3000);
   };
+
 
   useEffect(() => {
     getData();
-  }, [activePage, status, sort]);
+  }, [activePage]);
+ 
 
-  //============== DATE RANGE =========
-
-  // date state
-  const [range, setRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: 'selection'
-    }
-  ])
-
-  // open close
   const [open, setOpen] = useState(false)
-
-  // get the target element to toggle 
   const refOne = useRef(null)
 
   useEffect(() => {
-    // event listeners
+
     document.addEventListener("keydown", hideOnEscape, true)
     document.addEventListener("click", hideOnClickOutside, true)
   }, [])
 
-  // hide dropdown on ESC press
   const hideOnEscape = (e) => {
 
     if (e.key === "Escape") {
       setOpen(false)
     }
-  }
-
-  // Hide on outside click
+  };
   const hideOnClickOutside = (e) => {
 
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false)
     }
-  }
-  //============== DATE RANGE =========
+  };
+
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -187,12 +191,11 @@ const TransactionList = () => {
               <Box className="calendarWrap" >
 
                 <Input
-                  value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
+                  value={`${format(range[0].startDate, "yyyy-MM-dd")} to ${format(range[0].endDate, "yyyy-MM-dd")}`}
                   readOnly
                   className="inputBox"
                   onClick={() => setOpen(open => !open)}
                 />
-
                 <Box ref={refOne} style={{ zIndex: 9999999, position: 'absolute' }}>
                   {open &&
                     <DateRange
@@ -206,23 +209,21 @@ const TransactionList = () => {
                     />
                   }
                 </Box>
-
               </Box>
               <Select
                 w="200px"
                 placeholder="Sort By"
-                onChange={(e) => setSort(e.target.value)}
+                value={sort} onChange={(e) => setSort(e.target.value)}
               >
                 <option value="1">Tanggal Belanja A-Z</option>
                 <option value="2">Tanggal Belanja Z-A</option>
                 <option value="3">Invoice A-Z</option>
                 <option value="4">Invoice Z-A</option>
               </Select>
-
               <Select
                 w="200px"
                 placeholder="Pilih Status"
-                onChange={(e) => setStatus(e.target.value)}
+                value={status} onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
                 <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
@@ -232,6 +233,9 @@ const TransactionList = () => {
                 <option value="Pesanan Dikonfirmasi">Diterima</option>
                 <option value="Dibatalkan">Dibatalkan</option>
               </Select>
+
+              <Button colorScheme='linkedin' onClick={() => search()}>Search</Button>
+              <Button colorScheme='yellow' onClick={() => clear()}>Clear</Button>
             </Flex>
           </Flex>
           <Box overflow={{ sm: "scroll", lg: "hidden" }}>
@@ -267,7 +271,6 @@ const TransactionList = () => {
           </Box>
         </Flex>
       </Card>
-
       <ModalPrescription
         Tittle="Manage Your Prescription"
         code={code}
@@ -279,13 +282,11 @@ const TransactionList = () => {
         }}
         Submit={() => checkOutPrescription()}
       />
-
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
           activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
-
             setActivePage(pageInfo.activePage);
           }}
         />
@@ -293,5 +294,4 @@ const TransactionList = () => {
     </>
   );
 };
-
 export default TransactionList;

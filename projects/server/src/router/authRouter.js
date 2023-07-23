@@ -10,7 +10,6 @@ router.post("/auth/reset-password/:token", c_auth.reset_password);
 router.post("/auth/confirm-email", c_auth.confirm_email);
 router.get("/auth/keep-login", login, c_auth.keep_login);
 router.get("/auth/profile", login, c_auth.getProfile);
-router.get("/auth/auth", c_auth.getUserByToken);
 router.post("/auth/change-password", login, c_auth.changePassword)
 router.patch(
   "/auth/profile/edit",

@@ -49,7 +49,6 @@ const ModalPrescription = () => {
       )
     }
   };
-
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -69,13 +68,11 @@ const ModalPrescription = () => {
       formData.append("address_id", address_id);
 
       const tokenUser = JSON.parse(localStorage.getItem("user"));
-
       let result = await apiRequest.post("/prescription", formData, {
         headers: {
           Authorization: `Bearer ${tokenUser}`,
         },
       });
-
       alert(result.data.message);
       Swal.fire({
         icon: "success",
@@ -100,7 +97,6 @@ const ModalPrescription = () => {
     try {
 
       const tokenUser = JSON.parse(localStorage.getItem("user"));
-
       const result = await apiRequest.get("/address", {
         headers: {
           Authorization: `Bearer ${tokenUser}`,
@@ -112,7 +108,6 @@ const ModalPrescription = () => {
       });
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
-
     }
   };
 
@@ -205,5 +200,4 @@ const ModalPrescription = () => {
     </Box>
   );
 };
-
 export default ModalPrescription;

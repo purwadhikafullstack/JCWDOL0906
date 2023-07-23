@@ -18,13 +18,11 @@ const OnTheWay = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-
             setTransaction(result.data.data)
         } catch (error) {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
@@ -36,34 +34,27 @@ const OnTheWay = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
-
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-
             swalSuccess(result.data.message);
         } catch (error) {
-
             swalFailed(error.response.data.message);
         }
     }
-
     const userConfrimReceived = async (code) => {
         try {
             const result = await apiRequest.patch("/transaction/" + code + "/Pesanan Dikonfirmasi")
-
             getDataByStatus()
+            swalSuccess(result.data.message);
         } catch (error) {
-
             swalFailed(error.response.data.message);
         }
     }
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -73,7 +64,6 @@ const OnTheWay = () => {
             return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
-
 
     useEffect(() => {
         getDataByStatus()
@@ -100,7 +90,6 @@ const OnTheWay = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -117,7 +106,6 @@ const OnTheWay = () => {
                                             </CardHeader>
                                             <CardBody>
                                                 <Stack direction='row' h='100px'>
-
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
@@ -130,7 +118,6 @@ const OnTheWay = () => {
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                         </Card>
@@ -161,7 +148,6 @@ const OnTheWay = () => {
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
-
                                         <Flex justify='space-between' align='center'>
                                             <Box pt="4">
                                                 <Stack spacing="0.5">
@@ -178,12 +164,8 @@ const OnTheWay = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Ongkos Pengiriman :</Text>
@@ -196,7 +178,6 @@ const OnTheWay = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
 
@@ -209,7 +190,6 @@ const OnTheWay = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Bukti Pembayaran :</Text>
@@ -219,7 +199,6 @@ const OnTheWay = () => {
                             )}
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
@@ -230,5 +209,4 @@ const OnTheWay = () => {
         </Container>
     )
 }
-
 export default OnTheWay
