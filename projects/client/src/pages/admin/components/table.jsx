@@ -121,7 +121,7 @@ const TableCRUD = ({
                       <HStack spacing="5px">
                         <Button
                           colorScheme="teal"
-                          onClick={action[0]}
+                          onClick={action[4]}
                           id={el.id}
                         >
                           Update
