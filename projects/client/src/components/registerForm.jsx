@@ -1,4 +1,3 @@
-// import { ResetPassword } from "./ResetPasswordForm";
 import {
   Button,
   useDisclosure,
@@ -148,8 +147,6 @@ const [showPassword, setShowPassword] = useState(false);
                     placeholder="Username"
                   />
                   <ErrorMessage name="username" component="div" style={{ color: "red" }} />
-                </FormControl>
-                <FormControl>
                   <FormLabel mt={4}>Email Address</FormLabel>
                   <Field
                     as={Input}
@@ -160,8 +157,6 @@ const [showPassword, setShowPassword] = useState(false);
                     placeholder="Email Address"
                   />
                   <ErrorMessage name="email" component="div" style={{ color: "red" }} />
-                </FormControl>
-                <FormControl>
                   <FormLabel mt={4}>Phone Number</FormLabel>
                   <Field
                     as={Input}
@@ -172,14 +167,12 @@ const [showPassword, setShowPassword] = useState(false);
                     placeholder="Phone Number"
                   />
                   <ErrorMessage name="phonenumber" component="div" style={{ color: "red" }} />
-                </FormControl>
-                <FormControl>
                   <FormLabel mt={4}>Password</FormLabel>
                   <InputGroup>
                   <Field
                     as={Input}
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"} 
                     name="password"
                     borderColor="blue.700"
                     placeholder="Password"
@@ -197,14 +190,12 @@ const [showPassword, setShowPassword] = useState(false);
                 </InputRightElement>
                 </InputGroup>
                   <ErrorMessage name="password" component="div" style={{ color: "red" }} />
-                </FormControl>
-                <FormControl>
                   <FormLabel mt={4}>Password Confirmation</FormLabel>
                   <InputGroup>
                   <Field
                     as={Input}
                     id="confirmation"
-                    type="password"
+                    type={showPassword ? "text" : "password"} 
                     name="confirmation"
                     borderColor="blue.700"
                     placeholder="Password Confirmation"
