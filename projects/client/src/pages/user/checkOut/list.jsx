@@ -55,7 +55,7 @@ const List = ({ serviceCost }) => {
   const { cart, total_price, courier, address_id } = useSelector(
     (state) => state.cartSlice
   );
-  console.log("carts1", carts);
+
 
   const getCart = async () => {
     try {
@@ -65,7 +65,7 @@ const List = ({ serviceCost }) => {
         },
       });
 
-      // console.log(result.data.data)
+
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -76,7 +76,7 @@ const List = ({ serviceCost }) => {
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -95,7 +95,7 @@ const List = ({ serviceCost }) => {
       );
       getCart();
     } catch (error) {
-      console.log(error);
+
       if (error.response.status === 400) {
         toast({
           title: "",
@@ -118,7 +118,7 @@ const List = ({ serviceCost }) => {
       });
       getCart();
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -147,14 +147,14 @@ const List = ({ serviceCost }) => {
       service_cost: Number(serviceCost),
       cart: carts,
     };
-    console.log('data', data)
+
     try {
       let response = await apiRequest.post("/transaction/checkout", data, {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
-      console.log(response);
+
     } catch (error) {
       swalFailed(error.response.data.message);
     }

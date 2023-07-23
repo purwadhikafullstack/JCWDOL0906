@@ -42,7 +42,6 @@ const Address = () => {
   }, []);
 
   const [province, setProvince] = useState(" ");
-  console.log(province);
   const [city, setCity] = useState(" ");
   const [code, setCode] = useState([]);
   const [newCity, setNewCity] = useState([]);
@@ -56,10 +55,8 @@ const Address = () => {
         },
       });
       setDetail(result.data.data);
-      console.log(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
     }
   };
 
@@ -85,7 +82,6 @@ const Address = () => {
         is_default,
         postal_code,
       };
-      console.log(data);
 
       let result = await axios.post("http://localhost:8000/api/address", data, {
         headers: {
@@ -105,14 +101,12 @@ const Address = () => {
         (e) => e.province_id === province.split("/")[0]
       );
       setNewCity(arrayCity);
-      console.log(arrayCity);
     } catch (error) { }
   };
 
   const codeFilter = (e) => {
     const arrayCode = codes.filter((e) => e.city_id === city.split("/")[0]);
     setCode(arrayCode);
-    console.log(arrayCode);
   };
 
   useEffect(() => {

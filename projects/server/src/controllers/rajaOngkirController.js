@@ -20,7 +20,7 @@ module.exports = {
         data: data.data.rajaongkir,
       });
     } catch (error) {
-      // console.log(error.message);
+      // 
       res.status(400).send({
         isError: true,
         message: error.message,

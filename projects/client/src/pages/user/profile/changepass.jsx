@@ -45,10 +45,9 @@ export const ChangePassword = () => {
       });
 
       alert(response.data.message);
-      console.log(response);
-        setTimeout(() => {
-          navigate('/');
-        }, 4000);
+      setTimeout(() => {
+        navigate('/');
+      }, 4000);
 
       Swal.fire({
         icon: 'success',
@@ -58,7 +57,7 @@ export const ChangePassword = () => {
         },
       });
     } catch (error) {
-      console.log(error);
+
       Swal.fire({
         icon: 'error',
         title: 'Failed Attempt',
@@ -72,56 +71,56 @@ export const ChangePassword = () => {
 
   return (
     <>
-    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={useColorModeValue('white', 'gray.800')}>
-      <Stack spacing={4} w={'full'} maxW={'md'} bg={useColorModeValue('blue.50', 'gray.700')} rounded={'xl'} boxShadow={'lg'} p={6} my={12}>
-        <Heading lineHeight={1.1} color="blue.800" fontSize={{ base: '2xl', md: '3xl' }}>
-          Enter New Password
-        </Heading>
-        <Formik initialValues={{ password: '', newPassword: '', confirmPassword: '' }} validationSchema={ChangeSchema} onSubmit={(values) => changePassword(values)}>
-          {({ isSubmitting }) => (
-            <Form>
-              <FormControl id="password" isRequired>
-                <FormLabel>Password</FormLabel>
-                <Field name="password">
-                  {({ field }) => (
-                    <Input {...field} placeholder="Password" type="password" />
-                  )}
-                </Field>
-                <ErrorMessage name="password" component="div" style={{ color: 'red' }} />
-              </FormControl>
-              <FormControl id="newPassword" isRequired>
-                <FormLabel>New Password</FormLabel>
-                <Field name="newPassword">
-                  {({ field }) => (
-                    <Input {...field} placeholder="New Password" type="password" />
-                  )}
-                </Field>
-                <ErrorMessage name="newPassword" component="div" style={{ color: 'red' }} />
-              </FormControl>
-              <FormControl id="confirmPassword" isRequired>
-                <FormLabel>Password Confirmation</FormLabel>
-                <Field name="confirmPassword">
-                  {({ field }) => (
-                    <Input
-                      {...field}
-                      placeholder="Password Confirmation"
-                      type="password"
-                    />
-                  )}
-                </Field>
-                <ErrorMessage name="confirmPassword" component="div" style={{ color: 'red' }} />
-              </FormControl>
-              <Stack spacing={6}>
-                <Button type="submit" bg={'blue.800'} color={'white'} _hover={{ bg: 'blue.800' }} isLoading={isSubmitting}>
-                  Submit
-                </Button>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
-      </Stack>
-    </Flex>
-    <FooterUserPage/>
-</>
+      <Flex minH={'100vh'} align={'center'} justify={'center'} bg={useColorModeValue('white', 'gray.800')}>
+        <Stack spacing={4} w={'full'} maxW={'md'} bg={useColorModeValue('blue.50', 'gray.700')} rounded={'xl'} boxShadow={'lg'} p={6} my={12}>
+          <Heading lineHeight={1.1} color="blue.800" fontSize={{ base: '2xl', md: '3xl' }}>
+            Enter New Password
+          </Heading>
+          <Formik initialValues={{ password: '', newPassword: '', confirmPassword: '' }} validationSchema={ChangeSchema} onSubmit={(values) => changePassword(values)}>
+            {({ isSubmitting }) => (
+              <Form>
+                <FormControl id="password" isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Field name="password">
+                    {({ field }) => (
+                      <Input {...field} placeholder="Password" type="password" />
+                    )}
+                  </Field>
+                  <ErrorMessage name="password" component="div" style={{ color: 'red' }} />
+                </FormControl>
+                <FormControl id="newPassword" isRequired>
+                  <FormLabel>New Password</FormLabel>
+                  <Field name="newPassword">
+                    {({ field }) => (
+                      <Input {...field} placeholder="New Password" type="password" />
+                    )}
+                  </Field>
+                  <ErrorMessage name="newPassword" component="div" style={{ color: 'red' }} />
+                </FormControl>
+                <FormControl id="confirmPassword" isRequired>
+                  <FormLabel>Password Confirmation</FormLabel>
+                  <Field name="confirmPassword">
+                    {({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder="Password Confirmation"
+                        type="password"
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage name="confirmPassword" component="div" style={{ color: 'red' }} />
+                </FormControl>
+                <Stack spacing={6}>
+                  <Button type="submit" bg={'blue.800'} color={'white'} _hover={{ bg: 'blue.800' }} isLoading={isSubmitting}>
+                    Submit
+                  </Button>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
+        </Stack>
+      </Flex>
+      <FooterUserPage />
+    </>
   );
 };

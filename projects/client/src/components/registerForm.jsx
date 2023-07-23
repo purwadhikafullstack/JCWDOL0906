@@ -25,7 +25,7 @@ import { apiRequest } from "../helper/api";
 import { useState } from "react";
 
 export const RegistrationForm = () => {
-const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -51,7 +51,6 @@ const [showPassword, setShowPassword] = useState(false);
   const [overlay, setOverlay] = React.useState(<OverlayTwo />)
 
   const onRegister = async () => {
-    console.log("register");
     const data = {
       username: document.getElementById("username").value,
       email: document.getElementById("email").value,
@@ -62,7 +61,6 @@ const [showPassword, setShowPassword] = useState(false);
     try {
       const url = "/auth/register"
       const result = await apiRequest.post(url, data);
-      console.log(result);
 
       //untuk mereset kembali form
       document.getElementById("username").value = "";
@@ -83,7 +81,6 @@ const [showPassword, setShowPassword] = useState(false);
       });
       onClose()
     } catch (err) {
-      console.log(err);
       Swal.fire({
         icon: "error",
         title: "failed attempt",
@@ -109,7 +106,8 @@ const [showPassword, setShowPassword] = useState(false);
         href={"#"}
         onClick={() => {
           setOverlay(<OverlayTwo />)
-          onOpen()}}
+          onOpen()
+        }}
         pt={{ base: "4", md: 0 }}
         borderRadius='10px'
       >
@@ -169,49 +167,49 @@ const [showPassword, setShowPassword] = useState(false);
                   <ErrorMessage name="phonenumber" component="div" style={{ color: "red" }} />
                   <FormLabel mt={4}>Password</FormLabel>
                   <InputGroup>
-                  <Field
-                    as={Input}
-                    id="password"
-                    type={showPassword ? "text" : "password"} 
-                    name="password"
-                    borderColor="blue.700"
-                    placeholder="Password"
-                  />
-                  <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  backgroundColor="blue.800"
-                  color="white"
-                  onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </Button>
-                </InputRightElement>
-                </InputGroup>
+                    <Field
+                      as={Input}
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      borderColor="blue.700"
+                      placeholder="Password"
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        backgroundColor="blue.800"
+                        color="white"
+                        onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                   <ErrorMessage name="password" component="div" style={{ color: "red" }} />
                   <FormLabel mt={4}>Password Confirmation</FormLabel>
                   <InputGroup>
-                  <Field
-                    as={Input}
-                    id="confirmation"
-                    type={showPassword ? "text" : "password"} 
-                    name="confirmation"
-                    borderColor="blue.700"
-                    placeholder="Password Confirmation"
-                  />
-                   <InputRightElement width="4.5rem">
-                  <Button
-                  h="1.75rem"
-                  size="sm"
-                  backgroundColor="blue.800"
-                  color="white"
-                  onClick={() => setShowConfirmation(!showConfirmation)} // Toggle show/hide password
-                >
-                  {showConfirmation ? "Hide" : "Show"}
-                </Button>
-               </InputRightElement>
-                </InputGroup>
+                    <Field
+                      as={Input}
+                      id="confirmation"
+                      type={showPassword ? "text" : "password"}
+                      name="confirmation"
+                      borderColor="blue.700"
+                      placeholder="Password Confirmation"
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        backgroundColor="blue.800"
+                        color="white"
+                        onClick={() => setShowConfirmation(!showConfirmation)} // Toggle show/hide password
+                      >
+                        {showConfirmation ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                   <ErrorMessage name="confirmation" component="div" style={{ color: "red" }} />
                 </FormControl>
                 <ModalFooter>

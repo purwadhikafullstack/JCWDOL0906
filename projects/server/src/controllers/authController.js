@@ -55,7 +55,7 @@ module.exports = {
         require.resolve("../templates/verification.html"),
         { encoding: "utf8" }
       );
-      // console.log (tempEmail);
+      // 
       const tempCompile = handlebars.compile(tempEmail);
       const tempResult = tempCompile({ username, verificationLink });
 
@@ -69,9 +69,9 @@ module.exports = {
         (error, info) => {
           if (error) {
             throw new Error();
-            //   console.log(error);
+            //   
           } else {
-            console.log("Email sent: " + info.response);
+
           }
         }
       );
@@ -93,7 +93,7 @@ module.exports = {
         message: "Register success",
       });
     } catch (err) {
-      console.log(err.result);
+
       // res.status(400).send(err);
     }
   },
@@ -160,7 +160,7 @@ module.exports = {
         expiresIn: "1h",
       });
 
-      console.log(verifiedUser);
+
       // pengecekan verifikasi
       if (!verifiedUser.is_verified) {
         return res.status(400).send({
@@ -175,7 +175,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      console.log(err);
+
       return res.status(400).send(err);
     }
   },
@@ -187,7 +187,7 @@ module.exports = {
           message: "Please Input Your Email Address",
         });
       }
-      console.log(req.body);
+
 
       if (!email.includes("@") || !email.endsWith(".com")) {
         return res.status(400).send({
@@ -228,13 +228,13 @@ module.exports = {
         result,
       });
     } catch (error) {
-      console.log(error);
+
     }
   },
   reset_password: async (req, res) => {
     try {
       const { password, confirmPassword } = req.body;
-      console.log(password, confirmPassword);
+
       if (!password || !confirmPassword)
         return res.status(400).send({
           message: "Please Complate Your Data",
@@ -258,7 +258,7 @@ module.exports = {
       token = token.split(" ")[1];
       const data = jwt.verify(token, "g-medsnial");
 
-      console.log(data);
+
 
       const salt = await bcrypt.genSalt(10);
       const hashPass = await bcrypt.hash(password, salt);
@@ -274,7 +274,7 @@ module.exports = {
         // data: userPassword,
       });
     } catch (error) {
-      console.log(error);
+
       res.status(400).send({
         message: "Server Error!",
       });
@@ -284,7 +284,6 @@ module.exports = {
   changePassword: async (req, res) => {
     try {
       const { password, newPassword, confirmPassword } = req.body;
-
       const userExist = await user.findOne({where: {id: req.userId},});
       if (!userExist) {return res.status(404).send({message: "User not found"});}
 
@@ -324,7 +323,7 @@ module.exports = {
 
   getUserByToken: async (req, res) => {
     try {
-      
+
       let bearerToken = req.headers['authorization'];
       bearerToken = bearerToken.split(' ')[1]
       const user = jwt.verify(bearerToken, "g-medsnial");
@@ -357,14 +356,14 @@ module.exports = {
   getProfile: async (req, res) => {
     try {  
       const { userId } = req;
-      console.log('ID', userId);
+
 
       const profileData = await profile.findOne({
         where: {
           user_id: userId,
         },
       });
-      console.log(profileData);
+
       if (!profileData) {
         return res.status(400).send({
           message: "No UserId found",
@@ -375,7 +374,7 @@ module.exports = {
         result: profileData,
       });
     } catch (err) {
-      console.log(err);
+
       res.status(500).json({
         message: "Error",
       });
@@ -385,10 +384,10 @@ module.exports = {
     try {
       const { userId } = req;
       const { full_name, gender, birthdate } = req.body;
-      console.log("body:", req.body);
-      console.log("userId:", userId);
+
+
       let fileUploaded = req.file;
-      console.log("fileUpload:", fileUploaded);
+
 
       await profile.update(
         {
@@ -409,14 +408,14 @@ module.exports = {
           user_id: userId,
         },
       });
-      console.log(profileData);
+
 
       return res.status(200).json({
         message: "Changes Saved",
         result: profileData,
       });
     } catch (err) {
-      console.log(err);
+
       res.status(500).json({
         message: "Error",
       });

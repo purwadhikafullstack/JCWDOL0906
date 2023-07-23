@@ -52,7 +52,7 @@
 //     let createData = async () => {
 //         try {
             
-//             // console.log(id)
+//             // 
 //             let response = await apiRequest.post("/transaction/checkout"), data, {
 //                 headers: {
 //                   Authorization: "Bearer " + localStorage.getItem("user")

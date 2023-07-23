@@ -68,7 +68,7 @@ const Shipping = ({
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log("eror", error);
+
     }
   };
 
@@ -87,8 +87,7 @@ const Shipping = ({
       );
       setShippingCosts(result?.data?.data?.results[0]?.costs);
     } catch (error) {
-      // swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
 
@@ -223,7 +222,7 @@ const Shipping = ({
                 value={serviceCost}
               >
                 {shippingCosts.map((item, index) => {
-                  console.log(item);
+
                   return (
                     <>
                       <option value={item?.cost[0].value}>
