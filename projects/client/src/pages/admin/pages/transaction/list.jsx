@@ -67,6 +67,7 @@ const TransactionList = () => {
     }
   };
 
+
   const checkOutPrescription = async () => {
     try {
       const result = await apiRequest.patch(
@@ -80,48 +81,49 @@ const TransactionList = () => {
     }
   };
 
-  const confirmTransaction = async (code) => {
-    try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/confirm"
-      );
-      swalSuccess(result.data.message);
-      getData();
-    } catch (error) {
-      swalFailed(error);
-    }
-  };
 
-  const rejectTransaction = async (code) => {
+  const confirmUserPayment = async (code) => {
     try {
-      const result = await apiRequest.patch("/transaction/" + code + "/reject");
-      swalSuccess(result.data.message);
-      getData();
+      const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
+    swalSuccess(result.data.message);
+    getData()
     } catch (error) {
-      swalFailed(error.response.data.message);
+      swalFailed("Failed to reject the transaction. Please try again later.");
+    }
+  }
+
+  const rejectUserPayment = async (code) => {
+    try {
+      const result = await apiRequest.patch("/transaction/" + code + "/Menunggu Pembayaran")
+    swalSuccess(result.data.message);
+    getData()
+    } catch (error) {
+      swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
+ 
+
   const rejectUserOrder = async (code) => {
     try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/rejectorder"
-      );
-      swalSuccess(result.data.message);
-      getData();
+      const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
+    swalSuccess(result.data.message);
+    getData()
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
 
-  const sendUserOrder = async (code) => {
+  const confirmUserOrder = async (code) => {
     try {
-      const result = await apiRequest.patch(
-        "/transaction/" + code + "/Diproses"
-      );
+      const result = await apiRequest.patch("/transaction/" + code + "/Dikirim")
+    swalSuccess(result.data.message);
+    getData()
     } catch (error) {
-      swalFailed(error.response.data.message);
+      swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  };
+  }
+
+
 
   const closeDate = () => {
     setTimeout(() => {
@@ -200,14 +202,14 @@ const TransactionList = () => {
                 "payment_receipt",
               ]}
               action={[
-                (e) => confirmTransaction(e.target.id),
-                (e) => rejectTransaction(e.target.id),
+                (e) => confirmUserPayment(e.target.id),
+                (e) => rejectUserPayment(e.target.id),
                 (e) => {
                   modalAdd.onOpen();
                   setCode(e.target.id);
                 },
-                (e) => sendUserOrder(e.target.id),
-                (e) => rejectUserOrder(e.target.id),
+                (e) => confirmUserOrder(e.target.id),
+                (e) => rejectUserOrder(e.target.id)
               ]}
             />
           </Box>
@@ -228,7 +230,7 @@ const TransactionList = () => {
 
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
-          defaultActivePage={activePage}
+          activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
             console.log(pageInfo);

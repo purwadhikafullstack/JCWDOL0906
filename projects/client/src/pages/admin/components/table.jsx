@@ -164,14 +164,14 @@ const TableCRUD = ({
                             onClick={action[0]}
                             id={el.transaction_code}
                           >
-                            Confirm
+                            Terima Pembayaran
                           </Button>
                           <Button
                             colorScheme="red"
                             onClick={action[1]}
                             id={el.transaction_code}
                           >
-                            Reject
+                            Batalkan Pembayaran
                           </Button>
                         </HStack>
                       ) : (
@@ -193,18 +193,15 @@ const TableCRUD = ({
                       {el.status === "Diproses" ? (
                         <HStack spacing="5px">
                           <Button
-                            colorScheme="yellow"
-                            onClick={action[4]}
-                            id={el.transaction_code}
-                          >
-                            Reject Order
+                            colorScheme="yellow" onClick={action[4]} id={el.transaction_code}>
+                          Batalkan Pesanan
                           </Button>
                           <Button
                             colorScheme="teal"
                             onClick={action[3]}
                             id={el.transaction_code}
                           >
-                            Confirm Order
+                          Mengirim Pesanan
                           </Button>
                         </HStack>
                       ) : (
