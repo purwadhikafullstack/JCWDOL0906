@@ -32,19 +32,16 @@ const TransactionList = () => {
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState("");
   const [transaction, setTransaction] = useState([]);
-
   const [code, setCode] = useState("");
-  const [state, setState] = useState([
+  const modalAdd = useDisclosure();
+  const [range, setRange] = useState([
     {
       startDate: new Date(),
-      endDate: null,
-      key: "selection",
-    },
-  ]);
-
-  const [isDate, setIsDate] = useState(false);
-
-  const modalAdd = useDisclosure();
+      endDate: addDays(new Date(), 0),
+      key: 'selection'
+    }
+  ])
+  console.log('date', range)
 
   const getData = async () => {
     let params = "";
@@ -67,6 +64,45 @@ const TransactionList = () => {
 
     }
   };
+
+  const search = async () => {
+    let params = "";
+    let sorts = "";
+    let startDate = format(range[0].startDate, "yyyy-MM-dd")
+    let endDate = format(range[0].endDate, "yyyy-MM-dd")
+    if (status !== "") {
+      params += "&status=" + status;
+    }
+    if (sort !== "") {
+      sorts += "&sort=" + sort;
+    }
+    if (startDate !== endDate) {
+      params += "&startDate=" + startDate + "&endDate=" + endDate
+    }
+
+    try {
+      const result = await apiRequest.get(
+        "/transaction/admin?page=" + activePage + params + sorts
+      );
+
+      setTransaction(result.data.data);
+      setTotalPage(Math.ceil(result.data.count.count / 6));
+    } catch (error) {
+
+    }
+  }
+
+  const clear = () => {
+    setSort("")
+    setStatus("")
+    setRange([
+      {
+        startDate: new Date(),
+        endDate: addDays(new Date(), 0),
+        key: 'selection'
+      }
+    ])
+  }
 
 
   const checkOutPrescription = async () => {
@@ -124,28 +160,13 @@ const TransactionList = () => {
     }
   }
 
-
-
-  const closeDate = () => {
-    setTimeout(() => {
-      setIsDate(false);
-    }, 3000);
-  };
-
   useEffect(() => {
     getData();
-  }, [activePage, status, sort]);
+  }, [activePage]);
 
   //============== DATE RANGE =========
 
   // date state
-  const [range, setRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: 'selection'
-    }
-  ])
 
   // open close
   const [open, setOpen] = useState(false)
@@ -187,7 +208,7 @@ const TransactionList = () => {
               <Box className="calendarWrap" >
 
                 <Input
-                  value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
+                  value={`${format(range[0].startDate, "yyyy-MM-dd")} to ${format(range[0].endDate, "yyyy-MM-dd")}`}
                   readOnly
                   className="inputBox"
                   onClick={() => setOpen(open => !open)}
@@ -211,7 +232,7 @@ const TransactionList = () => {
               <Select
                 w="200px"
                 placeholder="Sort By"
-                onChange={(e) => setSort(e.target.value)}
+                value={sort} onChange={(e) => setSort(e.target.value)}
               >
                 <option value="1">Tanggal Belanja A-Z</option>
                 <option value="2">Tanggal Belanja Z-A</option>
@@ -222,7 +243,7 @@ const TransactionList = () => {
               <Select
                 w="200px"
                 placeholder="Pilih Status"
-                onChange={(e) => setStatus(e.target.value)}
+                value={status} onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
                 <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
@@ -232,6 +253,9 @@ const TransactionList = () => {
                 <option value="Pesanan Dikonfirmasi">Diterima</option>
                 <option value="Dibatalkan">Dibatalkan</option>
               </Select>
+
+              <Button colorScheme='linkedin' onClick={() => search()}>Search</Button>
+              <Button colorScheme='yellow' onClick={() => clear()}>Clear</Button>
             </Flex>
           </Flex>
           <Box overflow={{ sm: "scroll", lg: "hidden" }}>
