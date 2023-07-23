@@ -35,7 +35,6 @@ function App() {
 
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  // const isLoading = localStorage.getItem("user");
 
   let keepLogin = async () => {
     let response = await CheckLogin();
@@ -47,7 +46,7 @@ function App() {
   };
   useEffect(() => {
     setTimeout(() => { setIsLoading(false) }, 4000);
-        
+
     keepLogin();
   }, []);
 

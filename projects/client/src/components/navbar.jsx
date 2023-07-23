@@ -28,7 +28,6 @@ export const Navbar = () => {
 
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
-  // const isLogin = localStorage.getItem("user");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

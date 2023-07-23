@@ -283,16 +283,6 @@ module.exports = {
         token,
       });
     } catch (error) {res.status(401).send({isError: true, message: error.message, data: null,});}},
-
-  getUserByToken: async (req, res) => {
-    try {
-
-      let bearerToken = req.headers['authorization'];
-      bearerToken = bearerToken.split(' ')[1]
-      const user = jwt.verify(bearerToken, "g-medsnial");
-      const getUser = await db.User.findOne({where: {id: user.id}})
-      res.status(200).send({ isError: false, message: "Token still valid", data: getUser});
-    } catch(error) {res.status(400).send({ error: "Invalid token" });}},
   
   getProfile: async (req, res) => {
     try {  

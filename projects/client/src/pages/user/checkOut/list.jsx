@@ -1,18 +1,12 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Container,
-  Divider,
   Flex,
-  Grid,
   Heading,
   HStack,
   Icon,
   Image,
-  Skeleton,
   Stack,
   StackDivider,
   Text,
@@ -23,24 +17,24 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { rupiah, swalFailed } from "../../../helper";
-import { useNavigate } from "react-router-dom";
+import { rupiah, swalFailed, swalSuccess } from "../../../helper";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BsDash,
-  BsDashCircle,
   BsDashLg,
   BsPlus,
   BsPlusCircle,
   BsPlusLg,
   BsTrash,
   BsTrash2,
+  BsDashCircle
 } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
 import { add } from "../../../redux/cartSlice";
 import ProductCard from "../../../components/store/product/productCard";
 import { apiRequest } from "../../../helper/api";
 
-const List = ({ serviceCost }) => {
+const List = ({ serviceCost, code }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -73,9 +67,7 @@ const List = ({ serviceCost }) => {
         total_price += i.total_price;
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const updateItemQty = async (id, method) => {
     try {
@@ -92,7 +84,6 @@ const List = ({ serviceCost }) => {
       );
       getCart();
     } catch (error) {
-
       if (error.response.status === 400) {
         toast({
           title: "",
@@ -113,9 +104,7 @@ const List = ({ serviceCost }) => {
         },
       });
       getCart();
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const getRecomendItem = () => {
     let item = product.filter(
@@ -146,7 +135,6 @@ const List = ({ serviceCost }) => {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
-
     } catch (error) {
       swalFailed(error.response.data.message);
     }
@@ -199,90 +187,92 @@ const List = ({ serviceCost }) => {
               </Heading>
               {carts.length > 0
                 ? carts.map((i) => (
-                  <Flex
-                    borderWidth="1px"
-                    rounded="lg"
-                    padding="2"
-                    width="full"
-                    mt={2}
-                    justifyContent="space-between"
-                    bgColor="white"
-                  >
-                    <HStack>
-                      <Image
-                        rounded="lg"
-                        width="120px"
-                        height="120px"
-                        fit="cover"
-                        src={process.env.REACT_APP_IMAGE_API + i.image}
-                        alt=""
-                        draggable="false"
-                        loading="lazy"
-                      />
-                      <Box pt="4">
-                        <Stack spacing="0.5">
-                          <Text fontWeight="medium">{i.product_name}</Text>
-                          <Text
-                            color={mode("gray.600", "gray.400")}
-                            fontSize="sm"
-                          >
-                            {rupiah(i.price)}
-                          </Text>
-                        </Stack>
-                      </Box>
-                    </HStack>
-                    <Flex alignItems="end">
-                      <Button
-                        variant="ghost"
-                        w="fit-content"
-                        size="sm"
-                        ml={2}
-                        onClick={() => deleteItem(i.product_id, "minus")}
-                      >
-                        <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
-                      </Button>
-                      <Box>
-                        <Flex alignItems="center">
-                          <Button
-                            variant="ghost"
-                            w="fit-content"
-                            size="sm"
-                            ml={2}
-                            onClick={() =>
-                              updateItemQty(i.product_id, "minus")
-                            }
-                          >
-                            <Icon
-                              as={BsDashCircle}
-                              h={5}
-                              w={5}
-                              alignSelf={"center"}
-                            />
-                          </Button>
-                          <Text px={3} mb={0} fontWeight="medium">
-                            {i.qty}
-                          </Text>
-                          <Button
-                            variant="ghost"
-                            w="fit-content"
-                            size="sm"
-                            mr={2}
-                            onClick={() =>
-                              updateItemQty(i.product_id, "plus")
-                            }
-                          >
-                            <Icon
-                              as={BsPlusCircle}
-                              h={5}
-                              w={5}
-                              alignSelf={"center"}
-                            />
-                          </Button>
-                        </Flex>
-                      </Box>
+                    <Flex
+                      borderWidth="1px"
+                      rounded="lg"
+                      padding="2"
+                      width="full"
+                      mt={2}
+                      justifyContent="space-between"
+                      bgColor="white"
+                    >
+                      <HStack>
+                        <Image
+                          rounded="lg"
+                          width="120px"
+                          height="120px"
+                          fit="cover"
+                          src={process.env.REACT_APP_IMAGE_API + i.image}
+                          alt=""
+                          draggable="false"
+                          loading="lazy"
+                        />
+                        <Box pt="4">
+                          <Stack spacing="0.5">
+                            <Text fontWeight="medium">{i.product_name}</Text>
+                            <Text
+                              color={mode("gray.600", "gray.400")}
+                              fontSize="sm"
+                            >
+                              {rupiah(i.price)}
+                            </Text>
+                          </Stack>
+                        </Box>
+                      </HStack>
+
+                      <Flex alignItems="end">
+                        <Button
+                          variant="ghost"
+                          w="fit-content"
+                          size="sm"
+                          ml={2}
+                          onClick={() => deleteItem(i.product_id, "minus")}
+                        >
+                          <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
+                        </Button>
+
+                        <Box>
+                          <Flex alignItems="center">
+                            <Button
+                              variant="ghost"
+                              w="fit-content"
+                              size="sm"
+                              ml={2}
+                              onClick={() =>
+                                updateItemQty(i.product_id, "minus")
+                              }
+                            >
+                              <Icon
+                                as={BsDashCircle}
+                                h={5}
+                                w={5}
+                                alignSelf={"center"}
+                              />
+                            </Button>
+                            <Text px={3} mb={0} fontWeight="medium">
+                              {i.qty}
+                            </Text>
+                            <Button
+                              variant="ghost"
+                              w="fit-content"
+                              size="sm"
+                              mr={2}
+                              onClick={() =>
+                                updateItemQty(i.product_id, "plus")
+                              }
+                            >
+                              <Icon
+                                as={BsPlusCircle}
+                                h={5}
+                                w={5}
+                                alignSelf={"center"}
+                              />
+                            </Button>
+                          </Flex>
+                        </Box>
+                      </Flex>
                     </Flex>
-                  </Flex>
-                ))
+                  ))
                 : "Cart is Empty"}
             </Container>
           </Stack>
