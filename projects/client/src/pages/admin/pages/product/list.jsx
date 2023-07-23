@@ -38,6 +38,7 @@ const ProductList = () => {
   const [indication, setIndication] = useState("");
   const [dose, setDose] = useState("");
   const [rules, setRules] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState(0);
 
   // const [sortType, setSortType] = useState('')
   // const [query, setQuery] = useState()
@@ -87,7 +88,6 @@ const ProductList = () => {
       modalAdd.onClose();
       swalSuccess(result.data.message);
     } catch (error) {
-
       swalFailed(error.response.data.message);
     }
   };
@@ -95,12 +95,10 @@ const ProductList = () => {
   const getData = async () => {
     try {
       let result = await apiRequest.get("/product?page=" + activePage);
-
       setProducts(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
       swalFailed(error.response.data.message);
-
     }
   };
 
@@ -304,6 +302,10 @@ const ProductList = () => {
                   getDataUnit(e);
                   getDropdownUnits();
                 },
+                (e) => {
+                  modalUpdate.onOpen();
+                  setSelectedProductId(e.target.id);
+                },
               ]}
             />
           </Box>
@@ -325,7 +327,7 @@ const ProductList = () => {
         Open={modalAdd.isOpen}
         Close={modalAdd.onClose}
         categories={categories}
-        SetUnit={() => { }}
+        SetUnit={() => {}}
         Submit={() => addProduct()}
       />
 
@@ -333,6 +335,7 @@ const ProductList = () => {
         Title="Update Product"
         Open={modalUpdate.isOpen}
         Close={modalUpdate.onClose}
+        SetUnit={() => {}}
         categories={categories}
         productName={productName}
         categoryId={categoryId}
