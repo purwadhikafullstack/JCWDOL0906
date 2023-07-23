@@ -38,7 +38,7 @@ const UserProductList = () => {
       for (let i = 0; i < page; i++) {
         paginate.push({ no: i + 1 });
       }
-      console.log(result.data)
+
       setPaging(paginate);
       setRecords(result.data.count);
       setProduct(result.data.data)
@@ -63,7 +63,7 @@ const UserProductList = () => {
 
   useEffect(() => {
     getData()
-    console.log(product)
+
   }, [sort, pageNumber, filterCategory, filterName])
 
   useEffect(() => {

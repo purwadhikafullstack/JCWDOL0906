@@ -85,7 +85,6 @@ const ModalPrescription = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       Swal.fire({
         icon: "error",
         title: "Failed Attempt",
@@ -113,8 +112,7 @@ const ModalPrescription = () => {
       });
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
-      // swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
 

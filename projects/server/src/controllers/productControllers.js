@@ -33,7 +33,7 @@ module.exports = {
       category_id,
       createdBy,
     } = data;
-    
+
     const image = req.file.path;
 
     try {
@@ -60,7 +60,7 @@ module.exports = {
         return res.status(400).json({ message: "Product already exists! " });
       }
     } catch (error) {
-      console.log(error);
+
       return res.status(500).json({ message: "Internal server error" });
     }
   },
@@ -124,7 +124,7 @@ module.exports = {
         message: "Get All Product Succesfully",
       });
     } catch (error) {
-      console.log(error);
+
       res.status(500).send({
         error: "Failed to get all products",
       });
@@ -162,7 +162,7 @@ module.exports = {
   },
   updateProduct: async (req, res) => {
     const data = JSON.parse(req.body.data);
-    console.log(data)
+
     const {
       product_name,
       price,
@@ -180,7 +180,7 @@ module.exports = {
           id: req.params.id,
         },
       });
-      console.log(!isExists)
+
       if (!isExists) {
 
         return res.status(400).json({ message: "Product not found " });
@@ -256,7 +256,7 @@ module.exports = {
   },
 
   getStoreProduct: async (req, res) => {
-    console.log('category', req.query.category);
+
     let sort = "p.product_name ASC";
     let limit = 10;
     let offset = 0;
@@ -336,7 +336,7 @@ module.exports = {
 
       res.status(200).json({ count: count[0].count, data });
     } catch (error) {
-      console.log(error);
+
       res.status(500).json({ error });
     }
   },

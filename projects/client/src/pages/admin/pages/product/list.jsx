@@ -87,7 +87,7 @@ const ProductList = () => {
       modalAdd.onClose();
       swalSuccess(result.data.message);
     } catch (error) {
-      console.log(error);
+
       swalFailed(error.response.data.message);
     }
   };
@@ -95,12 +95,12 @@ const ProductList = () => {
   const getData = async () => {
     try {
       let result = await apiRequest.get("/product?page=" + activePage);
-      console.log(result.data)
+
       setProducts(result.data.data);
       setTotalPage(Math.ceil(result.data.count / 6));
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
 

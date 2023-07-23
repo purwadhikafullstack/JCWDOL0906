@@ -53,7 +53,7 @@ const List = () => {
   const [product, setProduct] = useState([]);
   const user = useSelector((state) => state.userSlice);
   const { cart, total_price } = useSelector((state) => state.cartSlice);
-  console.log("carts1", carts);
+
 
   const getCart = async () => {
     try {
@@ -73,7 +73,7 @@ const List = () => {
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -114,7 +114,7 @@ const List = () => {
       });
       getCart();
     } catch (error) {
-      console.log(error);
+
     }
   };
 

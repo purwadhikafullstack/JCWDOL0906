@@ -25,9 +25,7 @@ export const ConfirmEmail = () => {
   const confirmEmail = async (values) => {
     try {
       const url = '/auth/confirm-email';
-      console.log(values);
       const result = await apiRequest.post(url, values);
-      console.log(result);
 
       Swal.fire({
         icon: 'success',
@@ -43,7 +41,6 @@ export const ConfirmEmail = () => {
       }, 4000);
 
     } catch (error) {
-      console.log(error);
       Swal.fire({
         icon: 'error',
         title: 'Failed Attempt',
