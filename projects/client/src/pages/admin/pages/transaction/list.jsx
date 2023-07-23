@@ -41,7 +41,6 @@ const TransactionList = () => {
       key: 'selection'
     }
   ])
-  console.log('date', range)
 
   const getData = async () => {
     let params = "";
@@ -52,7 +51,6 @@ const TransactionList = () => {
     if (sort !== "") {
       sorts += "&sort=" + sort;
     }
-
     try {
       const result = await apiRequest.get(
         "/transaction/admin?page=" + activePage + params + sorts
@@ -61,7 +59,6 @@ const TransactionList = () => {
       setTransaction(result.data.data);
       setTotalPage(Math.ceil(result.data.count.count / 6));
     } catch (error) {
-
     }
   };
 
@@ -117,8 +114,6 @@ const TransactionList = () => {
       swalFailed(error);
     }
   };
-
-
   const confirmUserPayment = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Diproses")
@@ -127,8 +122,7 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
-
+  };
   const rejectUserPayment = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Menunggu Pembayaran")
@@ -138,8 +132,6 @@ const TransactionList = () => {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
-
-
   const rejectUserOrder = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Dibatalkan")
@@ -149,7 +141,6 @@ const TransactionList = () => {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
   };
-
   const confirmUserOrder = async (code) => {
     try {
       const result = await apiRequest.patch("/transaction/" + code + "/Dikirim")
@@ -158,44 +149,36 @@ const TransactionList = () => {
     } catch (error) {
       swalFailed("Failed to reject the transaction. Please try again later.");
     }
-  }
+  };
+
 
   useEffect(() => {
     getData();
   }, [activePage]);
+ 
 
-  //============== DATE RANGE =========
-
-  // date state
-
-  // open close
   const [open, setOpen] = useState(false)
-
-  // get the target element to toggle 
   const refOne = useRef(null)
 
   useEffect(() => {
-    // event listeners
+
     document.addEventListener("keydown", hideOnEscape, true)
     document.addEventListener("click", hideOnClickOutside, true)
   }, [])
 
-  // hide dropdown on ESC press
   const hideOnEscape = (e) => {
 
     if (e.key === "Escape") {
       setOpen(false)
     }
-  }
-
-  // Hide on outside click
+  };
   const hideOnClickOutside = (e) => {
 
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false)
     }
-  }
-  //============== DATE RANGE =========
+  };
+
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -213,7 +196,6 @@ const TransactionList = () => {
                   className="inputBox"
                   onClick={() => setOpen(open => !open)}
                 />
-
                 <Box ref={refOne} style={{ zIndex: 9999999, position: 'absolute' }}>
                   {open &&
                     <DateRange
@@ -227,7 +209,6 @@ const TransactionList = () => {
                     />
                   }
                 </Box>
-
               </Box>
               <Select
                 w="200px"
@@ -239,7 +220,6 @@ const TransactionList = () => {
                 <option value="3">Invoice A-Z</option>
                 <option value="4">Invoice Z-A</option>
               </Select>
-
               <Select
                 w="200px"
                 placeholder="Pilih Status"
@@ -291,7 +271,6 @@ const TransactionList = () => {
           </Box>
         </Flex>
       </Card>
-
       <ModalPrescription
         Tittle="Manage Your Prescription"
         code={code}
@@ -303,13 +282,11 @@ const TransactionList = () => {
         }}
         Submit={() => checkOutPrescription()}
       />
-
       <Flex justifyContent={"center"} mt={"20px"}>
         <Pagination
           activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
-
             setActivePage(pageInfo.activePage);
           }}
         />
@@ -317,5 +294,4 @@ const TransactionList = () => {
     </>
   );
 };
-
 export default TransactionList;

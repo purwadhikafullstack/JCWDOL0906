@@ -10,8 +10,6 @@ const cartSlice = createSlice({
   },
   reducers: {
     add: (state, action) => {
-
-
       state.cart = action.payload.cart;
       state.total_price = action.payload.total_price;
     },
@@ -23,7 +21,6 @@ const cartSlice = createSlice({
       state.address_id = action.payload.address_id;
     },
     addCourier: (state, action) => {
-
       state.courier = action.payload.courier;
     },
   },

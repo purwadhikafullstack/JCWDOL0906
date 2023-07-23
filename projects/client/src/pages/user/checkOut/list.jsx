@@ -1,18 +1,12 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Container,
-  Divider,
   Flex,
-  Grid,
   Heading,
   HStack,
   Icon,
   Image,
-  Skeleton,
   Stack,
   StackDivider,
   Text,
@@ -27,13 +21,13 @@ import { rupiah, swalFailed, swalSuccess } from "../../../helper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BsDash,
-  BsDashCircle,
   BsDashLg,
   BsPlus,
   BsPlusCircle,
   BsPlusLg,
   BsTrash,
   BsTrash2,
+  BsDashCircle
 } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
 import { add } from "../../../redux/cartSlice";
@@ -75,7 +69,6 @@ const List = ({ serviceCost, code }) => {
       dispatch(add({ cart: total_qty, total_price: total_price }));
     } catch (error) {}
   };
-
   const updateItemQty = async (id, method) => {
     try {
       const result = await apiRequest.patch(
@@ -103,7 +96,6 @@ const List = ({ serviceCost, code }) => {
       }
     }
   };
-
   const deleteItem = async (id, method) => {
     try {
       const result = await apiRequest.delete("/cart/" + id, {
@@ -114,14 +106,12 @@ const List = ({ serviceCost, code }) => {
       getCart();
     } catch (error) {}
   };
-
   const getRecomendItem = () => {
     let item = product.filter(
       (pr) => !carts.find((cr) => cr.product_id === pr.id)
     );
     setRecomendItem(item);
   };
-
   const getData = async () => {
     try {
       const result = await apiRequest.get("/store/product?page=" + pageNumber);
@@ -130,7 +120,6 @@ const List = ({ serviceCost, code }) => {
       swalFailed(error.response.data.message);
     }
   };
-
   const checkOut = async () => {
     let data = {
       total_price: Number(serviceCost) + Number(total_price),
@@ -150,18 +139,6 @@ const List = ({ serviceCost, code }) => {
       swalFailed(error.response.data.message);
     }
   };
-
-  // try {
-  //   await apiRequest.post("/cart/destroy", null, {
-  //     headers: {
-  //       Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
-  //     },
-  //   });
-  //   console.log("Cart destroyed for user");
-  // } catch (error) {
-  //   console.error("Error destroying cart:", error);
-  // }
-
   useEffect(() => {
     getCart();
     getData();
@@ -298,46 +275,6 @@ const List = ({ serviceCost, code }) => {
                   ))
                 : "Cart is Empty"}
             </Container>
-            {/* <Container maxW="container.xl" p={5} mt={5}>
-              <Heading fontSize="2xl" fontWeight="extrabold">
-                Our Recommendations
-              </Heading>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                {recomendItem.length === 0 && user.value.username === ""
-                  ? product.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))
-                  : recomendItem.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))}
-              </Grid>
-            </Container> */}
           </Stack>
         </Stack>
 
@@ -351,7 +288,6 @@ const List = ({ serviceCost, code }) => {
             bg="white"
           >
             <Heading size="md">Ringkasan Belanja</Heading>
-
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">

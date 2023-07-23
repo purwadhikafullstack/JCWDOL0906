@@ -22,7 +22,6 @@ const MainPanel = {
     variant: "main",
   },
 };
-
 export const MainPanelComponent = {
   components: {
     MainPanel,

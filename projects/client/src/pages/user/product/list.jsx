@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { ArrowLeftIcon, ArrowRightIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, Button, Container, Flex, Grid, IconButton, Image, Input, Menu, MenuButton, MenuItem, MenuList, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Text, Tooltip, useColorModeValue, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import axios from 'axios'
@@ -46,7 +45,6 @@ const UserProductList = () => {
       swalFailed(error.response.data.message)
     }
   }
-
   const getCategory = async () => {
     try {
       const result = await apiRequest.get("/categories/dropdown")
@@ -55,7 +53,6 @@ const UserProductList = () => {
       swalFailed(error.response.data.message)
     }
   }
-
   const clearFilter = () => {
     setFilterCategory(0)
     setSort("")
@@ -95,7 +92,6 @@ const UserProductList = () => {
             setFilterName={(e) => setFilterName(e.target.value)}
             clearFilter={() => clearFilter()}
           />
-
           <Flex alignItems="center">
             <Text p={5} mb={0}>
               {" "}
@@ -130,7 +126,6 @@ const UserProductList = () => {
               : "Product Not Found"}
           </Grid>
         </Container>
-
         <Flex w="100%" alignItems="center" justifyContent="end">
           <Text p={5}>
             {" "}
@@ -149,4 +144,4 @@ const UserProductList = () => {
   );
 };
 export default UserProductList
-// export default UserProductList
+

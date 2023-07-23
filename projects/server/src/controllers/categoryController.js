@@ -1,5 +1,4 @@
 //import model
-// const { error } = require('console');
 const db = require("../models");
 const category = db.Category;
 

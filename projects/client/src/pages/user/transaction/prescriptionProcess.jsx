@@ -24,7 +24,6 @@ const WaitingConfirmation = () => {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
@@ -36,7 +35,6 @@ const WaitingConfirmation = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
 
         try {
@@ -52,7 +50,6 @@ const WaitingConfirmation = () => {
             swalFailed(error.response.data.message);
         }
     };
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -62,7 +59,6 @@ const WaitingConfirmation = () => {
             return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
-
 
     useEffect(() => {
         getDataByStatus()
@@ -147,7 +143,6 @@ const WaitingConfirmation = () => {
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
-
                                         <Flex justify='space-between' align='center'>
                                             <Box pt="4">
                                                 <Stack spacing="0.5">
@@ -164,12 +159,8 @@ const WaitingConfirmation = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Ongkos Pengiriman :</Text>
@@ -182,10 +173,8 @@ const WaitingConfirmation = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
-
                                         <Flex justify='space-between' align='center'>
                                             <Text fontWeight='600'> Total Pembayaran :</Text>
                                             <Text>{rupiah(i.total_price)}</Text>
@@ -205,7 +194,6 @@ const WaitingConfirmation = () => {
                             )}
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
@@ -216,5 +204,4 @@ const WaitingConfirmation = () => {
         </Container>
     )
 }
-
 export default WaitingConfirmation

@@ -24,7 +24,6 @@ const OnProcess = () => {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
@@ -36,9 +35,7 @@ const OnProcess = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
-
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
@@ -50,7 +47,6 @@ const OnProcess = () => {
             swalFailed(error.response.data.message);
         }
     };
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -86,7 +82,6 @@ const OnProcess = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -103,7 +98,6 @@ const OnProcess = () => {
                                             </CardHeader>
                                             <CardBody>
                                                 <Stack direction='row' h='100px'>
-
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
@@ -112,7 +106,6 @@ const OnProcess = () => {
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                         </Card>
@@ -139,11 +132,9 @@ const OnProcess = () => {
                                 </Card>
                             )}
                             <Divider />
-
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
-
                                         <Flex justify='space-between' align='center'>
                                             <Box pt="4">
                                                 <Stack spacing="0.5">
@@ -160,12 +151,8 @@ const OnProcess = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Ongkos Pengiriman :</Text>
@@ -178,10 +165,8 @@ const OnProcess = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
-
                                         <Flex justify='space-between' align='center'>
                                             <Text fontWeight='600'> Total Pembayaran :</Text>
                                             <Text>{rupiah(i.total_price)}</Text>
@@ -191,7 +176,6 @@ const OnProcess = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Bukti Pembayaran :</Text>
@@ -201,7 +185,6 @@ const OnProcess = () => {
                             )}
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close

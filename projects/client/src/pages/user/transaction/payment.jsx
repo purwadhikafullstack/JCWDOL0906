@@ -24,7 +24,6 @@ const Payment = () => {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
@@ -36,7 +35,6 @@ const Payment = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
 
         try {
@@ -52,7 +50,6 @@ const Payment = () => {
             swalFailed(error.response.data.message);
         }
     };
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -62,7 +59,6 @@ const Payment = () => {
             return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
-
 
     useEffect(() => {
         getDataByStatus()
@@ -89,7 +85,6 @@ const Payment = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -106,17 +101,13 @@ const Payment = () => {
                                             </CardHeader>
                                             <CardBody>
                                                 <Stack direction='row' h='100px'>
-
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
-
-
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                         </Card>
