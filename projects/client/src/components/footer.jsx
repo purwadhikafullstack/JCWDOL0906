@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FaTwitter } from 'react-icons/fa';
-import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
+import logo_gmedsnial from "../assets/svg/logogmedsnial3.png";
 
 const Logo = (props) => {
     return (

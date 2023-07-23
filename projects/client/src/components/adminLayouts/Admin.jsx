@@ -32,7 +32,7 @@ import bgAdmin from "../../assets/img/admin-background.png";
 import Sidebar from "../adminComponents/Sidebar/Sidebar";
 import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
 import ProtectedRoute from "../protectedRoute";
-import logo_gmedsnial from "../../assets/svg/logogmedsnial1.png"
+import logo_gmedsnial from "../../assets/svg/logogmedsnial3.png"
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
