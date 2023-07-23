@@ -39,12 +39,12 @@ function App() {
 
   let keepLogin = async () => {
     let response = await CheckLogin();
-    console.log("responsee",response);
+    console.log("responsee", response);
     if (response.dataUser !== null) {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
     }
-  //   // setisLoading(false);
+    //   // setisLoading(false);
   };
   useEffect(() => {
     // setisLoading(true);

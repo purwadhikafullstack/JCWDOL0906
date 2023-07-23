@@ -24,8 +24,6 @@ const ListDefaultUnits = () => {
         }
     }
 
-    const { colorMode } = useColorMode();
-
     console.log("unitName ===========>     ", unitName)
     const handleSubmit = async () => {
         try {
@@ -76,9 +74,6 @@ const ListDefaultUnits = () => {
     }, [unitName])
 
     const textColor = useColorModeValue("gray.700", "white");
-    const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    const textTableColor = useColorModeValue("gray.500", "white");
     return (
         <>
 
