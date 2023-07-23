@@ -41,7 +41,6 @@ const MyAccount = () => {
   const handleTabChange = (index) => {
     setCurrentTab(index);
   };
-  console.log(picture);
 
   useEffect(() => {
     axios
@@ -51,7 +50,6 @@ const MyAccount = () => {
         },
       })
       .then((result) => {
-        console.log(result);
         setFullName(result.data.result.full_name);
         setBirthdate(
           new Date(result.data.result.birthdate).toISOString().split("T")[0]
@@ -78,7 +76,6 @@ const MyAccount = () => {
       formData.append("gender", gender);
 
       formData.append("picture", picture);
-      console.log(formData);
 
       let result = await axios.patch(
         "http://localhost:8000/api/auth/profile/edit",

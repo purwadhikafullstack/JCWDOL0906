@@ -18,7 +18,7 @@ const OnTheWay = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-            console.log(result.data.data)
+
             setTransaction(result.data.data)
         } catch (error) {
 
@@ -28,7 +28,7 @@ const OnTheWay = () => {
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
-            console.log(result.data.data)
+
             setUserTransaction(result.data.data.transaction)
             setDetailTransaction(result.data.data.details)
             onOpen()
@@ -38,17 +38,17 @@ const OnTheWay = () => {
     }
 
     const uploadBukti = async (e) => {
-        console.log(e)
+
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-            console.log(result.data.data)
+
             swalSuccess(result.data.message);
         } catch (error) {
-            console.log(error);
+
             swalFailed(error.response.data.message);
         }
     }
@@ -56,10 +56,10 @@ const OnTheWay = () => {
     const userConfrimReceived = async (code) => {
         try {
             const result = await apiRequest.patch("/transaction/" + code + "/Pesanan Dikonfirmasi")
-            console.log(result.data.data);
+
             getDataByStatus()
         } catch (error) {
-            console.log(error);
+
             swalFailed(error.response.data.message);
         }
     }
@@ -73,8 +73,8 @@ const OnTheWay = () => {
             return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
-    console.log(userTransaction)
-    console.log(detailTransaction)
+
+
     useEffect(() => {
         getDataByStatus()
     }, [])

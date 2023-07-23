@@ -11,14 +11,13 @@ export const Category = () => {
     const dispatch = useDispatch()
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        // console.log('categories',categories);
         async function fetchCategories() {
             try {
                 const categoriesData = await apiRequest.get("/categories?size=10");
-                console.log('categoriesdata', categoriesData)
+
                 setCategories(categoriesData.data.data)
             } catch (error) {
-                console.log(error)
+
             }
         }
         fetchCategories()

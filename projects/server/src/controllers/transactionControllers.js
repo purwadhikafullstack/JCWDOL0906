@@ -10,14 +10,14 @@ const Cart = db.Cart;
 
 module.exports = {
   createOrder: async (req, res) => {
-    console.log("kesini");
+
     const { userId } = req;
-    console.log("user id =======>", userId);
+
     const { total_price, shipping, cart, address_id, sub_total, service_cost } =
       req.body;
     let code = "INV-" + uuidv4().split("-")[0];
-    console.log(req.body);
-    console.log("address id:", address_id);
+
+
     const t = await sequelize.transaction();
 
     try {
@@ -33,8 +33,8 @@ module.exports = {
         },
         { transaction: t }
       );
-      console.log("hasil", transactionResult);
-      console.log("cart", cart);
+
+
       for (const product of cart) {
         await transaction_detail.create(
           {
@@ -59,7 +59,7 @@ module.exports = {
 
       return res.status(200).json({ message: "Checkout Product successfully" });
     } catch (error) {
-      console.log(error);
+
       await t.rollback();
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -73,21 +73,21 @@ module.exports = {
     //         total_price: parseInt(quantity) * parseInt(product_price),
     //       });
 
-    //       console.log(user_id);
+    //       
 
     //       await Cart.destroy({
     //         where: {
     //           user_id,
     //         },
     //       });
-    //       console.log("this");
+    //       
 
     //       return res.status(200).json({
     //         message: `new order_details from user ${user_id} has been edded`,
     //         result: dataOrder,
     //       });
     //     } catch (error) {
-    //       console.log(error);
+    //       
     //       return res.status(500).json({
     //         message: error.toString(),
     //       });
@@ -106,7 +106,7 @@ module.exports = {
 
       res.status(200).json(successResponse("", data, ""));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
@@ -121,7 +121,7 @@ module.exports = {
       );
       res.status(200).json(successResponse("", data, ""));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
@@ -150,7 +150,7 @@ module.exports = {
       data.details = detail;
       res.status(200).json(successResponse("", data, ""));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
@@ -164,10 +164,10 @@ module.exports = {
         },
         { where: { transaction_code: code } }
       );
-      console.log(data);
+
       res.status(200).json(successResponse("", "", ""));
     } catch (error) {
-      console.log(error);
+
       res.status(200).json(failedResponse(error));
     }
   },
@@ -198,12 +198,12 @@ module.exports = {
         .status(200)
         .json(successResponse("Success upload payment proof", "", ""));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
   getAdminTransaction: async (req, res) => {
-    console.log(req.query.sort);
+
     let param = "";
     let sort = `ts.createdAt DESC`;
     if (req.query.status && req.query.status !== "") {
@@ -258,21 +258,21 @@ module.exports = {
         message: "Get All Transaction Succesfully",
       });
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
   confirmTransaction: async (req, res) => {
     const code = req.params.code;
     const action = req.params.action;
-    console.log(code);
+
     try {
       const status = await transaction.findAll({
         where: { transaction_code: code },
       });
-      // console.log(status[0].status)
+      // 
       // const { dataValues } = status
-      // console.log(dataValues)
+      // 
 
       if (action === "confirm") {
         if (status[0].status === "Dibatalkan")
@@ -343,23 +343,23 @@ module.exports = {
 
   //         return res.status(200).json(successResponse("Order rejected succesfully", "", ""));
   //     } catch (error) {
-  //         console.log(error);
+  //         
   //         return res.status(500).json(failedResponse(error));
   //     }
   // },
-    adminUserStatusTransaction: async (req, res) => {
-        const code = req.params.code;
-        const status = req.params.status;
-        
-        try {
-            const result = await transaction.findOne({
-                where: {
-                    transaction_code: code,
-                }
-            });
-            if (!result) {
-                return res.status(404).json(failedResponse("Transaction not Found"))
-            };
+  adminUserStatusTransaction: async (req, res) => {
+    const code = req.params.code;
+    const status = req.params.status;
+
+    try {
+      const result = await transaction.findOne({
+        where: {
+          transaction_code: code,
+        }
+      });
+      if (!result) {
+        return res.status(404).json(failedResponse("Transaction not Found"))
+      };
       await transaction.update(
         { status },
         {

@@ -6,7 +6,7 @@ module.exports = {
 	login: async (req, res, next) => {
 		try {
 			let token = req.headers.authorization;
-			console.log(token);
+
 			if (!token)
 				throw {
 					message: "Unauthorized",
@@ -15,7 +15,7 @@ module.exports = {
 
 			// Extract user ID from the JWT token
 			const verifiedUser = jwt.verify(token, "g-medsnial");
-			console.log(verifiedUser);
+
 
 			// Find the user in the database
 			const userExist = await User.findOne({
@@ -34,7 +34,7 @@ module.exports = {
 
 			next();
 		} catch (err) {
-			console.log(err);
+
 			res.status(401).json({ message: "Unauthorized" });
 		}
 	},

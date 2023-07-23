@@ -32,7 +32,7 @@ const TransactionList = () => {
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState("");
   const [transaction, setTransaction] = useState([]);
-  console.log("transaction", transaction);
+
   const [code, setCode] = useState("");
   const [state, setState] = useState([
     {
@@ -42,7 +42,6 @@ const TransactionList = () => {
     },
   ]);
 
-  console.log(state);
   const [isDate, setIsDate] = useState(false);
 
   const modalAdd = useDisclosure();
@@ -62,11 +61,10 @@ const TransactionList = () => {
         "/transaction/admin?page=" + activePage + params + sorts
       );
 
-      console.log(result.data);
       setTransaction(result.data.data);
       setTotalPage(Math.ceil(result.data.count.count / 6));
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -163,7 +161,7 @@ const TransactionList = () => {
 
   // hide dropdown on ESC press
   const hideOnEscape = (e) => {
-    // console.log(e.key)
+
     if (e.key === "Escape") {
       setOpen(false)
     }
@@ -171,8 +169,7 @@ const TransactionList = () => {
 
   // Hide on outside click
   const hideOnClickOutside = (e) => {
-    // console.log(refOne.current)
-    // console.log(e.target)
+
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false)
     }
@@ -187,7 +184,7 @@ const TransactionList = () => {
               Transaction
             </Text>
             <Flex gap="2">
-              <Box className="calendarWrap" style={{ zIndex: 999999 }}>
+              <Box className="calendarWrap" >
 
                 <Input
                   value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
@@ -196,7 +193,7 @@ const TransactionList = () => {
                   onClick={() => setOpen(open => !open)}
                 />
 
-                <Box ref={refOne}>
+                <Box ref={refOne} style={{ zIndex: 9999999, position: 'absolute' }}>
                   {open &&
                     <DateRange
                       onChange={item => setRange([item.selection])}
@@ -288,7 +285,7 @@ const TransactionList = () => {
           activePage={activePage}
           totalPages={totalPage}
           onPageChange={(event, pageInfo) => {
-            console.log(pageInfo);
+
             setActivePage(pageInfo.activePage);
           }}
         />

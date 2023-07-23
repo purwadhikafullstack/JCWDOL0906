@@ -87,7 +87,6 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
   const getRoutes = (routes) => {
-    console.log(routes)
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -128,17 +127,17 @@ export default function Dashboard(props) {
         logo={
           <Stack direction='row' spacing='12px' align='center' justify='center'>
             {colorMode === "dark" ? (
-             <Image
-              src={logo_gmedsnial}
-              height={'40px'}
-              weight={'84px'}
-             />
+              <Image
+                src={logo_gmedsnial}
+                height={'40px'}
+                weight={'84px'}
+              />
             ) : (
               <Image
-              src={logo_gmedsnial}
-              height={'60px'}
-              weight={'84px'}
-             />
+                src={logo_gmedsnial}
+                height={'60px'}
+                weight={'84px'}
+              />
             )}
             {/* <Box
               w='1px'
@@ -171,12 +170,12 @@ export default function Dashboard(props) {
         </Portal>
         {getRoute() ? (
           <PanelContent>
-          <ProtectedRoute>
-            <PanelContainer>
-              <Routes>
-                {getRoutes(routes)}
-              </Routes>
-            </PanelContainer>
+            <ProtectedRoute>
+              <PanelContainer>
+                <Routes>
+                  {getRoutes(routes)}
+                </Routes>
+              </PanelContainer>
             </ProtectedRoute>
           </PanelContent>
         ) : null}

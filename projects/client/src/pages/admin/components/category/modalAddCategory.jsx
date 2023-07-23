@@ -25,7 +25,7 @@ const ModalAddCategory = ({
 	Cancel,
 	Submit,
 }) => {
-	// console.log(Data);
+
 	return (
 		<>
 			<Modal

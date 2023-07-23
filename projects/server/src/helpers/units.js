@@ -19,7 +19,7 @@ exports.createStock = (qty, conversion_qty, default_qty, type) => {
 };
 
 exports.addStock = async (product_id, qty) => {
-  console.log(product_id, qty);
+
   let stock_default = 0,
     stock_conversion = 0,
     update_default_stock = 0,
@@ -35,7 +35,7 @@ exports.addStock = async (product_id, qty) => {
         product_id: product_id,
       },
     });
-    console.log("Data unit =============> ", data);
+
     if (!data) return false;
     exists_default_unit_id = data.dataValues.default_unit_id;
     exists_conversion_unit_id = data.dataValues.conversion_unit_id;
@@ -49,9 +49,9 @@ exports.addStock = async (product_id, qty) => {
         product_id: product_id,
       },
     });
-    console.log("Data stock =============> ", data_stock);
-    console.log("lewat stock");
-    console.log(data_stock);
+
+
+
     if (data_stock) {
       // update_default_stock = stock_default + data_stock.dataValues.default_unit_qty
       // update_conversion_stock = stock_conversion + data_stock.dataValues.conversion_unit_qty
@@ -71,15 +71,15 @@ exports.addStock = async (product_id, qty) => {
           },
         }
       );
-      console.log("Update stock =============>");
+
       return true;
     } else {
-      console.log(product_id);
-      console.log(stock_default);
-      console.log(exists_default_unit_id);
-      console.log(stock_conversion);
-      console.log(exists_conversion_unit_id);
-      console.log("Mulai Create stock =============>");
+
+
+
+
+
+
 
       const data = await stock.create({
         product_id: product_id,
@@ -89,11 +89,11 @@ exports.addStock = async (product_id, qty) => {
         conversion_unit_id: exists_conversion_unit_id,
         qty: 0,
       });
-      console.log("Selesai Create stock =============>", data);
+
       return true;
     }
   } catch (error) {
-    console.log(error);
+
     return false;
   }
 };
@@ -164,10 +164,10 @@ exports.recalculateStock = async (product_id, qty) => {
       (data_stock.dataValues.default_unit_qty === 0
         ? 1
         : data_stock.dataValues.default_unit_qty);
-    console.log(data.dataValues.conversion_unit_qty);
-    console.log(qty);
-    console.log(data_stock.dataValues.default_unit_qty);
-    console.log(recalculateStockDefault);
+
+
+
+
     await stock.update(
       { default_unit_qty: recalculateStockDefault },
       {
@@ -191,18 +191,18 @@ exports.calculatePrescription = async (product_id, qty) => {
         product_id: product_id,
       },
     });
-    console.log(unit.dataValues);
+
     conversionUnitQty = unit.dataValues.conversion_unit_qty;
-    console.log(conversionUnitQty);
+
     let item = await product.findOne({
       where: { id: product_id },
     });
-    console.log(item);
+
     price = item.dataValues.price;
-    console.log("data", unit);
+
     const calculation =
       (Number(qty) / Number(conversionUnitQty)) * Number(price);
-    console.log("hasil", calculation);
+
     return { total_price: calculation };
   } catch (error) {
     return false;

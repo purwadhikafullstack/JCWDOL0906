@@ -45,7 +45,6 @@ export const ResetPassword = () => {
         );
 
         alert(response.data.message);
-        console.log(response);
         setTimeout(() => {
           navigate('/');
         }, 4000);
@@ -60,7 +59,6 @@ export const ResetPassword = () => {
       });
 
     } catch (error) {
-      console.log(error);
       Swal.fire({
         icon: 'error',
         title: 'Failed Attempt',

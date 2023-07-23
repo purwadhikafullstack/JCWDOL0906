@@ -31,7 +31,7 @@ function Prescription({ code }) {
   const getTransactionByCode = async (code) => {
     try {
       let result = await apiRequest.get(`/transaction/${code}/code`);
-      console.log(result);
+
       setTransactionCode(result.data.data.transaction[0]);
       setUserId(result.data.data.transaction[0].user_id);
     } catch (error) {
@@ -45,12 +45,12 @@ function Prescription({ code }) {
       setProducts(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
 
   const handleProductSelect = (product) => {
-    console.log(product);
+
     const newProduct = product.split(">");
     const existingProduct = chosenProducts.find(
       (p) => p.product_name === newProduct[1]
@@ -80,7 +80,7 @@ function Prescription({ code }) {
     try {
       const result = await apiRequest.get("/cart/resep?user_id=" + userId);
       setCart(result.data.data);
-      console.log(result.data.data);
+
       let data = result.data.data;
       let total_qty = 0;
       let total_price = 0;
@@ -92,7 +92,7 @@ function Prescription({ code }) {
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -112,7 +112,7 @@ function Prescription({ code }) {
       }, 2000);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
 
