@@ -146,6 +146,8 @@ const List = ({ serviceCost, code }) => {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
+      swalSuccess(response.data.message);
+      navigate("/transaction");
     } catch (error) {
       swalFailed(error.response.data.message);
     }
@@ -298,46 +300,6 @@ const List = ({ serviceCost, code }) => {
                   ))
                 : "Cart is Empty"}
             </Container>
-            {/* <Container maxW="container.xl" p={5} mt={5}>
-              <Heading fontSize="2xl" fontWeight="extrabold">
-                Our Recommendations
-              </Heading>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                {recomendItem.length === 0 && user.value.username === ""
-                  ? product.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))
-                  : recomendItem.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))}
-              </Grid>
-            </Container> */}
           </Stack>
         </Stack>
 

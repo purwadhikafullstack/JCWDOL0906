@@ -30,6 +30,7 @@ import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import Address from "./address";
 import { FaUser, FaMapMarkerAlt } from "react-icons/fa";
+import { apiRequest } from "../../../helper/api";
 
 const MyAccount = () => {
   const [fullName, setFullName] = useState();
@@ -43,8 +44,8 @@ const MyAccount = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/auth/profile", {
+    apiRequest
+      .get("/auth/profile", {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
@@ -55,7 +56,9 @@ const MyAccount = () => {
           new Date(result.data.result.birthdate).toISOString().split("T")[0]
         );
         setGender(result.data.result.gender);
-        setPicture("http://localhost:8000" + result.data.result.picture);
+        setPicture(
+          process.env.REACT_APP_IMAGE_API + result.data.result.picture
+        );
       });
   }, []);
 
@@ -77,15 +80,11 @@ const MyAccount = () => {
 
       formData.append("picture", picture);
 
-      let result = await axios.patch(
-        "http://localhost:8000/api/auth/profile/edit",
-        formData,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-          },
-        }
-      );
+      let result = await apiRequest.patch("/auth/profile/edit", formData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+      });
       // modalUpdate.onClose();
       // getData();
       // swalSuccess(result.data.message);

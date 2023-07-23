@@ -87,7 +87,7 @@ const Address = () => {
         postal_code,
       };
 
-      let result = await axios.post("http://localhost:8000/api/address", data, {
+      let result = await apiRequest.post("/address", data, {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
@@ -125,7 +125,11 @@ const Address = () => {
 
   const handleDeleteAddress = async (addressId) => {
     try {
-      let result = await apiRequest.delete("/address/" + addressId.target.id);
+      let result = await apiRequest.delete("/address/" + addressId, {
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
+        },
+      });
       getAddress();
     } catch (error) {
       swalFailed(error.response.data.message);
