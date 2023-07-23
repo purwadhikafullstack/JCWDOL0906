@@ -18,7 +18,6 @@ const OnTheWay = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-
             setTransaction(result.data.data)
         } catch (error) {
 
@@ -42,20 +41,17 @@ const OnTheWay = () => {
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-
             swalSuccess(result.data.message);
         } catch (error) {
-
             swalFailed(error.response.data.message);
         }
     }
     const userConfrimReceived = async (code) => {
         try {
             const result = await apiRequest.patch("/transaction/" + code + "/Pesanan Dikonfirmasi")
-
             getDataByStatus()
+            swalSuccess(result.data.message);
         } catch (error) {
-
             swalFailed(error.response.data.message);
         }
     }

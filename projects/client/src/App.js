@@ -29,7 +29,6 @@ import UserTransaction from "./pages/user/transaction";
 import { Loading } from "./components/loading";
 import { ChangePassword } from "./pages/user/profile/changepass";
 import ModalPrescription from "./pages/user/prescription/prescriptionpage";
-import { apiRequest } from "./helper/api";
 
 function App() {
 
