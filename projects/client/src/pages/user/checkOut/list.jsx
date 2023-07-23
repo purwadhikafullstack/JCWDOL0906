@@ -135,6 +135,8 @@ const List = ({ serviceCost, code }) => {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
+      swalSuccess(response.data.message);
+      navigate("/transaction");
     } catch (error) {
       swalFailed(error.response.data.message);
     }
