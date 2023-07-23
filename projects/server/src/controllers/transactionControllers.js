@@ -221,6 +221,13 @@ module.exports = {
     if (req.query.sort && req.query.sort == "4") {
       sort = `ts.transaction_code ASC`;
     }
+    if (req.query.startDate && param !== "") {
+      param += ` AND createdAt BETWEEN '${req.query.startDate}%' AND '${req.query.endDate}%'`
+    } else if (req.query.startDate) {
+      param += ` WHERE createdAt BETWEEN '${req.query.startDate}' AND '${req.query.endDate}%'`
+    }
+
+
     try {
       const page = parseInt(req.query.page) || 1;
       const pageSize = parseInt(req.query.size) || 6;
