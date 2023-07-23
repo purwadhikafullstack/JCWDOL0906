@@ -52,7 +52,7 @@ module.exports = {
         province_name,
         province_id,
         city_name,
-        city_id,
+        city_id: Number(city_id),
         is_default,
         label,
         postal_code,
