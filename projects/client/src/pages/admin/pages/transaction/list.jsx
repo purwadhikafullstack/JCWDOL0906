@@ -4,12 +4,13 @@ import {
   Card,
   ColorModeProvider,
   Flex,
+  Input,
   Select,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TableCRUD from "../../components/table";
 import { swalFailed, swalSuccess } from "../../../../helper";
 
@@ -20,6 +21,8 @@ import { apiRequest } from "../../../../helper/api";
 import { useNavigate } from "react-router-dom";
 import ModalPrescription from "../../components/prescription/ModalPrescription";
 import { DateRange, DateRangePicker } from "react-date-range";
+import format from 'date-fns/format'
+import { addDays } from 'date-fns'
 
 const TransactionList = () => {
   const navigate = useNavigate();
@@ -117,6 +120,47 @@ const TransactionList = () => {
   useEffect(() => {
     getData();
   }, [activePage, status, sort]);
+
+  //============== DATE RANGE =========
+
+  // date state
+  const [range, setRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: 'selection'
+    }
+  ])
+
+  // open close
+  const [open, setOpen] = useState(false)
+
+  // get the target element to toggle 
+  const refOne = useRef(null)
+
+  useEffect(() => {
+    // event listeners
+    document.addEventListener("keydown", hideOnEscape, true)
+    document.addEventListener("click", hideOnClickOutside, true)
+  }, [])
+
+  // hide dropdown on ESC press
+  const hideOnEscape = (e) => {
+    // console.log(e.key)
+    if (e.key === "Escape") {
+      setOpen(false)
+    }
+  }
+
+  // Hide on outside click
+  const hideOnClickOutside = (e) => {
+    // console.log(refOne.current)
+    // console.log(e.target)
+    if (refOne.current && !refOne.current.contains(e.target)) {
+      setOpen(false)
+    }
+  }
+  //============== DATE RANGE =========
   return (
     <>
       <Card p="0px" maxW={{ sm: "320px", md: "100%" }}>
@@ -126,12 +170,36 @@ const TransactionList = () => {
               Transaction
             </Text>
             <Flex gap="2">
-              {isDate ? <DateRange
+              <Box className="calendarWrap" style={{ zIndex: 999999 }}>
+
+                <Input
+                  value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
+                  readOnly
+                  className="inputBox"
+                  onClick={() => setOpen(open => !open)}
+                />
+
+                <Box ref={refOne}>
+                  {open &&
+                    <DateRange
+                      onChange={item => setRange([item.selection])}
+                      editableDateInputs={true}
+                      moveRangeOnFirstSelection={false}
+                      ranges={range}
+                      months={1}
+                      direction="horizontal"
+                      className="calendarElement"
+                    />
+                  }
+                </Box>
+
+              </Box>
+              {/* {isDate ? <DateRange
                 editableDateInputs={true}
                 onChange={item => { setState([item.selection]); closeDate() }}
                 moveRangeOnFirstSelection={false}
                 ranges={state}
-              /> : <Button onClick={() => setIsDate(true)}>Select Date</Button>}
+              /> : <Button onClick={() => setIsDate(true)}>Select Date</Button>} */}
               <Select
                 w="200px"
                 placeholder="Sort By"
