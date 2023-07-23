@@ -31,7 +31,7 @@ import { login } from "../redux/userSlice";
 import { apiRequest } from "../helper/api";
 
 export const LoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false); // Add state for showing/hiding password
+  const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Invalid Email").required("Email is Required"),
@@ -42,14 +42,13 @@ export const LoginForm = () => {
     <ModalOverlay
       bg='none'
       backdropFilter='auto'
-      // backdropInvert='80%'
+
       backdropBlur='2px'
     />
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayTwo/>)
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -79,12 +78,7 @@ export const LoginForm = () => {
       if (result.data.data.role === 2) {
         navigate("/admin/dashboard");
       } 
-      // else {
-      //   navigate("/");
-
-      // }
     } catch (error) {
-      // console.log(error);
       Swal.fire({
         icon: "error",
         title: "failed attempt",
@@ -153,7 +147,7 @@ export const LoginForm = () => {
                   <Field
                     as={Input}
                     id="password"
-                    type={showPassword ? "text" : "password"} // Show/hide password based on state
+                    type={showPassword ? "text" : "password"} 
                     name="password"
                     borderColor="blue.800"
                     placeholder="Password"
@@ -164,7 +158,7 @@ export const LoginForm = () => {
                   size="sm"
                   backgroundColor="blue.800"
                   color="white"
-                  onClick={() => setShowPassword(!showPassword)} // Toggle show/hide password
+                  onClick={() => setShowPassword(!showPassword)} 
                 >
                   {showPassword ? "Hide" : "Show"}
                 </Button>
@@ -192,7 +186,6 @@ export const LoginForm = () => {
               </Form>
             </Formik>
             <Link
-              // as={Button}
               variant="link"
               onClick={() => {
                 onClose();
@@ -201,7 +194,7 @@ export const LoginForm = () => {
               color="blue.800"
               mt={5}
             >
-              Forgot password? Reset here
+              Lupa Password? Reset di sini
             </Link>
           </ModalBody>
         </ModalContent>

@@ -63,8 +63,6 @@ const List = () => {
         },
       });
 
-      // console.log(result.data.data)
-      console.log("GET");
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -94,7 +92,6 @@ const List = () => {
       );
       getCart();
     } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         toast({
           title: "",
@@ -141,7 +138,7 @@ const List = () => {
     getCart();
     getData();
   }, [cart]);
-  console.log("DATA USER", user.value.username);
+
   useEffect(() => {
     if (user.value.username === "") {
       setCart([]);
@@ -214,6 +211,12 @@ const List = () => {
                             fontSize="sm"
                           >
                             {rupiah(i.price)}
+                          </Text>
+                          <Text
+                            color={mode("gray.600", "gray.400")}
+                            fontSize="sm"
+                          >
+                            Stock : {i.defaultQty}
                           </Text>
                         </Stack>
                       </Box>

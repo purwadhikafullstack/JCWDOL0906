@@ -459,7 +459,7 @@ module.exports = {
           },
         }
       );
-      const resetLink = `http://localhost:3000/resetpassword/${token}`;
+      const resetLink = `http://localhost:3000/reset-password/${token}`;
       const tempEmail = fs.readFileSync(
         require.resolve("../templates/reset.html"),
         { encoding: "utf8" }

@@ -44,8 +44,8 @@ import { clear } from "../redux/cartSlice";
 export const Navbar = () => {
 
   const { isOpen, onToggle } = useDisclosure();
-  // const [isLogin, setIsLogin] = useState(false);
-  const isLogin = localStorage.getItem("user");
+  const [isLogin, setIsLogin] = useState(false);
+  // const isLogin = localStorage.getItem("user");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,12 +68,12 @@ export const Navbar = () => {
     if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
-    // console.log("value", user.value.id);
-    // if (user.value.id) {
-    //   setIsLogin(true);
-    // } else {
-    //   setIsLogin(false);
-    // }
+    console.log("value", user.value.id);
+    if (user.value.id) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
   }, [user]);
 
 
@@ -149,7 +149,6 @@ export const Navbar = () => {
               ) : (
                 ""
               )}
-              {/* <SearchBar /> */}
               {isLogin ? (
                 <div>
                   <Menu direction="row">
@@ -182,7 +181,7 @@ export const Navbar = () => {
                   <RegistrationForm />
                   <LoginForm />
                 </div>
-              )}
+              )}         
             </Flex>
           </Flex>
         </Flex>

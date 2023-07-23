@@ -15,6 +15,8 @@ import * as Yup from 'yup';
 import { apiRequest } from '../../../helper/api';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import FooterUserPage from '../../../components/footer';
+
 export const ChangePassword = () => {
   const ChangeSchema = Yup.object().shape({
     password: Yup.string().required('Password is Required'),
@@ -69,6 +71,7 @@ export const ChangePassword = () => {
   };
 
   return (
+    <>
     <Flex minH={'100vh'} align={'center'} justify={'center'} bg={useColorModeValue('white', 'gray.800')}>
       <Stack spacing={4} w={'full'} maxW={'md'} bg={useColorModeValue('blue.50', 'gray.700')} rounded={'xl'} boxShadow={'lg'} p={6} my={12}>
         <Heading lineHeight={1.1} color="blue.800" fontSize={{ base: '2xl', md: '3xl' }}>
@@ -118,5 +121,7 @@ export const ChangePassword = () => {
         </Formik>
       </Stack>
     </Flex>
+    <FooterUserPage/>
+</>
   );
 };
