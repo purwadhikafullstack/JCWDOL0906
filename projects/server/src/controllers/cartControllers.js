@@ -11,33 +11,19 @@ const { calculatePrescription } = require("../helpers/units");
 
 module.exports = {
   getAll: async (req, res) => {
-    // try {
-    //     let sort = ['product_id', 'ASC']
-    //     let limit = 5
-    //     let offset = 0
-    //     let param = {
-    //         is_deleted: 0,
-    //     }
     if (req.query.page && req.query.page > 1) {
       offset = (Number(req.query.page) - 1) * limit;
     }
-    //     const { count, rows } = await cart.findAndCountAll({
-    //         include: [product],
-    //         order: [sort],
-    //         offset: offset,
-    //         limit: limit
-    //     })
-    //     res.status(200).json(successResponse("", rows, count))
-    // } catch (error) {
-    //     console.log(error)
-    //     res.status(500).json(failedResponse(error))
-    // }
     let limit = 5;
     let offset = 0;
 
     try {
       const [a] = await sequelize.query(
-        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
+        `SELECT c.*,p.*,s.default_unit_qty as defaultQty FROM Carts c 
+        JOIN Products p ON c.product_id = p.id 
+        JOIN stocks s ON s.product_id = c.product_id
+        LIMIT ${limit} 
+        OFFSET ${offset}`
       );
 
       console.log(a);

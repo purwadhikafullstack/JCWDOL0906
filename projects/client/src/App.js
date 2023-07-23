@@ -47,12 +47,12 @@ function App() {
 
   let keepLogin = async () => {
     let response = await CheckLogin();
-    console.log("responsee",response);
+    console.log("responsee", response);
     if (response.dataUser !== null) {
       dispatch(login(response.dataUser));
       localStorage.setItem("user", JSON.stringify(response.tokenUser));
     }
-  //   // setisLoading(false);
+    //   // setisLoading(false);
   };
   // const test = "test";
   useEffect(() => {
@@ -62,17 +62,17 @@ function App() {
     //   dispatch(login(userLogin));
     // }
     const token = JSON.parse(localStorage.getItem("user"));
-    setTimeout(() => {setIsLoading(false)}, 1000);
+    setTimeout(() => { setIsLoading(false) }, 1000);
     const fetchUser = async (token) => {
       try {
         const result = await apiRequest.get(`/auth/auth`, {
-          headers: {Authorization : `Bearer ${token}`}
+          headers: { Authorization: `Bearer ${token}` }
         });
         console.log("result", result);
-        dispatch(login({...result.data.data}));
+        dispatch(login({ ...result.data.data }));
       } catch (error) {
         console.log(error)
-    //     // window.location.href = "/token-invalid";
+        //     // window.location.href = "/token-invalid";
         localStorage.removeItem("user");
       }
     };
@@ -88,71 +88,71 @@ function App() {
 
   return (
     <>
-    {isLoading ? (<Loading/>) :
-    (
-    <ChakraProvider theme={theme} resetCss={false} position="relative">
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-          <HomePage />}
-          errorElement={<ErrorPage />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/verification/:token" element={<Verification />} />
-        <Route
-          path="*"
-          element={
-            // <ProtectedRoute>
-            <Dashboard />
-            // </ProtectedRoute>
-          }
-        />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/store/product" element={<UserProduct />} />
-        <Route path="/cart" element={<ShoppingCart />} />
-        <Route path="/prescription" element={<ModalPrescription />} />
-        <Route path="/checkout" element={<CheckOut />} />
+      {isLoading ? (<Loading />) :
+        (
+          <ChakraProvider theme={theme} resetCss={false} position="relative">
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={
+                  <HomePage />}
+                  errorElement={<ErrorPage />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/verification/:token" element={<Verification />} />
+                <Route
+                  path="*"
+                  element={
+                    // <ProtectedRoute>
+                    <Dashboard />
+                    // </ProtectedRoute>
+                  }
+                />
+                <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/confirm-email" element={<ConfirmEmail />} />
+                <Route path="/store/product" element={<UserProduct />} />
+                <Route path="/cart" element={<ShoppingCart />} />
+                <Route path="/prescription" element={<ModalPrescription />} />
+                <Route path="/checkout" element={<CheckOut />} />
 
-        <Route
-          path="/store/product/detail/:id"
-          element={<StoreProductDetail />}
-        />
-        {/* <Route path="/myaccount" Component={MyAccount} /> */}
-        <Route path="/myaccount" Component={UserProfile} />
-        <Route></Route>
-        <Route path="/mytransaction" element={<UserTransaction />} />
-        <Route path="/mytransaction/checkout" element={<CheckOut />} />
-        <Route
-          path="/mytransaction/waiting-payment"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/waiting-confirmation"
-          element={<UserTransaction />}
-        />
-        <Route path="/mytransaction/received" element={<UserTransaction />} />
-        <Route path="/mytransaction/payment" element={<UserTransaction />} />
-        <Route
-          path="/mytransaction/on-the-way"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/on-process"
-          element={<UserTransaction />}
-        />
-        <Route
-          path="/mytransaction/cancelled"
-          element={<UserTransaction />}
-        />
-        {/* <Route path="/admin/unit" Component={Dashboard} /> */}
-      </Routes>
-    </BrowserRouter>
-  </ChakraProvider>
-    )
-  }
-  </>
+                <Route
+                  path="/store/product/detail/:id"
+                  element={<StoreProductDetail />}
+                />
+                {/* <Route path="/myaccount" Component={MyAccount} /> */}
+                <Route path="/myaccount" Component={UserProfile} />
+                <Route></Route>
+                <Route path="/mytransaction" element={<UserTransaction />} />
+                <Route path="/mytransaction/checkout" element={<CheckOut />} />
+                <Route
+                  path="/mytransaction/waiting-payment"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/waiting-confirmation"
+                  element={<UserTransaction />}
+                />
+                <Route path="/mytransaction/received" element={<UserTransaction />} />
+                <Route path="/mytransaction/payment" element={<UserTransaction />} />
+                <Route
+                  path="/mytransaction/on-the-way"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/on-process"
+                  element={<UserTransaction />}
+                />
+                <Route
+                  path="/mytransaction/cancelled"
+                  element={<UserTransaction />}
+                />
+                {/* <Route path="/admin/unit" Component={Dashboard} /> */}
+              </Routes>
+            </BrowserRouter>
+          </ChakraProvider>
+        )
+      }
+    </>
   );
 }
 
