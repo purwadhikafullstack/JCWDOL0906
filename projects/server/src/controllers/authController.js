@@ -66,7 +66,7 @@ module.exports = {
           },
         }
       );
-      const verificationLink = `http://localhost:3000/verification/${token}`;
+      const verificationLink = `https://jcwdol0906.purwadhikabootcamp.com/verification/${token}`;
       const tempEmail = fs.readFileSync(
         require.resolve("../templates/verification.html"),
         { encoding: "utf8" }
@@ -192,7 +192,7 @@ module.exports = {
           },
         }
       );
-      const resetLink = `http://localhost:3000/reset-password/${token}`;
+      const resetLink = `https://jcwdol0906.purwadhikabootcamp.com/reset-password/${token}`;
       const tempEmail = fs.readFileSync(
         require.resolve("../templates/reset.html"),
         { encoding: "utf8" }
