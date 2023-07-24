@@ -1,11 +1,8 @@
 import {
   Box,
   Flex,
-  Text,
   IconButton,
-  Collapse,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
   Image,
   MenuButton,
@@ -13,38 +10,25 @@ import {
   Avatar,
   MenuItem,
   Menu,
-  Button,
-  MenuGroup,
-  Badge,
   AvatarBadge,
 } from "@chakra-ui/react";
 
-import { HamburgerIcon, CloseIcon, Icon } from "@chakra-ui/icons";
-
+import { HamburgerIcon, CloseIcon} from "@chakra-ui/icons";
 import { RegistrationForm } from "../components/registerForm";
 import { LoginForm } from "../components/loginForm";
-// import { SearchBar } from "../components/searchbar";
-import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
+import logo_gmedsnial from "../assets/svg/logogmedsnial3.png";
 import { useEffect, useState } from "react";
-import MyAccount from "../pages/user/profile/account";
-
-//imprt redux
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import { useNavigate, useLocation } from "react-router-dom";
-import { BsCart, BsCartPlus } from "react-icons/bs";
-// import {
-//   DocumentIcon,
-//   PersonIcon,
-//   RocketIcon,
-// } from "../components/adminComponents/Icons/Icons";
-
+import { BsCart } from "react-icons/bs";
 import { clear } from "../redux/cartSlice";
 
 export const Navbar = () => {
 
   const { isOpen, onToggle } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userSlice);
@@ -62,11 +46,9 @@ export const Navbar = () => {
   const { cart } = useSelector((state) => state.cartSlice);
 
   useEffect(() => {
-    console.log("role", user.value.role);
     if (user.value.role === 2) {
       navigate("/admin/dashboard");
     }
-    console.log("value", user.value.id);
     if (user.value.id) {
       setIsLogin(true);
     } else {
@@ -76,7 +58,6 @@ export const Navbar = () => {
 
 
   useEffect(() => {
-    // console.log(username)
   }, [username]);
 
   const location = useLocation();
@@ -86,10 +67,10 @@ export const Navbar = () => {
     <>
       <Box>
         <Flex
-            bg={useColorModeValue("blue.50", "blue.100")}
+          bg={useColorModeValue("blue.50", "blue.100")}
           color={useColorModeValue("gray.600", "white")}
-          minH={"70px"} // Adjust the minimum height to make the navbar slightly bigger
-          py={{ base: 3 }} // Adjust the vertical padding to make the navbar slightly bigger
+          minH={"70px"}
+          py={{ base: 3 }}
           px={{ base: 4 }}
           borderBottom={3}
           borderStyle={"solid"}
@@ -121,7 +102,7 @@ export const Navbar = () => {
           >
             <Image
               src={logo_gmedsnial}
-              height={"70px"}
+              height={"90px"}
               alt={"Icon Logo"}
               fit={"logo"}
               onClick={() => navigate("store/product")}
@@ -147,7 +128,6 @@ export const Navbar = () => {
               ) : (
                 ""
               )}
-              {/* <SearchBar /> */}
               {isLogin ? (
                 <div>
                   <Menu direction="row">

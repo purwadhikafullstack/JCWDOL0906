@@ -6,7 +6,6 @@ const PanelContent = {
     pe: "15px",
   },
 };
-
 export const PanelContentComponent = {
   components: {
     PanelContent,

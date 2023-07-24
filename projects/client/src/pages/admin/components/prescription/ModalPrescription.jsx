@@ -22,16 +22,15 @@ const ModalPrescription = ({
   Open,
   Close,
   isError,
-  Data,
   Title,
-  SetUnit,
   Cancel,
   Submit,
+  checkOutPrescription,
   code,
 }) => {
   return (
     <>
-      <Modal isOpen={Open} onClose={Close} size="5xl">
+      <Modal isOpen={Open} onClose={Close} size="6xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{Title}</ModalHeader>
@@ -41,7 +40,7 @@ const ModalPrescription = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={Submit}>
+            <Button colorScheme="blue" mr={3} onClick={checkOutPrescription}>
               Check Out
             </Button>
             <Button onClick={Cancel}>Cancel</Button>

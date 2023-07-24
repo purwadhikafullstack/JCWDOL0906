@@ -18,17 +18,16 @@ const OnProcess = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-            console.log(result.data.data)
+
             setTransaction(result.data.data)
         } catch (error) {
 
         }
     }
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
-            console.log(result.data.data)
+
             setUserTransaction(result.data.data.transaction)
             setDetailTransaction(result.data.data.details)
             onOpen()
@@ -36,23 +35,18 @@ const OnProcess = () => {
 
         }
     }
-
     const uploadBukti = async (e) => {
-        console.log(e)
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-            console.log(result.data.data)
             swalSuccess(result.data.message);
         } catch (error) {
-            console.log(error);
             swalFailed(error.response.data.message);
         }
     };
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -62,8 +56,7 @@ const OnProcess = () => {
             return <Image w='80px' src='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/09/2138107074.jpg' />
         }
     }
-    console.log(userTransaction)
-    console.log(detailTransaction)
+
     useEffect(() => {
         getDataByStatus()
     }, [])
@@ -89,7 +82,6 @@ const OnProcess = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -106,17 +98,14 @@ const OnProcess = () => {
                                             </CardHeader>
                                             <CardBody>
                                                 <Stack direction='row' h='100px'>
-
                                                     <Center>
                                                         <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     </Center>
-
 
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                         </Card>
@@ -143,11 +132,9 @@ const OnProcess = () => {
                                 </Card>
                             )}
                             <Divider />
-
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
-
                                         <Flex justify='space-between' align='center'>
                                             <Box pt="4">
                                                 <Stack spacing="0.5">
@@ -164,12 +151,8 @@ const OnProcess = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Ongkos Pengiriman :</Text>
@@ -182,10 +165,8 @@ const OnProcess = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
-
                                         <Flex justify='space-between' align='center'>
                                             <Text fontWeight='600'> Total Pembayaran :</Text>
                                             <Text>{rupiah(i.total_price)}</Text>
@@ -195,7 +176,6 @@ const OnProcess = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text fontWeight='600'> Bukti Pembayaran :</Text>
@@ -205,7 +185,6 @@ const OnProcess = () => {
                             )}
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close

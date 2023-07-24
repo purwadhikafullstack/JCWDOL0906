@@ -19,34 +19,46 @@ import {
   AccordionIcon,
   IconButton,
   Textarea,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Avatar,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import Address from "./address";
+import { FaUser, FaMapMarkerAlt } from "react-icons/fa";
+import { apiRequest } from "../../../helper/api";
 
 const MyAccount = () => {
   const [fullName, setFullName] = useState();
   const [birthdate, setBirthdate] = useState();
   const [gender, setGender] = useState();
   const [picture, setPicture] = useState();
-  console.log(picture);
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const handleTabChange = (index) => {
+    setCurrentTab(index);
+  };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/auth/profile", {
+    apiRequest
+      .get("/auth/profile", {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       })
       .then((result) => {
-        console.log(result);
         setFullName(result.data.result.full_name);
         setBirthdate(
           new Date(result.data.result.birthdate).toISOString().split("T")[0]
         );
         setGender(result.data.result.gender);
-        setPicture("http://localhost:8000" + result.data.result.picture);
+        setPicture(
+          process.env.REACT_APP_IMAGE_API + result.data.result.picture
+        );
       });
   }, []);
 
@@ -67,17 +79,12 @@ const MyAccount = () => {
       formData.append("gender", gender);
 
       formData.append("picture", picture);
-      console.log(formData);
 
-      let result = await axios.patch(
-        "http://localhost:8000/api/auth/profile/edit",
-        formData,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("userToken"),
-          },
-        }
-      );
+      let result = await apiRequest.patch("/auth/profile/edit", formData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+      });
       // modalUpdate.onClose();
       // getData();
       // swalSuccess(result.data.message);
@@ -110,97 +117,92 @@ const MyAccount = () => {
   // Perform save/update logic here
 
   return (
-    <Box bg="white" minHeight="100vh">
-      <Box p={4} maxWidth={400} mx="auto">
-        <Box textAlign="left" mb={4}>
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                onClick={() => handleBreadcrumbClick("My Account")}
-              >
-                My Account
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => handleBreadcrumbClick("Address")}>
-                Address
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                onClick={() => handleBreadcrumbClick("Transaction History")}
-              >
-                Transaction History
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbLink onClick={() => handleBreadcrumbClick("Logout")}>
-                Logout
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
-        </Box>
-        {currentBreadcrumb === "My Account" && (
-          <form onSubmit={updateDetailProfile} encType="multipart/form-data">
-            <VStack spacing={4}>
-              <Center>
-                <Avatar size="2xl" name={picture} src={picture} />
-              </Center>
-              <FormControl>
-                <FormLabel>Full Name</FormLabel>
-                <Input
-                  type="text"
-                  value={fullName}
-                  placeholder="Enter your full name"
-                  id="full_name"
-                  onChange={(e) => {
-                    setFullName(e.target.value);
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Birthdate</FormLabel>
-                <Input
-                  type="date"
-                  value={birthdate}
-                  id="birthdate"
-                  onChange={(e) => {
-                    setBirthdate(e.target.value);
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Gender</FormLabel>
-                <Select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  id="gender"
-                >
-                  <option value="">Select gender</option>
-                  <option value="0">Male</option>
-                  <option value="1">Female</option>
-                  <option value="2">Other</option>
-                </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Profile Picture</FormLabel>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  id="picture"
-                  onChange={(e) =>
-                    setPicture(URL.createObjectURL(e.currentTarget.files[0]))
-                  }
-                />
-              </FormControl>
-              <Button colorScheme="blue" type="submit">
-                Save
-              </Button>
-            </VStack>
-          </form>
-        )}
-        {currentBreadcrumb === "Address" && <Address />}
-      </Box>
+    <Box textAlign="left" mb={4}>
+      <Tabs
+        onChange={handleTabChange}
+        isFitted
+        variant="soft-rounded"
+        colorBackground="blue.800"
+      >
+        <TabList mb={4}>
+          <Tab
+            onClick={() => handleTabChange(0)}
+            _selected={{ color: "white", bg: "blue.800" }}
+          >
+            <FaUser /> My Account
+          </Tab>
+          <Tab
+            onClick={() => handleTabChange(1)}
+            _selected={{ color: "white", bg: "blue.800" }}
+          >
+            <FaMapMarkerAlt /> Address
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <form onSubmit={updateDetailProfile} encType="multipart/form-data">
+              <VStack spacing={4}>
+                <Center>
+                  <Avatar size="2xl" name={picture} src={picture} />
+                </Center>
+                <FormControl>
+                  <FormLabel>Full Name</FormLabel>
+                  <Input
+                    type="text"
+                    value={fullName}
+                    placeholder="Enter your full name"
+                    id="full_name"
+                    onChange={(e) => {
+                      setFullName(e.target.value);
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Birthdate</FormLabel>
+                  <Input
+                    type="date"
+                    value={birthdate}
+                    id="birthdate"
+                    onChange={(e) => {
+                      setBirthdate(e.target.value);
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    id="gender"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                    <option value="2">Other</option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    id="picture"
+                    onChange={(e) =>
+                      setPicture(URL.createObjectURL(e.currentTarget.files[0]))
+                    }
+                  />
+                </FormControl>
+                <Button colorScheme="blue" type="submit">
+                  Save
+                </Button>
+              </VStack>
+            </form>
+          </TabPanel>
+          <TabPanel>
+            <Address />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };

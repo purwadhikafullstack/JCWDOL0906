@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { FaTwitter } from 'react-icons/fa';
-import logo_gmedsnial from "../assets/svg/logogmedsnial1.png";
+import logo_gmedsnial from "../assets/svg/logogmedsnial3.png";
 
 const Logo = (props) => {
     return (
@@ -53,7 +53,7 @@ export default function FooterUserPage() {
                 spacing={4}
                 justify={{ base: 'center', md: 'space-between' }}
                 align={{ base: 'center', md: 'center' }}>
-                <Image src={logo_gmedsnial} height='45px' />
+                <Image src={logo_gmedsnial} height='50px' />
                 <Text>© 2023 G-Medsnial. All rights reserved</Text>
                 <Stack direction={'row'} spacing={6}>
 

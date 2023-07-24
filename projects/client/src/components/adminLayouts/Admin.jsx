@@ -32,7 +32,7 @@ import bgAdmin from "../../assets/img/admin-background.png";
 import Sidebar from "../adminComponents/Sidebar/Sidebar";
 import AdminNavbar from "../adminComponents/Navbars/AdminNavbar";
 import ProtectedRoute from "../protectedRoute";
-import logo_gmedsnial from "../../assets/svg/logogmedsnial1.png"
+import logo_gmedsnial from "../../assets/svg/logogmedsnial3.png"
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -43,7 +43,7 @@ export default function Dashboard(props) {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "G-Medsnial";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -87,7 +87,6 @@ export default function Dashboard(props) {
     return activeNavbar;
   };
   const getRoutes = (routes) => {
-    console.log(routes)
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -128,28 +127,18 @@ export default function Dashboard(props) {
         logo={
           <Stack direction='row' spacing='12px' align='center' justify='center'>
             {colorMode === "dark" ? (
-             <Image
-              src={logo_gmedsnial}
-              height={'40px'}
-              weight={'84px'}
-             />
+              <Image
+                src={logo_gmedsnial}
+                height={'90px'}
+                weight={'84px'}
+              />
             ) : (
               <Image
-              src={logo_gmedsnial}
-              height={'60px'}
-              weight={'84px'}
-             />
+                src={logo_gmedsnial}
+                height={'90px'}
+                weight={'84px'}
+              />
             )}
-            {/* <Box
-              w='1px'
-              h='20px'
-              bg={colorMode === "dark" ? "white" : "gray.700"}
-            />
-            {colorMode === "dark" ? (
-              <ChakraLogoLight w='82px' h='21px' />
-            ) : (
-              <ChakraLogoDark w='82px' h='21px' />
-            )} */}
           </Stack>
         }
         display='none'
@@ -171,12 +160,12 @@ export default function Dashboard(props) {
         </Portal>
         {getRoute() ? (
           <PanelContent>
-          <ProtectedRoute>
-            <PanelContainer>
-              <Routes>
-                {getRoutes(routes)}
-              </Routes>
-            </PanelContainer>
+            <ProtectedRoute>
+              <PanelContainer>
+                <Routes>
+                  {getRoutes(routes)}
+                </Routes>
+              </PanelContainer>
             </ProtectedRoute>
           </PanelContent>
         ) : null}

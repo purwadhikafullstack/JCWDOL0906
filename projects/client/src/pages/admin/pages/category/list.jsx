@@ -41,8 +41,7 @@ const CategoryList = () => {
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
       let result = await apiRequest.post("/categories", formData);
-      // console.log("adminId",adminId);
-      console.log(result);
+
       modalAdd.onClose();
       getAllCategory();
       swalSuccess(result.data.message);
@@ -62,7 +61,7 @@ const CategoryList = () => {
   };
   const updateCategory = async (e) => {
     try {
-     
+
       let image = document.getElementById("image").files[0];
       let category_name = document.getElementById("category_name").value;
       let formData = new FormData();
@@ -72,7 +71,7 @@ const CategoryList = () => {
       };
       formData.append("data", JSON.stringify(data));
       formData.append("image", image);
-      
+
       let result = await apiRequest.patch(
         "/categories/" + selectedCategoryId,
         formData,
@@ -83,7 +82,7 @@ const CategoryList = () => {
       getAllCategory();
       swalSuccess(result.data.message);
     } catch (error) {
-      console.log("error", error);
+
       swalFailed(error.response.data.message);
     }
   };
@@ -91,7 +90,7 @@ const CategoryList = () => {
   const deleteCategory = async (e) => {
     try {
       let result = await apiRequest.delete("/categories/" + e.target.id);
-      // console.log(result)
+
       getAllCategory();
       swalSuccess(result.data.message);
     } catch (error) {
@@ -147,7 +146,7 @@ const CategoryList = () => {
           //untuk mengganti halaman
           onPageChange={(event, pageInfo) => {
             setActivePage(pageInfo.activePage);
-            console.log(pageInfo);
+
           }}
         />
       </Flex>

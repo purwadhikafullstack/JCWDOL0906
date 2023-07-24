@@ -8,9 +8,11 @@ import {
   FormControl,
   FormLabel,
   Input,
+  RadioGroup,
   Select,
   Button,
   VStack,
+  HStack,
   Image,
   Center,
   Accordion,
@@ -28,6 +30,7 @@ import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Provider } from "react-redux";
 import { swalFailed, swalSuccess } from "../../../helper/index";
 import { apiRequest } from "../../../helper/api";
+import { FaTrash } from "react-icons/fa";
 const cities = require("./city.json").rajaongkir.results;
 const provinces = require("./province.json").rajaongkir.results;
 const codes = require("./city.json").rajaongkir.results;
@@ -42,11 +45,11 @@ const Address = () => {
   }, []);
 
   const [province, setProvince] = useState(" ");
-  console.log(province);
   const [city, setCity] = useState(" ");
   const [code, setCode] = useState([]);
   const [newCity, setNewCity] = useState([]);
   const [detail, setDetail] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
 
   const getAddress = async (e) => {
     try {
@@ -56,10 +59,8 @@ const Address = () => {
         },
       });
       setDetail(result.data.data);
-      console.log(result.data.data);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log(error);
     }
   };
 
@@ -85,9 +86,8 @@ const Address = () => {
         is_default,
         postal_code,
       };
-      console.log(data);
 
-      let result = await axios.post("http://localhost:8000/api/address", data, {
+      let result = await apiRequest.post("/address", data, {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
@@ -105,14 +105,36 @@ const Address = () => {
         (e) => e.province_id === province.split("/")[0]
       );
       setNewCity(arrayCity);
-      console.log(arrayCity);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const codeFilter = (e) => {
     const arrayCode = codes.filter((e) => e.city_id === city.split("/")[0]);
     setCode(arrayCode);
-    console.log(arrayCode);
+  };
+
+  const handleChangeAddress = (event) => {
+    setSelectedAddress(event);
+    const updatedDetail = detail.map((address) => ({
+      ...address,
+      is_default: address.label === event ? 1 : 0,
+    }));
+
+    console.log("Updated Address List:", updatedDetail);
+  };
+
+  const handleDeleteAddress = async (addressId) => {
+    try {
+      let result = await apiRequest.delete("/address/" + addressId, {
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
+        },
+      });
+      getAddress();
+    } catch (error) {
+      swalFailed(error.response.data.message);
+    }
+    console.log(`Delete address with ID ${addressId}`);
   };
 
   useEffect(() => {
@@ -132,13 +154,13 @@ const Address = () => {
       <AccordionItem>
         <h2>
           <AccordionButton>
-            <Box flex="1" textAlign="left">
+            <Box flex="1" textAlign="center">
               Create New Address
             </Box>
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={4}>
+        <AccordionPanel pb={8}>
           <VStack spacing={4} align="flex-start">
             <form onSubmit={createAddressHandler} encType="multipart/form-data">
               <VStack spacing={4}>
@@ -230,13 +252,40 @@ const Address = () => {
       <AccordionItem>
         <h2>
           <AccordionButton>
-            <Box flex="1" textAlign="left">
+            <Box flex="1" textAlign="center">
               Your Addresses
             </Box>
             <AccordionIcon />
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
+          <VStack spacing={4} align="flex-start">
+            <Stack>
+              <RadioGroup
+                value={selectedAddress}
+                onChange={handleChangeAddress}
+              >
+                {detail.map((address, index) => (
+                  <HStack key={index}>
+                    <Radio size="lg" value={address.label} colorScheme="blue">
+                      {address.label} {address.address_name}{" "}
+                      {address.province_name} {address.city_name}{" "}
+                      {address.postal_code}
+                    </Radio>
+                    <IconButton
+                      icon={<FaTrash />}
+                      colorScheme="red"
+                      aria-label="Delete Address"
+                      size="lg"
+                      onClick={() => handleDeleteAddress(address.id)}
+                    />
+                  </HStack>
+                ))}
+              </RadioGroup>
+            </Stack>
+          </VStack>
+        </AccordionPanel>
+        {/* <AccordionPanel pb={4}>
           <VStack spacing={4} align="flex-start">
             <Stack>
               {detail.map((detail, index) =>
@@ -268,7 +317,7 @@ const Address = () => {
               )}
             </Stack>
           </VStack>
-        </AccordionPanel>
+        </AccordionPanel> */}
       </AccordionItem>
     </Accordion>
   );

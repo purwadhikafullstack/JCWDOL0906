@@ -33,19 +33,10 @@ export const ResetPassword = () => {
       if (token) {
         const response = await apiRequest.post(
           url,
-          {
-            password: values.password,
-            confirmPassword: values.confirmPassword,
-          },
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
+          { password: values.password, confirmPassword: values.confirmPassword},
+          { headers: { authorization: `Bearer ${token}`}});
 
         alert(response.data.message);
-        console.log(response);
         setTimeout(() => {
           navigate('/');
         }, 4000);
@@ -53,14 +44,11 @@ export const ResetPassword = () => {
       Swal.fire({
         icon: 'success',
         title: 'Reset Password Succes',
-        // text: response.data.message,
         customClass: {
           container: 'my-swal',
         },
       });
-
     } catch (error) {
-      console.log(error);
       Swal.fire({
         icon: 'error',
         title: 'Failed Attempt',

@@ -17,9 +17,7 @@ const ListConversionUnits = () => {
     const textColor = useColorModeValue("gray.700", "white");
     const { onOpen, onClose, isOpen } = useDisclosure()
     const modalEdit = useDisclosure()
-    console.log(idUnit)
-    console.log(unitName)
-    console.log(dataEdit)
+
     const getData = async () => {
         try {
             let result = await apiRequest.get("/unit/conversion")
@@ -27,8 +25,7 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
@@ -42,20 +39,18 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const getDataEdit = async (e) => {
         try {
             let result = await apiRequest.get('/unit/conversion/' + e.target.id)
-            console.log(result)
+
             setDataEdit(result.data.dataValues)
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
-
+    };
     const handleUpdate = async () => {
-        console.log(idUnit)
+
         try {
             if (unitName === '') { setError(true); return; }
             let result = await apiRequest.post("/unit/conversion/" + dataEdit.id, {
@@ -68,12 +63,11 @@ const ListConversionUnits = () => {
         } catch (error) {
             swalFailed(error.response.data.message)
         }
-    }
+    };
 
     useEffect(() => {
         getData()
     }, [])
-
 
     return (
         <>
@@ -92,7 +86,6 @@ const ListConversionUnits = () => {
                     </Box>
                 </Flex>
             </Card>
-
             <Modal
                 isOpen={isOpen}
                 onClose={onClose}
@@ -111,9 +104,7 @@ const ListConversionUnits = () => {
                                 ""
                             )}
                         </FormControl>
-
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={() => handleSubmit()}>
                             Save
@@ -122,8 +113,6 @@ const ListConversionUnits = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
-            {/* MODAL EDIT */}
             <ModalEditForm
                 Title="Edit Conversion Unit"
                 Open={modalEdit.isOpen}
@@ -133,11 +122,7 @@ const ListConversionUnits = () => {
                 SetUnit={(e) => setUnitName(e.target.value)}
                 Cancel={() => { modalEdit.onClose(); setError(false); }}
                 Submit={() => handleUpdate()} />
-            {/* MODAL EDIT */}
-
         </>
-
     )
 }
-
 export default ListConversionUnits

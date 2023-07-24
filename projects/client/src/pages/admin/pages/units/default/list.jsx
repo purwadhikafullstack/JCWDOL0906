@@ -18,15 +18,13 @@ const ListDefaultUnits = () => {
         try {
             let result = await apiRequest.get("/unit/default")
             setUnits(result.data.data)
-            console.log(result)
+
         } catch (error) {
             swalFailed(error.response.data.message)
         }
     }
 
-    const { colorMode } = useColorMode();
 
-    console.log("unitName ===========>     ", unitName)
     const handleSubmit = async () => {
         try {
             if (document.getElementById('unit').value === '') { setError(true); return; }
@@ -45,7 +43,7 @@ const ListDefaultUnits = () => {
     const getDataEdit = async (e) => {
         try {
             let result = await apiRequest.get('/unit/default/' + e.target.id)
-            console.log(result)
+
             setDataEdit(result.data.dataValues)
         } catch (error) {
             swalFailed(error.response.data.message)
@@ -72,13 +70,10 @@ const ListDefaultUnits = () => {
     }, [])
 
     useEffect(() => {
-        console.log("unitName ===========>     ", unitName)
+
     }, [unitName])
 
     const textColor = useColorModeValue("gray.700", "white");
-    const tableRowColor = useColorModeValue("#F7FAFC", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    const textTableColor = useColorModeValue("gray.500", "white");
     return (
         <>
 

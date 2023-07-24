@@ -1,18 +1,12 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Container,
-  Divider,
   Flex,
-  Grid,
   Heading,
   HStack,
   Icon,
   Image,
-  Skeleton,
   Stack,
   StackDivider,
   Text,
@@ -23,24 +17,24 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { rupiah, swalFailed } from "../../../helper";
+import { rupiah, swalFailed, swalSuccess } from "../../../helper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   BsDash,
-  BsDashCircle,
   BsDashLg,
   BsPlus,
   BsPlusCircle,
   BsPlusLg,
   BsTrash,
   BsTrash2,
+  BsDashCircle
 } from "react-icons/bs";
 import { FaArrowRight } from "react-icons/fa";
 import { add } from "../../../redux/cartSlice";
 import ProductCard from "../../../components/store/product/productCard";
 import { apiRequest } from "../../../helper/api";
 
-const List = ({ serviceCost }) => {
+const List = ({ serviceCost, code }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,7 +49,6 @@ const List = ({ serviceCost }) => {
   const { cart, total_price, courier, address_id } = useSelector(
     (state) => state.cartSlice
   );
-  console.log("carts1", carts);
 
   const getCart = async () => {
     try {
@@ -65,7 +58,6 @@ const List = ({ serviceCost }) => {
         },
       });
 
-      // console.log(result.data.data)
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -75,11 +67,8 @@ const List = ({ serviceCost }) => {
         total_price += i.total_price;
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
-
   const updateItemQty = async (id, method) => {
     try {
       const result = await apiRequest.patch(
@@ -95,7 +84,6 @@ const List = ({ serviceCost }) => {
       );
       getCart();
     } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         toast({
           title: "",
@@ -108,7 +96,6 @@ const List = ({ serviceCost }) => {
       }
     }
   };
-
   const deleteItem = async (id, method) => {
     try {
       const result = await apiRequest.delete("/cart/" + id, {
@@ -117,18 +104,14 @@ const List = ({ serviceCost }) => {
         },
       });
       getCart();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
-
   const getRecomendItem = () => {
     let item = product.filter(
       (pr) => !carts.find((cr) => cr.product_id === pr.id)
     );
     setRecomendItem(item);
   };
-
   const getData = async () => {
     try {
       const result = await apiRequest.get("/store/product?page=" + pageNumber);
@@ -137,7 +120,6 @@ const List = ({ serviceCost }) => {
       swalFailed(error.response.data.message);
     }
   };
-
   const checkOut = async () => {
     let data = {
       total_price: Number(serviceCost) + Number(total_price),
@@ -147,23 +129,18 @@ const List = ({ serviceCost }) => {
       service_cost: Number(serviceCost),
       cart: carts,
     };
-    console.log('data', data)
     try {
       let response = await apiRequest.post("/transaction/checkout", data, {
         headers: {
           Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")),
         },
       });
-      console.log(response);
+      swalSuccess(response.data.message);
+      navigate("/transaction");
     } catch (error) {
       swalFailed(error.response.data.message);
     }
   };
-  // baca data yg di kirim terus dikirim via post
-  // masukin semua data di cart, passing semua data ke dalam handler ini,
-  // cart: cart,
-  //setelah sukses checkout redirect ke checkOutSuccess, baru nampilin data dengan cara get data
-
   useEffect(() => {
     getCart();
     getData();
@@ -212,134 +189,94 @@ const List = ({ serviceCost }) => {
               </Heading>
               {carts.length > 0
                 ? carts.map((i) => (
-                  <Flex
-                    borderWidth="1px"
-                    rounded="lg"
-                    padding="2"
-                    width="full"
-                    mt={2}
-                    justifyContent="space-between"
-                    bgColor="white"
-                  >
-                    <HStack>
-                      <Image
-                        rounded="lg"
-                        width="120px"
-                        height="120px"
-                        fit="cover"
-                        src={process.env.REACT_APP_IMAGE_API + i.image}
-                        alt=""
-                        draggable="false"
-                        loading="lazy"
-                      />
-                      <Box pt="4">
-                        <Stack spacing="0.5">
-                          <Text fontWeight="medium">{i.product_name}</Text>
-                          <Text
-                            color={mode("gray.600", "gray.400")}
-                            fontSize="sm"
-                          >
-                            {rupiah(i.price)}
-                          </Text>
-                        </Stack>
-                      </Box>
-                    </HStack>
+                    <Flex
+                      borderWidth="1px"
+                      rounded="lg"
+                      padding="2"
+                      width="full"
+                      mt={2}
+                      justifyContent="space-between"
+                      bgColor="white"
+                    >
+                      <HStack>
+                        <Image
+                          rounded="lg"
+                          width="120px"
+                          height="120px"
+                          fit="cover"
+                          src={process.env.REACT_APP_IMAGE_API + i.image}
+                          alt=""
+                          draggable="false"
+                          loading="lazy"
+                        />
+                        <Box pt="4">
+                          <Stack spacing="0.5">
+                            <Text fontWeight="medium">{i.product_name}</Text>
+                            <Text
+                              color={mode("gray.600", "gray.400")}
+                              fontSize="sm"
+                            >
+                              {rupiah(i.price)}
+                            </Text>
+                          </Stack>
+                        </Box>
+                      </HStack>
 
-                    <Flex alignItems="end">
-                      <Button
-                        variant="ghost"
-                        w="fit-content"
-                        size="sm"
-                        ml={2}
-                        onClick={() => deleteItem(i.product_id, "minus")}
-                      >
-                        <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
-                      </Button>
+                      <Flex alignItems="end">
+                        <Button
+                          variant="ghost"
+                          w="fit-content"
+                          size="sm"
+                          ml={2}
+                          onClick={() => deleteItem(i.product_id, "minus")}
+                        >
+                          <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
+                        </Button>
 
-                      <Box>
-                        <Flex alignItems="center">
-                          <Button
-                            variant="ghost"
-                            w="fit-content"
-                            size="sm"
-                            ml={2}
-                            onClick={() =>
-                              updateItemQty(i.product_id, "minus")
-                            }
-                          >
-                            <Icon
-                              as={BsDashCircle}
-                              h={5}
-                              w={5}
-                              alignSelf={"center"}
-                            />
-                          </Button>
-                          <Text px={3} mb={0} fontWeight="medium">
-                            {i.qty}
-                          </Text>
-                          <Button
-                            variant="ghost"
-                            w="fit-content"
-                            size="sm"
-                            mr={2}
-                            onClick={() =>
-                              updateItemQty(i.product_id, "plus")
-                            }
-                          >
-                            <Icon
-                              as={BsPlusCircle}
-                              h={5}
-                              w={5}
-                              alignSelf={"center"}
-                            />
-                          </Button>
-                        </Flex>
-                      </Box>
+                        <Box>
+                          <Flex alignItems="center">
+                            <Button
+                              variant="ghost"
+                              w="fit-content"
+                              size="sm"
+                              ml={2}
+                              onClick={() =>
+                                updateItemQty(i.product_id, "minus")
+                              }
+                            >
+                              <Icon
+                                as={BsDashCircle}
+                                h={5}
+                                w={5}
+                                alignSelf={"center"}
+                              />
+                            </Button>
+                            <Text px={3} mb={0} fontWeight="medium">
+                              {i.qty}
+                            </Text>
+                            <Button
+                              variant="ghost"
+                              w="fit-content"
+                              size="sm"
+                              mr={2}
+                              onClick={() =>
+                                updateItemQty(i.product_id, "plus")
+                              }
+                            >
+                              <Icon
+                                as={BsPlusCircle}
+                                h={5}
+                                w={5}
+                                alignSelf={"center"}
+                              />
+                            </Button>
+                          </Flex>
+                        </Box>
+                      </Flex>
                     </Flex>
-                  </Flex>
-                ))
+                  ))
                 : "Cart is Empty"}
             </Container>
-            {/* <Container maxW="container.xl" p={5} mt={5}>
-              <Heading fontSize="2xl" fontWeight="extrabold">
-                Our Recommendations
-              </Heading>
-              <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-                {recomendItem.length === 0 && user.value.username === ""
-                  ? product.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))
-                  : recomendItem.map((i, index) => (
-                      <ProductCard
-                        key={index}
-                        image={i.image}
-                        product_name={i.product_name}
-                        price={i.price}
-                        id={i.id}
-                        category={i.category}
-                        description={i.description}
-                        dose={i.dose}
-                        indication={i.indication}
-                        rules={i.rules}
-                        unit={i.defaultUnit}
-                        category_id={i.category_id}
-                      />
-                    ))}
-              </Grid>
-            </Container> */}
           </Stack>
         </Stack>
 
@@ -353,7 +290,6 @@ const List = ({ serviceCost }) => {
             bg="white"
           >
             <Heading size="md">Ringkasan Belanja</Heading>
-
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">

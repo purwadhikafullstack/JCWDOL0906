@@ -7,7 +7,6 @@ export const inputStyles = {
           fontWeight: 400,
         },
       },
-
       variants: {
         auth: (props) => ({
           field: {
