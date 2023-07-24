@@ -11,54 +11,40 @@ const { calculatePrescription } = require("../helpers/units");
 
 module.exports = {
   getAll: async (req, res) => {
-    // try {
-    //     let sort = ['product_id', 'ASC']
-    //     let limit = 5
-    //     let offset = 0
-    //     let param = {
-    //         is_deleted: 0,
-    //     }
     if (req.query.page && req.query.page > 1) {
       offset = (Number(req.query.page) - 1) * limit;
     }
-    //     const { count, rows } = await cart.findAndCountAll({
-    //         include: [product],
-    //         order: [sort],
-    //         offset: offset,
-    //         limit: limit
-    //     })
-    //     res.status(200).json(successResponse("", rows, count))
-    // } catch (error) {
-    //     console.log(error)
-    //     res.status(500).json(failedResponse(error))
-    // }
     let limit = 5;
     let offset = 0;
 
     try {
       const [a] = await sequelize.query(
-        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id LIMIT ${limit} OFFSET ${offset}`
+        `SELECT c.*,p.*,s.default_unit_qty as defaultQty FROM Carts c 
+        JOIN Products p ON c.product_id = p.id 
+        JOIN stocks s ON s.product_id = c.product_id
+        LIMIT ${limit} 
+        OFFSET ${offset}`
       );
 
-      console.log(a);
+
 
       res.status(200).json(successResponse("", a, a.length));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
 
   addToCart: async (req, res) => {
     const { product_id, qty, price } = req.body;
-    console.log(product_id, qty, price)
+
     try {
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,
         },
       });
-      console.log(productStock)
+
       const stocks = productStock.dataValues.default_unit_qty;
 
       const isExists = await cart.findOne({
@@ -67,7 +53,7 @@ module.exports = {
         },
       });
 
-      // console.log(isExists)
+      // 
 
       if (!isExists) {
         const user_id = req.userId;
@@ -103,13 +89,13 @@ module.exports = {
           .json(successResponse("update product success", null, null));
       }
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
 
   updateCart: async (req, res) => {
-    console.log(req.body);
+
     try {
       const productStock = await stock.findOne({
         where: {
@@ -118,7 +104,7 @@ module.exports = {
       });
       const stocks = productStock.dataValues.default_unit_qty;
 
-      console.log("STOCK", stocks);
+
       const isExists = await cart.findOne({
         where: {
           product_id: req.params.id,
@@ -154,7 +140,7 @@ module.exports = {
         .status(200)
         .json(successResponse("update product success", null, null));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
@@ -164,14 +150,13 @@ module.exports = {
       await cart.destroy({ where: { product_id: req.params.id } });
       res.status(200).json(successResponse("delete item success", null, null));
     } catch (error) {
-      console.log(error);
+
       res.status(500).json(failedResponse(error));
     }
   },
   addPrescriptionToCart: async (req, res) => {
     try {
-      const user_id = req.userId;
-      const { product_id, qty } = req.body;
+      const { userId, product_id, qty, conversion_unit } = req.body;
       const productStock = await stock.findOne({
         where: {
           product_id: product_id,
@@ -186,13 +171,14 @@ module.exports = {
       const { total_price } = result;
 
       await cart.create({
-        user_id,
+        user_id: userId,
         product_id,
         qty,
+        conversion_unit,
         price: total_price,
         total_price,
       });
-      // console.log(data);
+      // 
       res.status(200).send({
         message: "Get All Product Unit Success",
       });
@@ -201,6 +187,20 @@ module.exports = {
         message: error.message,
         data: error,
       });
+    }
+  },
+  totalPricePrescription: async (req, res) => {
+    try {
+      const [a] = await sequelize.query(
+        `SELECT * FROM Carts c JOIN Products p ON c.product_id = p.id where c.user_id = ${req.query.user_id}`
+      );
+
+
+
+      res.status(200).json(successResponse("", a, a.length));
+    } catch (error) {
+
+      res.status(500).json(failedResponse(error));
     }
   },
 };

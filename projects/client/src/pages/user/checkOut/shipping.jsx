@@ -68,10 +68,9 @@ const Shipping = ({
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
       swalFailed(error.response.data.message);
-      console.log("eror", error);
+
     }
   };
-
   const getShippingCost = async () => {
     try {
       let body = { origin, destination, weight, courier };
@@ -87,11 +86,9 @@ const Shipping = ({
       );
       setShippingCosts(result?.data?.data?.results[0]?.costs);
     } catch (error) {
-      // swalFailed(error.response.data.message);
-      console.log(error);
+
     }
   };
-
   useEffect(() => {
     getAddress();
   }, []);
@@ -116,7 +113,6 @@ const Shipping = ({
           <Heading size="ml">Shipping Address</Heading>
         </CardHeader>
       </Card>
-
       <Accordion>
         <AccordionItem>
           <h2>
@@ -175,7 +171,6 @@ const Shipping = ({
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-
       <form onSubmit={() => { }}>
         <VStack spacing={4}>
           <Text
@@ -202,7 +197,6 @@ const Shipping = ({
               <option value="tiki">TIKI</option>
             </Select>
           </FormControl>
-
           <VStack w="full" align="left">
             <Text
               w="full"
@@ -213,7 +207,6 @@ const Shipping = ({
             >
               Choose Service
             </Text>
-
             <FormControl w="full">
               <Select
                 onChange={(e) => {
@@ -223,7 +216,6 @@ const Shipping = ({
                 value={serviceCost}
               >
                 {shippingCosts.map((item, index) => {
-                  console.log(item);
                   return (
                     <>
                       <option value={item?.cost[0].value}>
@@ -249,7 +241,4 @@ const Shipping = ({
     </Box>
   );
 };
-
-// check out di klik, tampilin modal yg nampilin detail transaksi dan gambar payment bank bca beswerta no rek nya
-
 export default Shipping;

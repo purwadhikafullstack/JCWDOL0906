@@ -10,9 +10,11 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import AdminNavbarLinks from "./AdminNavbarLinks";
 
 export default function AdminNavbar(props) {
+  const location = useLocation()
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -131,7 +133,7 @@ export default function AdminNavbar(props) {
 
             <BreadcrumbItem color={mainText}>
               <BreadcrumbLink href="#" color={mainText}>
-                {brandText}
+                {location.pathname.split('/')[2]}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -152,7 +154,7 @@ export default function AdminNavbar(props) {
               boxShadow: "none",
             }}
           >
-            {brandText}
+            {location.pathname.split('/')[2]}
           </Link>
         </Box>
         <Box ms="auto" w={{ sm: "100%", md: "unset" }}>

@@ -1,9 +1,7 @@
-import axios from "axios"
 import { apiRequest } from "../helper/api";
 export const CheckLogin = async () => {
         try {
                 let getTokenId = JSON.parse(localStorage.getItem('user'));
-                console.log(getTokenId);
                 if (!getTokenId) return {
                         dataUser: null,
                         tokenUser: null
@@ -14,7 +12,6 @@ export const CheckLogin = async () => {
                                 authorization: `Bearer ${getTokenId}`
                         }
                 })
-                console.log(response)
                 return {
                         dataUser: response.data.data,
                         tokenUser: response.data.token
@@ -25,5 +22,4 @@ export const CheckLogin = async () => {
                         tokenUser: null
                 }
         }
-
 }

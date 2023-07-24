@@ -45,13 +45,10 @@ const ModalPrescription = () => {
       setIsOpen(true);
     } else {
       Swal.fire(
-        'Bukan User?',
         'Silahkan Daftar dan Masuk Kembali',
-        'question'
       )
     }
   };
-
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -71,13 +68,11 @@ const ModalPrescription = () => {
       formData.append("address_id", address_id);
 
       const tokenUser = JSON.parse(localStorage.getItem("user"));
-
       let result = await apiRequest.post("/prescription", formData, {
         headers: {
           Authorization: `Bearer ${tokenUser}`,
         },
       });
-
       alert(result.data.message);
       Swal.fire({
         icon: "success",
@@ -87,7 +82,6 @@ const ModalPrescription = () => {
         },
       });
     } catch (error) {
-      console.log(error);
       Swal.fire({
         icon: "error",
         title: "Failed Attempt",
@@ -103,7 +97,6 @@ const ModalPrescription = () => {
     try {
 
       const tokenUser = JSON.parse(localStorage.getItem("user"));
-
       const result = await apiRequest.get("/address", {
         headers: {
           Authorization: `Bearer ${tokenUser}`,
@@ -115,8 +108,6 @@ const ModalPrescription = () => {
       });
       setSelectedAddress(defaultAddress[0]);
     } catch (error) {
-      // swalFailed(error.response.data.message);
-      console.log(error);
     }
   };
 
@@ -209,5 +200,4 @@ const ModalPrescription = () => {
     </Box>
   );
 };
-
 export default ModalPrescription;

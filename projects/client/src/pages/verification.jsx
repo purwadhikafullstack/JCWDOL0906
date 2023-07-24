@@ -11,7 +11,6 @@ export const Verification = () => {
   let { token } = useParams();
 
   const tokenVerification = async () => {
-    console.log(tokenVerification);
     try {
       if (token) {
         const response = await apiRequest.post(
@@ -23,18 +22,12 @@ export const Verification = () => {
             },
           }
         );
-
         alert(response.data.message);
-        console.log(response);
         setTimeout(() => {
           navigate("/");
         }, 4000);
       }
-    } catch (err) {
-      console.log(err.response.data);
-      alert(err.response.data);
-    }
-  };
+    } catch (err) { alert(err.response.data)}};
 
   useEffect(() => {
     tokenVerification();
@@ -68,5 +61,4 @@ export const Verification = () => {
     </Stack>
   );
 };
-
 export default Verification;

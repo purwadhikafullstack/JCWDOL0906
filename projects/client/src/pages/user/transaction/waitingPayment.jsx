@@ -21,53 +21,42 @@ const WaitingPayment = () => {
     const getDataByStatus = async () => {
         try {
             const result = await apiRequest.get("/transaction/" + searchParams.get('status') + "/status")
-            console.log(result.data.data)
+
             setTransaction(result.data.data)
         } catch (error) {
 
         }
     }
-
     const uploadBukti = async (e) => {
-        console.log(e)
         try {
             let formData = new FormData()
             formData.append("image", e.files[0]);
 
             let result = await apiRequest.post("/transaction/" + e.id, formData);
             getDataByStatus();
-            console.log(result.data.data)
+
             swalSuccess(result.data.message);
         } catch (error) {
-            console.log(error);
+
             swalFailed(error.response.data.message);
         }
     };
-
     const getDetailTransaction = async (code) => {
         try {
             const result = await apiRequest.get("/transaction/" + code + "/code")
-            console.log(result.data.data)
-
             setUserTransaction(result.data.data.transaction)
             setDetailTransaction(result.data.data.details)
             onOpen()
         } catch (error) {
-
         }
     }
-
     const cancelTransaction = async (code) => {
         try {
             const result = await apiRequest.delete("/transaction/" + code)
-            console.log(result.data.data)
-
             getDataByStatus()
         } catch (error) {
-
         }
     }
-
     const jasaPengiriman = (shipping) => {
         if (shipping === 'tiki') {
             return <Image w='80px' src='https://www.tiki.id/images/logo.png' />
@@ -103,7 +92,6 @@ const WaitingPayment = () => {
                         </Flex>
                     </Flex>
                 </CardHeader>
-
                 <CardBody>
                     <Stack spacing='4'>
                         <Card variant='outline'>
@@ -119,28 +107,6 @@ const WaitingPayment = () => {
                                                 </Flex>
                                             </CardHeader>
                                             <CardBody>
-                                                {/* <HStack>
-                                                    <Card>
-                                                        <CardBody>
-                                                            <Heading size='sm'>Metode Pembayaran : Bank Transfer</Heading>
-                                                            <Flex spacing={2}>
-                                                                <Center>
-                                                                    <Image src='https://www.bca.co.id/-/media/Feature/Header/Header-Logo/logo-bca.svg?v=1' />
-                                                                </Center>
-                                                                <Spacer />
-                                                                <Center>
-                                                                    <Heading size='sm'> 72345678911</Heading>
-                                                                </Center>
-                                                            </Flex>
-
-                                                        </CardBody>
-                                                    </Card>
-                                                    <Card>
-                                                        <CardBody>
-                                                            Total Pembayaran : {rupiah(i.total_price)}
-                                                        </CardBody>
-                                                    </Card>
-                                                </HStack> */}
                                                 <Stack direction='row' h='100px'>
                                                     <VStack>
                                                         <Heading size='sm'>Metode Pembayaran : Bank Transfer</Heading>
@@ -154,30 +120,24 @@ const WaitingPayment = () => {
                                                             </Center>
                                                         </Flex>
                                                     </VStack>
-
                                                     <Divider orientation='vertical' />
                                                     <Center>
                                                         <Text> Total Pembayaran : {rupiah(i.total_price)}</Text>
                                                     </Center>
-
                                                 </Stack>
                                             </CardBody>
                                             <CardFooter>
                                                 {code === i.transaction_code ? <>
-
                                                     <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     <Flex>
                                                         <Input type='file' id={i.transaction_code} onChange={(e) => uploadBukti(e.target)} />
                                                         <Button ml={2} colorScheme='red' onClick={() => setCode("")}>X</Button>
                                                     </Flex>
                                                     <Button ml={2} colorScheme='red' onClick={() => cancelTransaction(i.transaction_code)}><Icon as={BsTrash} h={5} w={5} alignSelf={'center'} /></Button>
-
                                                 </> : <>
-
                                                     <Button mr={2} colorScheme='blue' onClick={() => getDetailTransaction(i.transaction_code)}>Detail</Button>
                                                     <Button variant='outline' colorScheme='blue' onClick={() => { setCode(i.transaction_code); setTransactionId(i.id) }}>Upload Receipt</Button>
                                                     <Button ml={2} colorScheme='red' onClick={() => cancelTransaction(i.transaction_code)}><Icon as={BsTrash} h={5} w={5} alignSelf={'center'} /></Button>
-
                                                 </>
                                                 }
                                             </CardFooter>
@@ -197,7 +157,6 @@ const WaitingPayment = () => {
                     <ModalBody>
                         <Stack>
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
                                         <Text> Tujuan Pengiriman : {i.address_name}</Text>
@@ -205,7 +164,6 @@ const WaitingPayment = () => {
                                 </Card>
                             )}
                             <Divider />
-
                             <Card variant='outline' bg='blue.50'>
                                 {detailTransaction.map((j, index) =>
                                     <CardBody key={index}>
@@ -226,9 +184,6 @@ const WaitingPayment = () => {
                                     </CardBody>
                                 )}
                             </Card>
-
-
-
                             <Divider />
                             {userTransaction.map(i =>
 
@@ -244,7 +199,6 @@ const WaitingPayment = () => {
                             )}
                             <Divider />
                             {userTransaction.map(i =>
-
                                 <Card variant='outline' bg='blue.50'>
                                     <CardBody>
 
@@ -266,7 +220,6 @@ const WaitingPayment = () => {
                                 </Card>
                                 :
                                 userTransaction.map(i =>
-
                                     <Card variant='outline' bg='blue.50'>
                                         <CardBody>
                                             <Text fontWeight='600'> Bukti Pembayaran :</Text>
@@ -275,10 +228,8 @@ const WaitingPayment = () => {
                                     </Card>
                                 )
                             }
-
                         </Stack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>
                             Close
@@ -287,8 +238,6 @@ const WaitingPayment = () => {
                 </ModalContent>
             </Modal>
         </Container>
-
     )
 }
-
 export default WaitingPayment

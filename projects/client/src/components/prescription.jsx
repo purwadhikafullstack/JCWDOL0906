@@ -29,7 +29,7 @@ export const Prescriptions = (props) => {
       <Heading as='h4' size='xl' color='blue.900'>Punya Resep Dari Dokter?</Heading>
       <Text py='3' fontSize='18px' fontWeight='bold'>
         Tebus Resep Dokter, Online dan Tanpa Antri!
-        G-Medsnial memberikan kemudahan bagi Anda untuk tebus obat resep tanpa antri secara online. 
+        G-Medsnials memberikan kemudahan bagi Anda untuk tebus obat resep tanpa antri secara online. 
       </Text>
       <ModalPrescription/>
     </CardBody>

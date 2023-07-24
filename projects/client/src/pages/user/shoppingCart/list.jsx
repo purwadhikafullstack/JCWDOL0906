@@ -46,14 +46,11 @@ const List = () => {
   const navigate = useNavigate();
   const [carts, setCart] = useState([]);
   const [recomendItem, setRecomendItem] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [paging, setPaging] = useState([]);
-  const [records, setRecords] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [product, setProduct] = useState([]);
   const user = useSelector((state) => state.userSlice);
   const { cart, total_price } = useSelector((state) => state.cartSlice);
-  console.log("carts1", carts);
+
 
   const getCart = async () => {
     try {
@@ -62,9 +59,6 @@ const List = () => {
           authorization: `Bearer ${user.value.verification_token}`,
         },
       });
-
-      // console.log(result.data.data)
-      console.log("GET");
       setCart(result.data.data);
       let data = result.data.data;
       let total_qty = 0;
@@ -75,10 +69,9 @@ const List = () => {
       });
       dispatch(add({ cart: total_qty, total_price: total_price }));
     } catch (error) {
-      console.log(error);
+
     }
   };
-
   const updateItemQty = async (id, method) => {
     try {
       const result = await apiRequest.patch(
@@ -94,7 +87,6 @@ const List = () => {
       );
       getCart();
     } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         toast({
           title: "",
@@ -107,7 +99,6 @@ const List = () => {
       }
     }
   };
-
   const deleteItem = async (id, method) => {
     try {
       const result = await apiRequest.delete("/cart/" + id, {
@@ -117,17 +108,15 @@ const List = () => {
       });
       getCart();
     } catch (error) {
-      console.log(error);
+
     }
   };
-
   const getRecomendItem = () => {
     let item = product.filter(
       (pr) => !carts.find((cr) => cr.product_id === pr.id)
     );
     setRecomendItem(item);
   };
-
   const getData = async () => {
     try {
       const result = await apiRequest.get("/store/product?page=" + pageNumber);
@@ -141,7 +130,7 @@ const List = () => {
     getCart();
     getData();
   }, [cart]);
-  console.log("DATA USER", user.value.username);
+
   useEffect(() => {
     if (user.value.username === "") {
       setCart([]);
@@ -215,10 +204,15 @@ const List = () => {
                           >
                             {rupiah(i.price)}
                           </Text>
+                          <Text
+                            color={mode("gray.600", "gray.400")}
+                            fontSize="sm"
+                          >
+                            Stock : {i.defaultQty}
+                          </Text>
                         </Stack>
                       </Box>
                     </HStack>
-
                     <Flex alignItems="end">
                       <Button
                         variant="ghost"
@@ -229,7 +223,6 @@ const List = () => {
                       >
                         <Icon as={BsTrash} h={5} w={5} alignSelf={"center"} />
                       </Button>
-
                       <Box>
                         <Flex alignItems="center">
                           <Button
@@ -316,7 +309,6 @@ const List = () => {
             </Container>
           </Stack>
         </Stack>
-
         <Flex direction="column" align="center" flex="1">
           <Stack
             spacing="8"
@@ -327,7 +319,6 @@ const List = () => {
             bg="white"
           >
             <Heading size="md">Ringkasan Belanja</Heading>
-
             <Stack spacing="6">
               <Flex justify="space-between">
                 <Text fontSize="lg" fontWeight="semibold">

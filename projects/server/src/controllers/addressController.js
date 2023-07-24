@@ -8,10 +8,7 @@ const user = db.User;
 module.exports = {
   getAddress: async (req, res) => {
     try {
-
       const { userId } = req;
-      console.log(userId);
-      // console.log(getData);
       let data = await address.findAll({
         where: {
           user_id: userId,
@@ -20,13 +17,11 @@ module.exports = {
           model: user,
         },
       });
-      // console.log(data);
       res.status(200).send({
         message: "Get All Address Success",
         data,
       });
     } catch (error) {
-      console.log(error)
       res.status(500).send({
         message: error.message,
         data: error,
@@ -45,14 +40,13 @@ module.exports = {
         label,
         postal_code,
       } = req.body;
-      console.log("body", req.body);
       let { userId } = req;
       let data = await address.create({
         address_name,
         province_name,
         province_id,
         city_name,
-        city_id,
+        city_id: Number(city_id),
         is_default,
         label,
         postal_code,
@@ -63,7 +57,6 @@ module.exports = {
         data,
       });
     } catch (error) {
-      console.log(error);
       res.status(400).json({
         message: error.message,
         data: error,
@@ -83,7 +76,6 @@ module.exports = {
         label,
         postal_code,
       } = req.body;
-
       await address.update(
         {
           address_name,
@@ -101,20 +93,17 @@ module.exports = {
           },
         }
       );
-
       const addressData = await address.findOne({
         where: {
           user_id: userId,
         },
       });
-      console.log(addressData);
-
       return res.status(200).json({
         message: "Changes Saved",
         result: addressData,
       });
     } catch (err) {
-      console.log(err);
+
       res.status(500).json({
         message: "Error",
       });
